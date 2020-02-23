@@ -492,164 +492,6 @@
 
 </article>
     
-    <article id="post-Spring Boot 启用配置原理" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/"
-    >SpringBoot 启动配置原理</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h1 id="启动配置原理"><a href="#启动配置原理" class="headerlink" title="启动配置原理"></a>启动配置原理</h1><p>几个重要的事件回调机制</p>
-<p>配置在META-INF/spring.factories</p>
-<p><strong>ApplicationContextInitializer</strong></p>
-<p><strong>SpringApplicationRunListener</strong></p>
-<p>只需要放在ioc容器中</p>
-<p><strong>ApplicationRunner</strong></p>
-<p><strong>CommandLineRunner</strong></p>
-<h2 id="1、创建SpringApplication对象"><a href="#1、创建SpringApplication对象" class="headerlink" title="1、创建SpringApplication对象"></a><strong>1、创建SpringApplication对象</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>((ResourceLoader)<span class="keyword">null</span>, primarySources);</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//保存主配置类</span></span><br><span class="line">    <span class="keyword">this</span>.primarySources = <span class="keyword">new</span> LinkedHashSet(Arrays.asList(primarySources));</span><br><span class="line">    <span class="comment">//判断当前是否一个web应用</span></span><br><span class="line">    <span class="keyword">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//从类路径下找到META-INF/spring.factories配置的所有ApplicationContextInitializer；然后保存起来</span></span><br><span class="line">    <span class="keyword">this</span>.setInitializers(<span class="keyword">this</span>.getSpringFactoriesInstances(ApplicationContextInitializer<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">    <span class="comment">//从类路径下找到ETA-INF/spring.factories配置的所有ApplicationListener</span></span><br><span class="line">    <span class="keyword">this</span>.setListeners(<span class="keyword">this</span>.getSpringFactoriesInstances(ApplicationListener<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">    <span class="comment">//从多个配置类中找到有main方法的主配置类</span></span><br><span class="line">    <span class="keyword">this</span>.mainApplicationClass = <span class="keyword">this</span>.deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring Boot 嵌入式Servlet" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/"
-    >SpringBoot 配置嵌入式Servlet容器</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="配置嵌入式Servlet容器"><a href="#配置嵌入式Servlet容器" class="headerlink" title="配置嵌入式Servlet容器"></a>配置嵌入式Servlet容器</h2><p>SpringBoot默认使用Tomcat作为嵌入式的Servlet容器；</p>
-<h3 id="1）、如何定制和修改Servlet容器的相关配置；"><a href="#1）、如何定制和修改Servlet容器的相关配置；" class="headerlink" title="1）、如何定制和修改Servlet容器的相关配置；"></a>1）、如何定制和修改Servlet容器的相关配置；</h3><p>1、修改和server有关的配置（ServerProperties)</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">server.port</span>=<span class="string">8081</span></span><br><span class="line"><span class="meta">server.context-path</span>=<span class="string">/crud</span></span><br><span class="line"></span><br><span class="line"><span class="meta">server.tomcat.uri-encoding</span>=<span class="string">UTF-8</span></span><br><span class="line"></span><br><span class="line"><span class="attr">//通用的Servlet容器设置</span></span><br><span class="line"><span class="attr">server.xxx</span></span><br><span class="line"><span class="attr">//Tomcat的设置</span></span><br><span class="line"><span class="attr">server.tomcat.xxx</span></span><br></pre></td></tr></table></figure>
-
-<p>2、编写一个<del>EmbeddedServletContainerCustomizer</del>，2.0以后改为<code>WebServerFactoryCustomizer</code> : 嵌入式的Servlet容器的定制器；来修改Servlet容器的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public WebServerFactoryCustomizer webServerFactoryCustomizer()&#123;</span><br><span class="line">        return new WebServerFactoryCustomizer&lt;ConfigurableWebServerFactory&gt;() &#123;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;定制嵌入式的Servlet容器相关的规则</span><br><span class="line">            @Override</span><br><span class="line">            public void customize(ConfigurableWebServerFactory factory) &#123;</span><br><span class="line">                factory.setPort(8002);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
     <article id="post-Spring Boot Thymeleaf" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -706,97 +548,6 @@
 <p>使用：</p>
       
       <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20Thymeleaf/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring Boot 数据库访问" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/"
-    >SpringBoot与数据访问</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h1 id="SpringBoot与数据访问"><a href="#SpringBoot与数据访问" class="headerlink" title="SpringBoot与数据访问"></a>SpringBoot与数据访问</h1><h2 id="1、JDBC"><a href="#1、JDBC" class="headerlink" title="1、JDBC"></a>1、JDBC</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://localhost:3306/javatest?serverTimezone=UTC</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<p>效果：</p>
-<p>​    2.x版本默认是用HikariDataSource作为数据源；</p>
-<p>​    数据源的相关配置都在DataSourceProperties里面；</p>
-<p>自动配置原理：</p>
-<p>org.springframework.boot.autoconfigure.jdbc：</p>
-<p>1、参考DataSourceConfiguration，根据配置创建数据源，默认使用HikariDataSource数据源；可以使用spring.datasource.type指定自定义的数据源类型；</p>
-<p>2、SpringBoot默认可以支持；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.tomcat.jdbc.pool.DataSource、HikariDataSource、BasicDataSource、</span><br></pre></td></tr></table></figure>
-
-<p>3、自定义数据源类型</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Generic DataSource configuration.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span>(proxyBeanMethods = <span class="keyword">false</span>)</span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>(DataSource<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">ConditionalOnProperty</span>(<span class="title">name</span> </span>= <span class="string">"spring.datasource.type"</span>)</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Generic</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function">DataSource <span class="title">dataSource</span><span class="params">(DataSourceProperties properties)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> properties.initializeDataSourceBuilder().build();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4、<strong>DataSourceInitializer：ApplicationListener</strong>；</p>
-<p>创建时执行数据表创建文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">boolean createSchema() &#123;</span><br><span class="line">	List&lt;Resource&gt; scripts &#x3D; getScripts(&quot;spring.datasource.schema&quot;, this.properties.getSchema(), &quot;schema&quot;);</span><br><span class="line">	if (!scripts.isEmpty()) &#123;</span><br><span class="line">		if (!isEnabled()) &#123;</span><br><span class="line">			logger.debug(&quot;Initialization disabled (not running DDL scripts)&quot;);</span><br><span class="line">			return false;</span><br><span class="line">		&#125;</span><br><span class="line">		String username &#x3D; this.properties.getSchemaUsername();</span><br><span class="line">		String password &#x3D; this.properties.getSchemaPassword();</span><br><span class="line">		runScripts(scripts, username, password);</span><br><span class="line">	&#125;</span><br><span class="line">	return !scripts.isEmpty();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -919,7 +670,7 @@
 
 </article>
     
-    <article id="post-Spring Boot 配置文件" class="article article-type-post" itemscope
+    <article id="post-Spring Boot 嵌入式Servlet" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -927,8 +678,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
-    >SpringBoot 配置文件</a
+  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/"
+    >SpringBoot 配置嵌入式Servlet容器</a
   >
 </h2>
   
@@ -938,7 +689,7 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
+      <a href="/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/" class="article-date">
   <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
 </a>
       
@@ -962,24 +713,269 @@
       
 
       
-      <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><h2 id="1、配置文件"><a href="#1、配置文件" class="headerlink" title="1、配置文件"></a>1、配置文件</h2><p>SpringBoot使用一个全局的配置文件，配置文件名是固定的；</p>
-<p>•application.properties</p>
-<p>•application.yml</p>
-<p>配置文件的作用：修改SpringBoot自动配置的默认值；SpringBoot在底层都给我们自动配置好；</p>
-<p>YAML（YAML Ain’t Markup Language）</p>
-<p>​    YAML  A Markup Language：是一个标记语言</p>
-<p>​    YAML   isn’t Markup Language：不是一个标记语言；</p>
-<p>标记语言：</p>
-<p>​    以前的配置文件；大多都使用的是  <strong>xxxx.xml</strong>文件；</p>
-<p>​    YAML：<strong>以数据为中心</strong>，比json、xml等更适合做配置文件；</p>
-<p>​    YAML：配置例子</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br></pre></td></tr></table></figure>
+      <h2 id="配置嵌入式Servlet容器"><a href="#配置嵌入式Servlet容器" class="headerlink" title="配置嵌入式Servlet容器"></a>配置嵌入式Servlet容器</h2><p>SpringBoot默认使用Tomcat作为嵌入式的Servlet容器；</p>
+<h3 id="1）、如何定制和修改Servlet容器的相关配置；"><a href="#1）、如何定制和修改Servlet容器的相关配置；" class="headerlink" title="1）、如何定制和修改Servlet容器的相关配置；"></a>1）、如何定制和修改Servlet容器的相关配置；</h3><p>1、修改和server有关的配置（ServerProperties)</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">server.port</span>=<span class="string">8081</span></span><br><span class="line"><span class="meta">server.context-path</span>=<span class="string">/crud</span></span><br><span class="line"></span><br><span class="line"><span class="meta">server.tomcat.uri-encoding</span>=<span class="string">UTF-8</span></span><br><span class="line"></span><br><span class="line"><span class="attr">//通用的Servlet容器设置</span></span><br><span class="line"><span class="attr">server.xxx</span></span><br><span class="line"><span class="attr">//Tomcat的设置</span></span><br><span class="line"><span class="attr">server.tomcat.xxx</span></span><br></pre></td></tr></table></figure>
 
-<p>​    XML：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">port</span>&gt;</span>8081<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2、编写一个<del>EmbeddedServletContainerCustomizer</del>，2.0以后改为<code>WebServerFactoryCustomizer</code> : 嵌入式的Servlet容器的定制器；来修改Servlet容器的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public WebServerFactoryCustomizer webServerFactoryCustomizer()&#123;</span><br><span class="line">        return new WebServerFactoryCustomizer&lt;ConfigurableWebServerFactory&gt;() &#123;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;定制嵌入式的Servlet容器相关的规则</span><br><span class="line">            @Override</span><br><span class="line">            public void customize(ConfigurableWebServerFactory factory) &#123;</span><br><span class="line">                factory.setPort(8002);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
       
-      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">阅读更多...</a>
+      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/">阅读更多...</a>
       
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring Boot 启用配置原理" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/"
+    >SpringBoot 启动配置原理</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h1 id="启动配置原理"><a href="#启动配置原理" class="headerlink" title="启动配置原理"></a>启动配置原理</h1><p>几个重要的事件回调机制</p>
+<p>配置在META-INF/spring.factories</p>
+<p><strong>ApplicationContextInitializer</strong></p>
+<p><strong>SpringApplicationRunListener</strong></p>
+<p>只需要放在ioc容器中</p>
+<p><strong>ApplicationRunner</strong></p>
+<p><strong>CommandLineRunner</strong></p>
+<h2 id="1、创建SpringApplication对象"><a href="#1、创建SpringApplication对象" class="headerlink" title="1、创建SpringApplication对象"></a><strong>1、创建SpringApplication对象</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>((ResourceLoader)<span class="keyword">null</span>, primarySources);</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//保存主配置类</span></span><br><span class="line">    <span class="keyword">this</span>.primarySources = <span class="keyword">new</span> LinkedHashSet(Arrays.asList(primarySources));</span><br><span class="line">    <span class="comment">//判断当前是否一个web应用</span></span><br><span class="line">    <span class="keyword">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//从类路径下找到META-INF/spring.factories配置的所有ApplicationContextInitializer；然后保存起来</span></span><br><span class="line">    <span class="keyword">this</span>.setInitializers(<span class="keyword">this</span>.getSpringFactoriesInstances(ApplicationContextInitializer<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">    <span class="comment">//从类路径下找到ETA-INF/spring.factories配置的所有ApplicationListener</span></span><br><span class="line">    <span class="keyword">this</span>.setListeners(<span class="keyword">this</span>.getSpringFactoriesInstances(ApplicationListener<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">    <span class="comment">//从多个配置类中找到有main方法的主配置类</span></span><br><span class="line">    <span class="keyword">this</span>.mainApplicationClass = <span class="keyword">this</span>.deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring Boot 数据库访问" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/"
+    >SpringBoot与数据访问</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h1 id="SpringBoot与数据访问"><a href="#SpringBoot与数据访问" class="headerlink" title="SpringBoot与数据访问"></a>SpringBoot与数据访问</h1><h2 id="1、JDBC"><a href="#1、JDBC" class="headerlink" title="1、JDBC"></a>1、JDBC</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://localhost:3306/javatest?serverTimezone=UTC</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p>​    2.x版本默认是用HikariDataSource作为数据源；</p>
+<p>​    数据源的相关配置都在DataSourceProperties里面；</p>
+<p>自动配置原理：</p>
+<p>org.springframework.boot.autoconfigure.jdbc：</p>
+<p>1、参考DataSourceConfiguration，根据配置创建数据源，默认使用HikariDataSource数据源；可以使用spring.datasource.type指定自定义的数据源类型；</p>
+<p>2、SpringBoot默认可以支持；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.tomcat.jdbc.pool.DataSource、HikariDataSource、BasicDataSource、</span><br></pre></td></tr></table></figure>
+
+<p>3、自定义数据源类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Generic DataSource configuration.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span>(proxyBeanMethods = <span class="keyword">false</span>)</span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>(DataSource<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">ConditionalOnProperty</span>(<span class="title">name</span> </span>= <span class="string">"spring.datasource.type"</span>)</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Generic</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function">DataSource <span class="title">dataSource</span><span class="params">(DataSourceProperties properties)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> properties.initializeDataSourceBuilder().build();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4、<strong>DataSourceInitializer：ApplicationListener</strong>；</p>
+<p>创建时执行数据表创建文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">boolean createSchema() &#123;</span><br><span class="line">	List&lt;Resource&gt; scripts &#x3D; getScripts(&quot;spring.datasource.schema&quot;, this.properties.getSchema(), &quot;schema&quot;);</span><br><span class="line">	if (!scripts.isEmpty()) &#123;</span><br><span class="line">		if (!isEnabled()) &#123;</span><br><span class="line">			logger.debug(&quot;Initialization disabled (not running DDL scripts)&quot;);</span><br><span class="line">			return false;</span><br><span class="line">		&#125;</span><br><span class="line">		String username &#x3D; this.properties.getSchemaUsername();</span><br><span class="line">		String password &#x3D; this.properties.getSchemaPassword();</span><br><span class="line">		runScripts(scripts, username, password);</span><br><span class="line">	&#125;</span><br><span class="line">	return !scripts.isEmpty();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring IoC 容器" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"
+    >Spring IOC容器</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="BeanFactory容器"><a href="#BeanFactory容器" class="headerlink" title="BeanFactory容器"></a>BeanFactory容器</h2><p>BeanFactory世纪初类型的IoC容器，它由org.springframework.beans.facytory.BeanFactory接口定义，并提供了完成的IoC服务支持。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ClassPathResource resource &#x3D; new ClassPathResource(&quot;bean.xml&quot;);</span><br><span class="line">BeanFactory beanFactory &#x3D; new XmlBeanFactory(resource);</span><br><span class="line">TestServiceImpl test &#x3D; (TestServiceImpl) (beanFactory.getBean(&quot;TestService&quot;));</span><br><span class="line">test.say();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从BeanFactory获取Bean对象时，BeanFactory是延迟加载的。获取时才创建对象</p>
+</blockquote>
+<h2 id="Spring-ApplicationContext容器"><a href="#Spring-ApplicationContext容器" class="headerlink" title="Spring ApplicationContext容器"></a>Spring ApplicationContext容器</h2><p>Application Context是BeanFactory的子接口，也被称为Spring上下文 ，它可以加载配置文件中定义的bean，将所有的bean集中在一起，当有请求的时候分配bean。</p>
+<h4 id="常用被试用的ApplicationContext接口实现"><a href="#常用被试用的ApplicationContext接口实现" class="headerlink" title="常用被试用的ApplicationContext接口实现"></a>常用被试用的ApplicationContext接口实现</h4><ul>
+<li>ClassPathXmlApplciationContext：通过类路径下加载xml配置文件</li>
+<li>FileSystemXmlApplicationContext: 通过磁盘路径加载配置文件（要有访问权限）</li>
+<li>AnnotationFigApplicationContext：读取注解创建容器的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);</span><br><span class="line">TestServiceImpl te &#x3D; (TestServiceImpl) (context.getBean(&quot;TestService&quot;));</span><br><span class="line">te.say();</span><br></pre></td></tr></table></figure>
+
+
       
       <!-- reward -->
       
