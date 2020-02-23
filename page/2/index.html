@@ -71,7 +71,7 @@
     
     
     
-    <article id="post-Spring 事务管理" class="article article-type-post" itemscope
+    <article id="post-Spring jdbcTemplate" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -79,8 +79,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"
-    >Spring 事务管理</a
+  <a class="article-title" href="/2019/02/19/Spring%20jdbcTemplate/"
+    >Spring jdbcTemplate</a
   >
 </h2>
   
@@ -90,7 +90,7 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="article-date">
+      <a href="/2019/02/19/Spring%20jdbcTemplate/" class="article-date">
   <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
 </a>
       
@@ -114,183 +114,16 @@
       
 
       
-      <h3 id="Spring-事务控制我们要明确的"><a href="#Spring-事务控制我们要明确的" class="headerlink" title="Spring 事务控制我们要明确的"></a>Spring 事务控制我们要明确的</h3><pre><code>第一： JavaEE 体系进行分层开发，事务处理位于业务层，Spring提供了分层设计业务层的事务处理解决方案
-第二： Spring框架为我们提供了一组事务控制的接口。在spring-tx-3.2.13.RELEASE.jar 中
-第三：spring的事务控制都是基于AOP的，它既可以使用变成的方式的实现，也可以使用配置的方式实现</code></pre><h3 id="Spring-中的三个核心接口"><a href="#Spring-中的三个核心接口" class="headerlink" title="Spring 中的三个核心接口"></a>Spring 中的三个核心接口</h3><h4 id="1-PlatformTransactionManager"><a href="#1-PlatformTransactionManager" class="headerlink" title="1. PlatformTransactionManager"></a>1. PlatformTransactionManager</h4><p>PlatformTransactionManager 接口是 Spring 提供的平台事务管理器，用于管理事务。该接口中提供了三个事务操作方法，具体如下。</p>
-<ul>
-<li><code>TransactionStatus getTransaction（TransactionDefinition definition）</code>用于获取事务状态信息。</li>
-<li><code>void commit（TransactionStatus status）</code>用于提交事务。</li>
-<li><code>void rollback（TransactionStatus status）</code>用于回滚事务。</li>
-</ul>
-<p>真正管理事务的对象</p>
-<ul>
-<li><code>org.springframework.jdbc.datasource.DataSourceTransactionManager</code>使用SpringJDBC或Mybatis进行持久化数据时使用</li>
-<li><code>org.springframework.orm.hibernate5.HibernateTransactionManager</code> 使用Hibernate版本进行持久化数据时使用</li>
-</ul>
+      <h2 id="Spring-JDBCTemplate"><a href="#Spring-JDBCTemplate" class="headerlink" title="Spring JDBCTemplate"></a>Spring JDBCTemplate</h2><p>Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  </p>
+<p>Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。</p>
+<h4 id="创建数据源对象"><a href="#创建数据源对象" class="headerlink" title="创建数据源对象"></a>创建数据源对象</h4><p>Spring内部提供了自己DataSource对象<code>DriverManagerDataSource</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DriverManagerDataSource dataSource &#x3D; new DriverManagerDataSource();</span><br><span class="line">dataSource.setDriverClassName(&quot;com.mysql.cj.jdbc.Driver&quot;);</span><br><span class="line">dataSource.setUrl(&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;javatest?serverTimezone&#x3D;UTC&quot;);</span><br><span class="line">dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">dataSource.setPassword(&quot;123456&quot;);</span><br></pre></td></tr></table></figure>
+<h4 id="创建JDBCTemplate对象"><a href="#创建JDBCTemplate对象" class="headerlink" title="创建JDBCTemplate对象"></a>创建JDBCTemplate对象</h4><p>创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JdbcTemplate jdbcTemplate &#x3D; new JdbcTemplate();</span><br><span class="line">jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">List&lt;Account&gt; accounts &#x3D; jdbcTemplate.query(&quot;select * from account&quot;,new AccountRowMapper());</span><br><span class="line">for(Account account:accounts)&#123;</span><br><span class="line">    System.out.println(account);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象"><a href="#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象" class="headerlink" title="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象"></a>在执行查询的时候我们需要提供一个继承于<code>RowMapper</code>接口的实现类,用于封装结果对象</h5>
       
-      <a class="article-more-link" href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">阅读更多...</a>
+      <a class="article-more-link" href="/2019/02/19/Spring%20jdbcTemplate/">阅读更多...</a>
       
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring IoC 容器" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"
-    >Spring IOC容器</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="BeanFactory容器"><a href="#BeanFactory容器" class="headerlink" title="BeanFactory容器"></a>BeanFactory容器</h2><p>BeanFactory世纪初类型的IoC容器，它由org.springframework.beans.facytory.BeanFactory接口定义，并提供了完成的IoC服务支持。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ClassPathResource resource &#x3D; new ClassPathResource(&quot;bean.xml&quot;);</span><br><span class="line">BeanFactory beanFactory &#x3D; new XmlBeanFactory(resource);</span><br><span class="line">TestServiceImpl test &#x3D; (TestServiceImpl) (beanFactory.getBean(&quot;TestService&quot;));</span><br><span class="line">test.say();</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>从BeanFactory获取Bean对象时，BeanFactory是延迟加载的。获取时才创建对象</p>
-</blockquote>
-<h2 id="Spring-ApplicationContext容器"><a href="#Spring-ApplicationContext容器" class="headerlink" title="Spring ApplicationContext容器"></a>Spring ApplicationContext容器</h2><p>Application Context是BeanFactory的子接口，也被称为Spring上下文 ，它可以加载配置文件中定义的bean，将所有的bean集中在一起，当有请求的时候分配bean。</p>
-<h4 id="常用被试用的ApplicationContext接口实现"><a href="#常用被试用的ApplicationContext接口实现" class="headerlink" title="常用被试用的ApplicationContext接口实现"></a>常用被试用的ApplicationContext接口实现</h4><ul>
-<li>ClassPathXmlApplciationContext：通过类路径下加载xml配置文件</li>
-<li>FileSystemXmlApplicationContext: 通过磁盘路径加载配置文件（要有访问权限）</li>
-<li>AnnotationFigApplicationContext：读取注解创建容器的</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);</span><br><span class="line">TestServiceImpl te &#x3D; (TestServiceImpl) (context.getBean(&quot;TestService&quot;));</span><br><span class="line">te.say();</span><br></pre></td></tr></table></figure>
-
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring 整合Junit" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/"
-    >Spring 整合Junit</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <ol>
-<li>导入spring整合junit的jar(坐标)(spring-test)</li>
-<li>使用Junit提供的<code>@Runwith</code>注解把原有的main方法替换了，替换成spring提供的<code>SpringJunit4ClassRunner</code></li>
-<li>使用<code>@ContextConfiguration</code>注解告知spring的运行器，spring和ioc创建时基于xml还是注解的，并且说明位置  <blockquote>
-<p><strong>locations</strong>：指定xml文件的位置，加上classpath关键字，表示在类路径下<br><strong>classes</strong>:指定注解类的class</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(classes &#x3D; SpringConfig.class)</span><br><span class="line">public class mainApp &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    @Qualifier(&quot;userServiceImpl&quot;)</span><br><span class="line">    UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void Test()&#123;</span><br><span class="line">        List&lt;User&gt; userList &#x3D; userService.findAllUser();</span><br><span class="line">        for(User user:userList)&#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-
       
       <!-- reward -->
       
@@ -404,7 +237,7 @@
 
 </article>
     
-    <article id="post-事务管理（不使用spring）" class="article article-type-post" itemscope
+    <article id="post-Spring 事务管理" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -412,8 +245,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/"
-    >事务管理（不使用spring）</a
+  <a class="article-title" href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"
+    >Spring 事务管理</a
   >
 </h2>
   
@@ -423,7 +256,7 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/" class="article-date">
+      <a href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="article-date">
   <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
 </a>
       
@@ -447,30 +280,21 @@
       
 
       
-      <p>在开发中我们免不了要进行一些事务的存储。例如用户之间的转账</p>
-<h5 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h5><table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>money</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>张三</td>
-<td>1000</td>
-</tr>
-<tr>
-<td>2</td>
-<td>李四</td>
-<td>1000</td>
-</tr>
-</tbody></table>
-<h4 id="1-编写Service层的事务接口"><a href="#1-编写Service层的事务接口" class="headerlink" title="1. 编写Service层的事务接口"></a>1. 编写Service层的事务接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void transfer(int sourceId, int targetId, double money) &#123;</span><br><span class="line">        &#x2F;&#x2F;1.获取转出账户</span><br><span class="line">        Account sourceAccount &#x3D; accountDao.findOne(sourceId);</span><br><span class="line">        &#x2F;&#x2F;2. 获取转入账户</span><br><span class="line">        Account targetAccount &#x3D; accountDao.findOne(targetId);</span><br><span class="line">        &#x2F;&#x2F;3. 转出账户减钱</span><br><span class="line"></span><br><span class="line">        sourceAccount.setMoney(sourceAccount.getMoney()-money);</span><br><span class="line">        &#x2F;&#x2F;4. 转入账户加钱</span><br><span class="line">        targetAccount.setMoney(targetAccount.getMoney()+money);</span><br><span class="line">        &#x2F;&#x2F;5. 更新转出账户信息</span><br><span class="line">        accountDao.updateAccount(sourceAccount);</span><br><span class="line"></span><br><span class="line">        int i &#x3D;1&#x2F;0;</span><br><span class="line">        &#x2F;&#x2F;6. 更新转入账户信息</span><br><span class="line">        accountDao.updateAccount(targetAccount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection</p>
+      <h3 id="Spring-事务控制我们要明确的"><a href="#Spring-事务控制我们要明确的" class="headerlink" title="Spring 事务控制我们要明确的"></a>Spring 事务控制我们要明确的</h3><pre><code>第一： JavaEE 体系进行分层开发，事务处理位于业务层，Spring提供了分层设计业务层的事务处理解决方案
+第二： Spring框架为我们提供了一组事务控制的接口。在spring-tx-3.2.13.RELEASE.jar 中
+第三：spring的事务控制都是基于AOP的，它既可以使用变成的方式的实现，也可以使用配置的方式实现</code></pre><h3 id="Spring-中的三个核心接口"><a href="#Spring-中的三个核心接口" class="headerlink" title="Spring 中的三个核心接口"></a>Spring 中的三个核心接口</h3><h4 id="1-PlatformTransactionManager"><a href="#1-PlatformTransactionManager" class="headerlink" title="1. PlatformTransactionManager"></a>1. PlatformTransactionManager</h4><p>PlatformTransactionManager 接口是 Spring 提供的平台事务管理器，用于管理事务。该接口中提供了三个事务操作方法，具体如下。</p>
+<ul>
+<li><code>TransactionStatus getTransaction（TransactionDefinition definition）</code>用于获取事务状态信息。</li>
+<li><code>void commit（TransactionStatus status）</code>用于提交事务。</li>
+<li><code>void rollback（TransactionStatus status）</code>用于回滚事务。</li>
+</ul>
+<p>真正管理事务的对象</p>
+<ul>
+<li><code>org.springframework.jdbc.datasource.DataSourceTransactionManager</code>使用SpringJDBC或Mybatis进行持久化数据时使用</li>
+<li><code>org.springframework.orm.hibernate5.HibernateTransactionManager</code> 使用Hibernate版本进行持久化数据时使用</li>
+</ul>
       
-      <a class="article-more-link" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/">阅读更多...</a>
+      <a class="article-more-link" href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -560,6 +384,178 @@
 </ol>
       
       <a class="article-more-link" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring 整合Junit" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/"
+    >Spring 整合Junit</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <ol>
+<li>导入spring整合junit的jar(坐标)(spring-test)</li>
+<li>使用Junit提供的<code>@Runwith</code>注解把原有的main方法替换了，替换成spring提供的<code>SpringJunit4ClassRunner</code></li>
+<li>使用<code>@ContextConfiguration</code>注解告知spring的运行器，spring和ioc创建时基于xml还是注解的，并且说明位置  <blockquote>
+<p><strong>locations</strong>：指定xml文件的位置，加上classpath关键字，表示在类路径下<br><strong>classes</strong>:指定注解类的class</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(classes &#x3D; SpringConfig.class)</span><br><span class="line">public class mainApp &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    @Qualifier(&quot;userServiceImpl&quot;)</span><br><span class="line">    UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void Test()&#123;</span><br><span class="line">        List&lt;User&gt; userList &#x3D; userService.findAllUser();</span><br><span class="line">        for(User user:userList)&#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-事务管理（不使用spring）" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/"
+    >事务管理（不使用spring）</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <p>在开发中我们免不了要进行一些事务的存储。例如用户之间的转账</p>
+<h5 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h5><table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>money</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>张三</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+<td>1000</td>
+</tr>
+</tbody></table>
+<h4 id="1-编写Service层的事务接口"><a href="#1-编写Service层的事务接口" class="headerlink" title="1. 编写Service层的事务接口"></a>1. 编写Service层的事务接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void transfer(int sourceId, int targetId, double money) &#123;</span><br><span class="line">        &#x2F;&#x2F;1.获取转出账户</span><br><span class="line">        Account sourceAccount &#x3D; accountDao.findOne(sourceId);</span><br><span class="line">        &#x2F;&#x2F;2. 获取转入账户</span><br><span class="line">        Account targetAccount &#x3D; accountDao.findOne(targetId);</span><br><span class="line">        &#x2F;&#x2F;3. 转出账户减钱</span><br><span class="line"></span><br><span class="line">        sourceAccount.setMoney(sourceAccount.getMoney()-money);</span><br><span class="line">        &#x2F;&#x2F;4. 转入账户加钱</span><br><span class="line">        targetAccount.setMoney(targetAccount.getMoney()+money);</span><br><span class="line">        &#x2F;&#x2F;5. 更新转出账户信息</span><br><span class="line">        accountDao.updateAccount(sourceAccount);</span><br><span class="line"></span><br><span class="line">        int i &#x3D;1&#x2F;0;</span><br><span class="line">        &#x2F;&#x2F;6. 更新转入账户信息</span><br><span class="line">        accountDao.updateAccount(targetAccount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection</p>
+      
+      <a class="article-more-link" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/">阅读更多...</a>
       
       
       <!-- reward -->
