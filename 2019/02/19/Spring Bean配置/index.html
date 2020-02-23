@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Spring Bean 配置 |  xy
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="xy" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-Spring Bean配置" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Spring Bean 配置
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.8k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">8分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h4 id="Bean配置的示例代码"><a href="#Bean配置的示例代码" class="headerlink" title="Bean配置的示例代码"></a>Bean配置的示例代码</h4><p>JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;</span><br><span class="line">    xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot; xmlns:p&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;p&quot;</span><br><span class="line">    xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans</span><br><span class="line">    http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&#x2F;spring-beans-3.2.xsd&quot;&gt;</span><br><span class="line">    &lt;!-- 使用id属性定义person1，其对应的实现类为com.mengma.person1 --&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;person1&quot; class&#x3D;&quot;com.mengma.damain.Person1&quot; &#x2F;&gt;</span><br><span class="line">    &lt;!--使用name属性定义person2，其对应的实现类为com.mengma.domain.Person2--&gt;</span><br><span class="line">    &lt;bean name&#x3D;&quot;Person2&quot; class&#x3D;&quot;com.mengma.domain.Person2&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;beans&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Bean-属性"><a href="#Bean-属性" class="headerlink" title="Bean 属性"></a>Bean 属性</h4><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class</td>
+<td>指定bean类的全限定类名</td>
+</tr>
+<tr>
+<td>name/id</td>
+<td>bean标识符</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>用来指定特定bean定义创建的对象的作用域</td>
+</tr>
+<tr>
+<td>constructor-arg</td>
+<td>通过构造函数注入</td>
+</tr>
+<tr>
+<td>property</td>
+<td>通过setter注入</td>
+</tr>
+<tr>
+<td>autowiring mode</td>
+<td></td>
+</tr>
+<tr>
+<td>lazy-initalization mode</td>
+<td>延迟初始化</td>
+</tr>
+<tr>
+<td>init-method</td>
+<td>指定初始化方法</td>
+</tr>
+<tr>
+<td>destroy-method</td>
+<td>指定bean被销毁时执行方法。</td>
+</tr>
+</tbody></table>
+<h4 id="Spring-Bean作用域"><a href="#Spring-Bean作用域" class="headerlink" title="Spring Bean作用域"></a>Spring Bean作用域</h4><p>scope值：</p>
+<ul>
+<li><code>signleton</code> Bean实例以单例模式存在（创建容器时就会创建单例Bean对象），默认</li>
+<li><code>prototype</code> Bean实例以多例，并且在获取对象是创建</li>
+<li><code>request</code> 每次HTTP请求都会常见一个新的Bean，仅适用于web项目</li>
+<li><code>session</code> 同一个HTTP Sesssion共享一个Bean，不同Session使用不同的Bean。仅适用于web项目 * <code>golbal-session</code> 作用域集群环境的会话范围（全局会话范围），当不是集群环境时，它既是session</li>
+</ul>
+<h4 id="Spring-Bean-生命周期"><a href="#Spring-Bean-生命周期" class="headerlink" title="Spring Bean 生命周期"></a>Spring Bean 生命周期</h4><p>通过使用<code>init-method</code>和<code>destroy-method</code>属性来指定bean对象中的初始和销毁方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name&#x3D;&quot;TestService&quot; init-method&#x3D;&quot;Init&quot; destroy-method&#x3D;&quot;Destroy&quot; class&#x3D;&quot;cn.test.service.impl.TestServiceImpl&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p>单例对象</p>
+<ul>
+<li>出生：当容器创建对象时出生</li>
+<li>活着：只要容器还在，对象一直活着</li>
+<li>死亡：容器销毁，对象消亡</li>
+<li>总结：单例对象的生命周期和容器相同  </li>
+</ul>
+<p>多例对象</p>
+<ul>
+<li>出生：当我们使用对象spring框架为我们创建</li>
+<li>活着：当对象只要是在使用过程中就一直或者</li>
+<li>死亡：当对象长时间不用，且没有别的对象引用时，由Java的垃圾回收器回收</li>
+</ul>
+<h4 id="Spring-依赖注入"><a href="#Spring-依赖注入" class="headerlink" title="Spring 依赖注入"></a>Spring 依赖注入</h4><a id="more"></a>
+
+<h5 id="通过构造函数注入"><a href="#通过构造函数注入" class="headerlink" title="通过构造函数注入"></a>通过构造函数注入</h5><p>使用<code>&lt;bean&gt;</code>标签内部的<code>&lt;constructor-arg&gt;</code>标签<br>属性：</p>
+<ul>
+<li><code>type</code>用于指定要注入的数据的数据类型，该数据类型也是构造函数中某个或某些参数的类型</li>
+<li><code>index</code>用于指定要注入的数据给构造函数中指定索引位置的参数赋值。索引的位置是从0开始的</li>
+<li><code>name</code> 用于指定给构造函数中指定名称的参数复制</li>
+<li><code>value</code> 用于提供基本类型和String类型的数据</li>
+<li><code>ref</code> 用于指定其他的bean类型数据。它值的就是在spring的Ioc核心容器中出现的bean对象   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;带参数的构造方法</span><br><span class="line">public TestServiceImpl(String name,int age,Date birthday)&#123;</span><br><span class="line">    this.name &#x3D; name;</span><br><span class="line">    this.age &#x3D; age;</span><br><span class="line">    this.birthday &#x3D; birthday;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name&#x3D;&quot;TestService&quot; init-method&#x3D;&quot;Init&quot; destroy-method&#x3D;&quot;Destroy&quot; class&#x3D;&quot;cn.test.service.impl.TestServiceImpl&quot;&gt;</span><br><span class="line">    &lt;constructor-arg name&#x3D;&quot;name&quot; value&#x3D;&quot;张三&quot;&gt;&lt;&#x2F;constructor-arg&gt;</span><br><span class="line">    &lt;constructor-arg name&#x3D;&quot;age&quot; value&#x3D;&quot;12&quot;&gt;&lt;&#x2F;constructor-arg&gt;</span><br><span class="line">    &lt;constructor-arg name&#x3D;&quot;birthday&quot; ref&#x3D;&quot;birDate&quot;&gt;&lt;&#x2F;constructor-arg&gt;</span><br><span class="line">&lt;&#x2F;bean&gt;</span><br><span class="line">&lt;bean id&#x3D;&quot;birDate&quot; class&#x3D;&quot;java.util.Date&quot;&gt;&lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
+
+<p>优势：在获取bean对象时，诸如数据是必须的操作，否则对象无法创建成功。<br>弊端：改变了bean对象的实例化方式，是我们在创建对象时，如果用不到这些数据，也必须提供</p>
+<h5 id="属性setter注入"><a href="#属性setter注入" class="headerlink" title="属性setter注入"></a>属性setter注入</h5><p>使用<code>&lt;bean&gt;</code>标签内部的<code>&lt;property&gt;</code>标签<br>属性：</p>
+<ul>
+<li><code>name</code> 用于指定注入式所调用的set方法名称</li>
+<li><code>value</code> 用于提供基本类型和String类型的数据</li>
+<li><code>ref</code> 用于指定其他的bean类型数据。它值的就是在spring的Ioc核心容器中出现的bean对象   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;setter方法</span><br><span class="line">public void setName(String name) &#123;</span><br><span class="line">    this.name &#x3D; name;</span><br><span class="line">&#125;</span><br><span class="line">public void setAge(Integer age) &#123;</span><br><span class="line">    this.age &#x3D; age;</span><br><span class="line">&#125;</span><br><span class="line">public void setBirthday(Date birthday) &#123;</span><br><span class="line">    this.birthday &#x3D; birthday;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name&#x3D;&quot;TestService2&quot; class&#x3D;&quot;cn.test.service.impl.TestServiceImpl&quot;&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;name&quot; value&#x3D;&quot;李四&quot;&gt;&lt;&#x2F;property&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;age&quot; value&#x3D;&quot;15&quot;&gt;&lt;&#x2F;property&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;birthday&quot; ref&#x3D;&quot;birDate&quot;&gt;&lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;bean&gt;</span><br><span class="line">&lt;bean id&#x3D;&quot;birDate&quot; class&#x3D;&quot;java.util.Date&quot;&gt;&lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
+<p>优势：创建对象时没有明确的现之，可以直接使用默认构造函数<br>弊端：如果有某个成员必须有值，则set方法无法保证一定注入。</p>
+<h6 id="内置bean注入"><a href="#内置bean注入" class="headerlink" title="内置bean注入"></a>内置bean注入</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name&#x3D;&quot;birthday&quot;&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;java.util.Date&quot;&gt;&lt;&#x2F;bean&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="集合类型注入"><a href="#集合类型注入" class="headerlink" title="集合类型注入"></a>集合类型注入</h5><p>List结构集合注入的标签：list array set<br>Map结合就够注入的标签：map props</p>
+<blockquote>
+<p>结构相同的标签可以互换</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name&#x3D;&quot;TestService3&quot; class&#x3D;&quot;cn.test.service.impl.TestServiceImpl2&quot;&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;myStrs&quot;&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">            &lt;value&gt;张三&lt;&#x2F;value&gt;</span><br><span class="line">            &lt;value&gt;王五&lt;&#x2F;value&gt;</span><br><span class="line">        &lt;&#x2F;array&gt;</span><br><span class="line">    &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;myList&quot;&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">            &lt;value&gt;路飞&lt;&#x2F;value&gt;</span><br><span class="line">            &lt;value&gt;娜美&lt;&#x2F;value&gt;</span><br><span class="line">        &lt;&#x2F;list&gt;</span><br><span class="line">    &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;mySets&quot;&gt;</span><br><span class="line">        &lt;set&gt;</span><br><span class="line">            &lt;value&gt;那鲁多&lt;&#x2F;value&gt;</span><br><span class="line">            &lt;value&gt;啥事gay&lt;&#x2F;value&gt;</span><br><span class="line">        &lt;&#x2F;set&gt;</span><br><span class="line">    &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;myMaps&quot;&gt;</span><br><span class="line">        &lt;map&gt;</span><br><span class="line">            &lt;entry key&#x3D;&quot;西片&quot;&gt;</span><br><span class="line">                &lt;value&gt;高木&lt;&#x2F;value&gt;</span><br><span class="line">            &lt;&#x2F;entry&gt;</span><br><span class="line">            &lt;entry key&#x3D;&quot;486&quot; value&#x3D;&quot;艾米利亚&quot;&gt;&lt;&#x2F;entry&gt;</span><br><span class="line">        &lt;&#x2F;map&gt;</span><br><span class="line">    &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;myPros&quot;&gt;</span><br><span class="line">        &lt;props&gt;</span><br><span class="line">            &lt;prop key&#x3D;&quot;索隆&quot;&gt;山治&lt;&#x2F;prop&gt;</span><br><span class="line">            &lt;prop key&#x3D;&quot;大老师&quot;&gt;雪乃&lt;&#x2F;prop&gt;</span><br><span class="line">        &lt;&#x2F;props&gt;</span><br><span class="line">    &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h3><p>通过配置<code>bean</code>的<code>autowrite</code>属性，使bean自动装入上去<br>autowrite值</p>
+<ul>
+<li><code>no</code> 关闭自动装配，默认设置</li>
+<li><code>byName</code> 根据属性名将配置文件中的相同名称bean对象自动装配上去</li>
+<li><code>byType</code> 由属性数据类型自动装配。Spring 容器看到在 XML 配置文件中 bean 的自动装配的属性设置为 byType。然后如果它的类型匹配配置文件中的一个确切的 bean 名称，它将尝试匹配和连接属性的类型。如果存在不止一个这样的 bean，则一个致命的异常将会被抛出。</li>
+<li><code>constructor</code> 通过构造函数的参数进行自动装配</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void setAnimal(AnimalImpl animal) &#123;</span><br><span class="line">    this.animal &#x3D; animal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean name&#x3D;&quot;TestServices4&quot; class&#x3D;&quot;cn.test.service.impl.TestServiceImpl3&quot; autowire&#x3D;&quot;byName&quot;&gt;</span><br><span class="line">    &lt;property name&#x3D;&quot;name&quot; value&#x3D;&quot;zhangsan&quot;&gt;&lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;bean&gt;</span><br><span class="line">&lt;bean name&#x3D;&quot;animal&quot; class&#x3D;&quot;cn.test.dao.impl.AnimalImpl&quot;&gt;&lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2019/02/19/Spring%20AOP/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Spring AOP
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/02/19/Spring%20Boot%20Web/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">SpringBoot Web</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2015-2020
+        John Doe
+      </li>
+      <li>
+        
+          Powered by
+        
+        
+        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+      <aside class="sidebar">
+        <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/portrait.jpg" alt="xy"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="http://shenyu-vip.lofter.com" target="_blank" rel="noopener">摄影</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+      </aside>
+      <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+      
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+    strings: ['面朝大海，春暖花开','愿你一生努力，一生被爱','想要的都拥有，得不到的都释怀'],
+    startDelay: 0,
+    typeSpeed: 200,
+    loop: true,
+    backSpeed: 100,
+    showCursor: true
+    });
+  } catch (err) {
+  }
+  
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer:'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+<script>
+  var ayerConfig = {
+    mathjax: false
+  }
+</script>
+
+
+<script src="/js/ayer.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+  </div>
+</body>
+
+</html>
