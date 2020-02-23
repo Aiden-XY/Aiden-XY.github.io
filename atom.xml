@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>xy</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2020-02-21T08:48:07.582Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>John Doe</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://yoursite.com/2020/02/21/hello-world/"/>
+    <id>http://yoursite.com/2020/02/21/hello-world/</id>
+    <published>2020-02-21T08:48:07.582Z</published>
+    <updated>2020-02-21T08:48:07.582Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Spring AOP</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20AOP/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20AOP/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:30.645Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Spring-Aop是什么&quot;&gt;&lt;a href=&quot;#Spring-Aop是什么&quot; class=&quot;headerlink&quot; title=&quot;Spring Aop是什么&quot;&gt;&lt;/a&gt;Spring
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dao冗余代码问题</title>
+    <link href="http://yoursite.com/2019/02/19/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2019/02/19/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:04.098Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;我们已经学会了jdbcTemplate，但是每个Dao类中都少不了下面这几句代码&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Bean 配置</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:43.162Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;Bean配置的示例代码&quot;&gt;&lt;a href=&quot;#Bean配置的示例代码&quot; class=&quot;headerlink&quot; title=&quot;Bean配置的示例代码&quot;&gt;&lt;/a&gt;Bean配置的示例代码&lt;/h4&gt;&lt;p&gt;JavaBean
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring jdbcTemplate</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20jdbcTemplate/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20jdbcTemplate/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:37:04.993Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Spring-JDBCTemplate&quot;&gt;&lt;a href=&quot;#Spring-JDBCTemplate&quot; class=&quot;headerlink&quot; title=&quot;Spring JDBCTemplate&quot;&gt;&lt;/a&gt;Spring
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring IOC容器</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:51.202Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;BeanFactory容器&quot;&gt;&lt;a href=&quot;#BeanFactory容器&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring注解配置</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:22.114Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;通过XML进行主配置&quot;&gt;&lt;a href=&quot;#通过XML进行主配置&quot; class=&quot;headerlink&quot; title=&quot;通过XML进行主配置&quot;&gt;&lt;/a&gt;通过XML进行主配置&lt;/h3&gt;&lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>事务管理（不使用spring）</title>
+    <link href="http://yoursite.com/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/"/>
+    <id>http://yoursite.com/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:35:57.418Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在开发中我们免不了要进行一些事务的存储。例如用户之间的转账&lt;/p&gt;
+&lt;h5 id=&quot;数据表&quot;&gt;&lt;a href=&quot;#数据表&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring 整合Junit</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:16.859Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;ol&gt;
+&lt;li&gt;导入spring整合junit的jar(坐标)(spring-test)&lt;/li&gt;
+&lt;li&gt;使用Junit提供的&lt;code&gt;@Runwith&lt;/code&gt;注解把原有的main方法替换了，替换成spring提供的&lt;code&gt;SpringJunit4ClassRun
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring 事务管理</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:36:10.196Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;Spring-事务控制我们要明确的&quot;&gt;&lt;a href=&quot;#Spring-事务控制我们要明确的&quot; class=&quot;headerlink&quot; title=&quot;Spring 事务控制我们要明确的&quot;&gt;&lt;/a&gt;Spring
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+</feed>
