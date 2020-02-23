@@ -138,6 +138,39 @@
   </entry>
   
   <entry>
+    <title>SpringBoot Thymeleaf</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:03:38.870Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Thymeleaf&quot;&gt;&lt;a href=&quot;#Thymeleaf&quot; class=&quot;headerlink&quot; title=&quot;Thymeleaf&quot;&gt;&lt;/a&gt;Thymeleaf&lt;/h2&gt;&lt;p&gt;SpringBoot推荐的模板引擎；&lt;/p&gt;
+&lt;p&gt;语法更简单，功能更强大；&lt;/p&gt;
+&lt;h3 id=&quot;1、引入thymeleaf；&quot;&gt;&lt;a href=&quot;#1、引入thymeleaf；&quot; class=&quot;headerlink&quot; title=&quot;1、引入thymeleaf；&quot;&gt;&lt;/a&gt;1、引入thymeleaf；&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;spring-boot-starter-thymeleaf&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;最新版的spring boot 会自动设置好最新的版本，如果需要以前的的版本则可以&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &amp;lt;thymeleaf.version&amp;gt;3.0.11.RELEASE&amp;lt;&amp;#x2F;thymeleaf.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;thymeleaf-layout-dialect.version&amp;gt;2.4.1&amp;lt;&amp;#x2F;thymeleaf-layout-dialect.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;2、Thymeleaf使用&quot;&gt;&lt;a href=&quot;#2、Thymeleaf使用&quot; class=&quot;headerlink&quot; title=&quot;2、Thymeleaf使用&quot;&gt;&lt;/a&gt;2、Thymeleaf使用&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@ConfigurationProperties(prefix &amp;#x3D; &amp;quot;spring.thymeleaf&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class ThymeleafProperties &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final Charset DEFAULT_ENCODING &amp;#x3D; Charset.forName(&amp;quot;UTF-8&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final MimeType DEFAULT_CONTENT_TYPE &amp;#x3D; MimeType.valueOf(&amp;quot;text&amp;#x2F;html&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_PREFIX &amp;#x3D; &amp;quot;classpath:&amp;#x2F;templates&amp;#x2F;&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_SUFFIX &amp;#x3D; &amp;quot;.html&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  	&amp;#x2F;&amp;#x2F;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;只要我们把HTML页面放在classpath:/templates/，thymeleaf就能自动渲染；&lt;/p&gt;
+&lt;p&gt;使用：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Spring Bean 配置</title>
     <link href="http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/"/>
     <id>http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/</id>
@@ -228,25 +261,22 @@
   </entry>
   
   <entry>
-    <title>SpringBoot Thymeleaf</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/</id>
+    <title>SpringBoot 启动配置原理</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/</id>
     <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:03:38.870Z</updated>
+    <updated>2020-02-23T10:03:15.546Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Thymeleaf&quot;&gt;&lt;a href=&quot;#Thymeleaf&quot; class=&quot;headerlink&quot; title=&quot;Thymeleaf&quot;&gt;&lt;/a&gt;Thymeleaf&lt;/h2&gt;&lt;p&gt;SpringBoot推荐的模板引擎；&lt;/p&gt;
-&lt;p&gt;语法更简单，功能更强大；&lt;/p&gt;
-&lt;h3 id=&quot;1、引入thymeleaf；&quot;&gt;&lt;a href=&quot;#1、引入thymeleaf；&quot; class=&quot;headerlink&quot; title=&quot;1、引入thymeleaf；&quot;&gt;&lt;/a&gt;1、引入thymeleaf；&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;spring-boot-starter-thymeleaf&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;最新版的spring boot 会自动设置好最新的版本，如果需要以前的的版本则可以&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &amp;lt;thymeleaf.version&amp;gt;3.0.11.RELEASE&amp;lt;&amp;#x2F;thymeleaf.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;thymeleaf-layout-dialect.version&amp;gt;2.4.1&amp;lt;&amp;#x2F;thymeleaf-layout-dialect.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;2、Thymeleaf使用&quot;&gt;&lt;a href=&quot;#2、Thymeleaf使用&quot; class=&quot;headerlink&quot; title=&quot;2、Thymeleaf使用&quot;&gt;&lt;/a&gt;2、Thymeleaf使用&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@ConfigurationProperties(prefix &amp;#x3D; &amp;quot;spring.thymeleaf&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class ThymeleafProperties &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final Charset DEFAULT_ENCODING &amp;#x3D; Charset.forName(&amp;quot;UTF-8&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final MimeType DEFAULT_CONTENT_TYPE &amp;#x3D; MimeType.valueOf(&amp;quot;text&amp;#x2F;html&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_PREFIX &amp;#x3D; &amp;quot;classpath:&amp;#x2F;templates&amp;#x2F;&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_SUFFIX &amp;#x3D; &amp;quot;.html&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  	&amp;#x2F;&amp;#x2F;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;只要我们把HTML页面放在classpath:/templates/，thymeleaf就能自动渲染；&lt;/p&gt;
-&lt;p&gt;使用：&lt;/p&gt;
+      &lt;h1 id=&quot;启动配置原理&quot;&gt;&lt;a href=&quot;#启动配置原理&quot; class=&quot;headerlink&quot; title=&quot;启动配置原理&quot;&gt;&lt;/a&gt;启动配置原理&lt;/h1&gt;&lt;p&gt;几个重要的事件回调机制&lt;/p&gt;
+&lt;p&gt;配置在META-INF/spring.factories&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ApplicationContextInitializer&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SpringApplicationRunListener&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;只需要放在ioc容器中&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ApplicationRunner&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CommandLineRunner&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;1、创建SpringApplication对象&quot;&gt;&lt;a href=&quot;#1、创建SpringApplication对象&quot; class=&quot;headerlink&quot; title=&quot;1、创建SpringApplication对象&quot;&gt;&lt;/a&gt;&lt;strong&gt;1、创建SpringApplication对象&lt;/strong&gt;&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;((ResourceLoader)&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, primarySources);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SpringApplication&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ResourceLoader resourceLoader, Class&amp;lt;?&amp;gt;... primarySources)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//保存主配置类&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.primarySources = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LinkedHashSet(Arrays.asList(primarySources));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//判断当前是否一个web应用&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.webApplicationType = WebApplicationType.deduceFromClasspath();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//从类路径下找到META-INF/spring.factories配置的所有ApplicationContextInitializer；然后保存起来&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.setInitializers(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getSpringFactoriesInstances(ApplicationContextInitializer&lt;span class=&quot;class&quot;&gt;.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;))&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//从类路径下找到ETA-INF/spring.factories配置的所有ApplicationListener&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.setListeners(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getSpringFactoriesInstances(ApplicationListener&lt;span class=&quot;class&quot;&gt;.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;))&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//从多个配置类中找到有main方法的主配置类&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.mainApplicationClass = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.deduceMainApplicationClass();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
@@ -334,36 +364,6 @@
   </entry>
   
   <entry>
-    <title>SpringBoot 启动配置原理</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:03:15.546Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;启动配置原理&quot;&gt;&lt;a href=&quot;#启动配置原理&quot; class=&quot;headerlink&quot; title=&quot;启动配置原理&quot;&gt;&lt;/a&gt;启动配置原理&lt;/h1&gt;&lt;p&gt;几个重要的事件回调机制&lt;/p&gt;
-&lt;p&gt;配置在META-INF/spring.factories&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;ApplicationContextInitializer&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;SpringApplicationRunListener&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;只需要放在ioc容器中&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;ApplicationRunner&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;CommandLineRunner&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id=&quot;1、创建SpringApplication对象&quot;&gt;&lt;a href=&quot;#1、创建SpringApplication对象&quot; class=&quot;headerlink&quot; title=&quot;1、创建SpringApplication对象&quot;&gt;&lt;/a&gt;&lt;strong&gt;1、创建SpringApplication对象&lt;/strong&gt;&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;((ResourceLoader)&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, primarySources);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SpringApplication&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ResourceLoader resourceLoader, Class&amp;lt;?&amp;gt;... primarySources)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//保存主配置类&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.primarySources = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LinkedHashSet(Arrays.asList(primarySources));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//判断当前是否一个web应用&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.webApplicationType = WebApplicationType.deduceFromClasspath();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//从类路径下找到META-INF/spring.factories配置的所有ApplicationContextInitializer；然后保存起来&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.setInitializers(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getSpringFactoriesInstances(ApplicationContextInitializer&lt;span class=&quot;class&quot;&gt;.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;))&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//从类路径下找到ETA-INF/spring.factories配置的所有ApplicationListener&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.setListeners(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getSpringFactoriesInstances(ApplicationListener&lt;span class=&quot;class&quot;&gt;.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;))&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//从多个配置类中找到有main方法的主配置类&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.mainApplicationClass = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.deduceMainApplicationClass();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
     <title>SpringBoot与数据访问</title>
     <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/"/>
     <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/</id>
@@ -391,72 +391,6 @@
 &lt;p&gt;4、&lt;strong&gt;DataSourceInitializer：ApplicationListener&lt;/strong&gt;；&lt;/p&gt;
 &lt;p&gt;创建时执行数据表创建文件&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;boolean createSchema() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	List&amp;lt;Resource&amp;gt; scripts &amp;#x3D; getScripts(&amp;quot;spring.datasource.schema&amp;quot;, this.properties.getSchema(), &amp;quot;schema&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	if (!scripts.isEmpty()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		if (!isEnabled()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			logger.debug(&amp;quot;Initialization disabled (not running DDL scripts)&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			return false;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		String username &amp;#x3D; this.properties.getSchemaUsername();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		String password &amp;#x3D; this.properties.getSchemaPassword();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		runScripts(scripts, username, password);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return !scripts.isEmpty();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring IOC容器</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T09:48:00.258Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;BeanFactory容器&quot;&gt;&lt;a href=&quot;#BeanFactory容器&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SpringBoot 配置文件</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:02:47.969Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;配置文件&quot;&gt;&lt;a href=&quot;#配置文件&quot; class=&quot;headerlink&quot; title=&quot;配置文件&quot;&gt;&lt;/a&gt;配置文件&lt;/h1&gt;&lt;h2 id=&quot;1、配置文件&quot;&gt;&lt;a href=&quot;#1、配置文件&quot; class=&quot;headerlink&quot; title=&quot;1、配置文件&quot;&gt;&lt;/a&gt;1、配置文件&lt;/h2&gt;&lt;p&gt;SpringBoot使用一个全局的配置文件，配置文件名是固定的；&lt;/p&gt;
-&lt;p&gt;•application.properties&lt;/p&gt;
-&lt;p&gt;•application.yml&lt;/p&gt;
-&lt;p&gt;配置文件的作用：修改SpringBoot自动配置的默认值；SpringBoot在底层都给我们自动配置好；&lt;/p&gt;
-&lt;p&gt;YAML（YAML Ain’t Markup Language）&lt;/p&gt;
-&lt;p&gt;​    YAML  A Markup Language：是一个标记语言&lt;/p&gt;
-&lt;p&gt;​    YAML   isn’t Markup Language：不是一个标记语言；&lt;/p&gt;
-&lt;p&gt;标记语言：&lt;/p&gt;
-&lt;p&gt;​    以前的配置文件；大多都使用的是  &lt;strong&gt;xxxx.xml&lt;/strong&gt;文件；&lt;/p&gt;
-&lt;p&gt;​    YAML：&lt;strong&gt;以数据为中心&lt;/strong&gt;，比json、xml等更适合做配置文件；&lt;/p&gt;
-&lt;p&gt;​    YAML：配置例子&lt;/p&gt;
-&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;server:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;8081&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;​    XML：&lt;/p&gt;
-&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;server&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;port&lt;/span&gt;&amp;gt;&lt;/span&gt;8081&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;port&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;server&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
@@ -531,6 +465,35 @@
   </entry>
   
   <entry>
+    <title>Spring IOC容器</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T09:48:00.258Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;BeanFactory容器&quot;&gt;&lt;a href=&quot;#BeanFactory容器&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Spring 整合Junit</title>
     <link href="http://yoursite.com/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/"/>
     <id>http://yoursite.com/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/</id>
@@ -548,6 +511,85 @@
 &lt;li&gt;使用Junit提供的&lt;code&gt;@Runwith&lt;/code&gt;注解把原有的main方法替换了，替换成spring提供的&lt;code&gt;SpringJunit4ClassRun
         
       
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot 配置文件</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:02:47.969Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;配置文件&quot;&gt;&lt;a href=&quot;#配置文件&quot; class=&quot;headerlink&quot; title=&quot;配置文件&quot;&gt;&lt;/a&gt;配置文件&lt;/h1&gt;&lt;h2 id=&quot;1、配置文件&quot;&gt;&lt;a href=&quot;#1、配置文件&quot; class=&quot;headerlink&quot; title=&quot;1、配置文件&quot;&gt;&lt;/a&gt;1、配置文件&lt;/h2&gt;&lt;p&gt;SpringBoot使用一个全局的配置文件，配置文件名是固定的；&lt;/p&gt;
+&lt;p&gt;•application.properties&lt;/p&gt;
+&lt;p&gt;•application.yml&lt;/p&gt;
+&lt;p&gt;配置文件的作用：修改SpringBoot自动配置的默认值；SpringBoot在底层都给我们自动配置好；&lt;/p&gt;
+&lt;p&gt;YAML（YAML Ain’t Markup Language）&lt;/p&gt;
+&lt;p&gt;​    YAML  A Markup Language：是一个标记语言&lt;/p&gt;
+&lt;p&gt;​    YAML   isn’t Markup Language：不是一个标记语言；&lt;/p&gt;
+&lt;p&gt;标记语言：&lt;/p&gt;
+&lt;p&gt;​    以前的配置文件；大多都使用的是  &lt;strong&gt;xxxx.xml&lt;/strong&gt;文件；&lt;/p&gt;
+&lt;p&gt;​    YAML：&lt;strong&gt;以数据为中心&lt;/strong&gt;，比json、xml等更适合做配置文件；&lt;/p&gt;
+&lt;p&gt;​    YAML：配置例子&lt;/p&gt;
+&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;server:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;8081&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;​    XML：&lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;server&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;port&lt;/span&gt;&amp;gt;&lt;/span&gt;8081&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;port&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;server&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>事务管理（不使用spring）</title>
+    <link href="http://yoursite.com/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/"/>
+    <id>http://yoursite.com/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:01:51.979Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在开发中我们免不了要进行一些事务的存储。例如用户之间的转账&lt;/p&gt;
+&lt;h5 id=&quot;数据表&quot;&gt;&lt;a href=&quot;#数据表&quot; class=&quot;headerlink&quot; title=&quot;数据表&quot;&gt;&lt;/a&gt;数据表&lt;/h5&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;money&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;张三&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;李四&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h4 id=&quot;1-编写Service层的事务接口&quot;&gt;&lt;a href=&quot;#1-编写Service层的事务接口&quot; class=&quot;headerlink&quot; title=&quot;1. 编写Service层的事务接口&quot;&gt;&lt;/a&gt;1. 编写Service层的事务接口&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Override&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public void transfer(int sourceId, int targetId, double money) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;1.获取转出账户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Account sourceAccount &amp;#x3D; accountDao.findOne(sourceId);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;2. 获取转入账户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Account targetAccount &amp;#x3D; accountDao.findOne(targetId);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;3. 转出账户减钱&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        sourceAccount.setMoney(sourceAccount.getMoney()-money);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;4. 转入账户加钱&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        targetAccount.setMoney(targetAccount.getMoney()+money);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;5. 更新转出账户信息&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        accountDao.updateAccount(sourceAccount);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int i &amp;#x3D;1&amp;#x2F;0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;6. 更新转入账户信息&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        accountDao.updateAccount(targetAccount);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection&lt;/p&gt;
     
     </summary>
     
@@ -585,48 +627,6 @@
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ApplicationContext context &amp;#x3D; new AnnotationConfigApplicationContext(SpringConfig.class);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 通过主配置文件上的&lt;code&gt;@ComponenScan&lt;/code&gt;会自动扫描包下的配置文件&lt;/li&gt;
 &lt;/ol&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>事务管理（不使用spring）</title>
-    <link href="http://yoursite.com/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/"/>
-    <id>http://yoursite.com/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:01:51.979Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在开发中我们免不了要进行一些事务的存储。例如用户之间的转账&lt;/p&gt;
-&lt;h5 id=&quot;数据表&quot;&gt;&lt;a href=&quot;#数据表&quot; class=&quot;headerlink&quot; title=&quot;数据表&quot;&gt;&lt;/a&gt;数据表&lt;/h5&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;money&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;张三&lt;/td&gt;
-&lt;td&gt;1000&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;李四&lt;/td&gt;
-&lt;td&gt;1000&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-&lt;h4 id=&quot;1-编写Service层的事务接口&quot;&gt;&lt;a href=&quot;#1-编写Service层的事务接口&quot; class=&quot;headerlink&quot; title=&quot;1. 编写Service层的事务接口&quot;&gt;&lt;/a&gt;1. 编写Service层的事务接口&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Override&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public void transfer(int sourceId, int targetId, double money) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;1.获取转出账户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Account sourceAccount &amp;#x3D; accountDao.findOne(sourceId);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;2. 获取转入账户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Account targetAccount &amp;#x3D; accountDao.findOne(targetId);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;3. 转出账户减钱&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        sourceAccount.setMoney(sourceAccount.getMoney()-money);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;4. 转入账户加钱&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        targetAccount.setMoney(targetAccount.getMoney()+money);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;5. 更新转出账户信息&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        accountDao.updateAccount(sourceAccount);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int i &amp;#x3D;1&amp;#x2F;0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;6. 更新转入账户信息&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        accountDao.updateAccount(targetAccount);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection&lt;/p&gt;
     
     </summary>
     

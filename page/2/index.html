@@ -71,172 +71,6 @@
     
     
     
-    <article id="post-Spring Boot 配置文件" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
-    >SpringBoot 配置文件</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><h2 id="1、配置文件"><a href="#1、配置文件" class="headerlink" title="1、配置文件"></a>1、配置文件</h2><p>SpringBoot使用一个全局的配置文件，配置文件名是固定的；</p>
-<p>•application.properties</p>
-<p>•application.yml</p>
-<p>配置文件的作用：修改SpringBoot自动配置的默认值；SpringBoot在底层都给我们自动配置好；</p>
-<p>YAML（YAML Ain’t Markup Language）</p>
-<p>​    YAML  A Markup Language：是一个标记语言</p>
-<p>​    YAML   isn’t Markup Language：不是一个标记语言；</p>
-<p>标记语言：</p>
-<p>​    以前的配置文件；大多都使用的是  <strong>xxxx.xml</strong>文件；</p>
-<p>​    YAML：<strong>以数据为中心</strong>，比json、xml等更适合做配置文件；</p>
-<p>​    YAML：配置例子</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br></pre></td></tr></table></figure>
-
-<p>​    XML：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">port</span>&gt;</span>8081<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring jdbcTemplate" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20jdbcTemplate/"
-    >Spring jdbcTemplate</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20jdbcTemplate/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Spring-JDBCTemplate"><a href="#Spring-JDBCTemplate" class="headerlink" title="Spring JDBCTemplate"></a>Spring JDBCTemplate</h2><p>Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  </p>
-<p>Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。</p>
-<h4 id="创建数据源对象"><a href="#创建数据源对象" class="headerlink" title="创建数据源对象"></a>创建数据源对象</h4><p>Spring内部提供了自己DataSource对象<code>DriverManagerDataSource</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DriverManagerDataSource dataSource &#x3D; new DriverManagerDataSource();</span><br><span class="line">dataSource.setDriverClassName(&quot;com.mysql.cj.jdbc.Driver&quot;);</span><br><span class="line">dataSource.setUrl(&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;javatest?serverTimezone&#x3D;UTC&quot;);</span><br><span class="line">dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">dataSource.setPassword(&quot;123456&quot;);</span><br></pre></td></tr></table></figure>
-<h4 id="创建JDBCTemplate对象"><a href="#创建JDBCTemplate对象" class="headerlink" title="创建JDBCTemplate对象"></a>创建JDBCTemplate对象</h4><p>创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JdbcTemplate jdbcTemplate &#x3D; new JdbcTemplate();</span><br><span class="line">jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">List&lt;Account&gt; accounts &#x3D; jdbcTemplate.query(&quot;select * from account&quot;,new AccountRowMapper());</span><br><span class="line">for(Account account:accounts)&#123;</span><br><span class="line">    System.out.println(account);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象"><a href="#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象" class="headerlink" title="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象"></a>在执行查询的时候我们需要提供一个继承于<code>RowMapper</code>接口的实现类,用于封装结果对象</h5>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20jdbcTemplate/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
     <article id="post-Spring 事务管理" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -308,6 +142,89 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring IoC 容器" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"
+    >Spring IOC容器</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="BeanFactory容器"><a href="#BeanFactory容器" class="headerlink" title="BeanFactory容器"></a>BeanFactory容器</h2><p>BeanFactory世纪初类型的IoC容器，它由org.springframework.beans.facytory.BeanFactory接口定义，并提供了完成的IoC服务支持。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ClassPathResource resource &#x3D; new ClassPathResource(&quot;bean.xml&quot;);</span><br><span class="line">BeanFactory beanFactory &#x3D; new XmlBeanFactory(resource);</span><br><span class="line">TestServiceImpl test &#x3D; (TestServiceImpl) (beanFactory.getBean(&quot;TestService&quot;));</span><br><span class="line">test.say();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从BeanFactory获取Bean对象时，BeanFactory是延迟加载的。获取时才创建对象</p>
+</blockquote>
+<h2 id="Spring-ApplicationContext容器"><a href="#Spring-ApplicationContext容器" class="headerlink" title="Spring ApplicationContext容器"></a>Spring ApplicationContext容器</h2><p>Application Context是BeanFactory的子接口，也被称为Spring上下文 ，它可以加载配置文件中定义的bean，将所有的bean集中在一起，当有请求的时候分配bean。</p>
+<h4 id="常用被试用的ApplicationContext接口实现"><a href="#常用被试用的ApplicationContext接口实现" class="headerlink" title="常用被试用的ApplicationContext接口实现"></a>常用被试用的ApplicationContext接口实现</h4><ul>
+<li>ClassPathXmlApplciationContext：通过类路径下加载xml配置文件</li>
+<li>FileSystemXmlApplicationContext: 通过磁盘路径加载配置文件（要有访问权限）</li>
+<li>AnnotationFigApplicationContext：读取注解创建容器的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);</span><br><span class="line">TestServiceImpl te &#x3D; (TestServiceImpl) (context.getBean(&quot;TestService&quot;));</span><br><span class="line">te.say();</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
 
 
     </footer>
@@ -400,7 +317,7 @@
 
 </article>
     
-    <article id="post-Spring 注解配置" class="article article-type-post" itemscope
+    <article id="post-Spring Boot 配置文件" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -408,8 +325,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/"
-    >Spring注解配置</a
+  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
+    >SpringBoot 配置文件</a
   >
 </h2>
   
@@ -419,12 +336,12 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/" class="article-date">
+      <a href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
   <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
   </div>
 
       
@@ -443,25 +360,23 @@
       
 
       
-      <h3 id="通过XML进行主配置"><a href="#通过XML进行主配置" class="headerlink" title="通过XML进行主配置"></a>通过XML进行主配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;</span><br><span class="line">    xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">    xmlns:context&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context&quot;</span><br><span class="line">    xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans</span><br><span class="line">        https:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&#x2F;spring-beans.xsd</span><br><span class="line">        http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context</span><br><span class="line">        https:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context&#x2F;spring-context.xsd&quot;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="通过Java类作为主配置"><a href="#通过Java类作为主配置" class="headerlink" title="通过Java类作为主配置"></a>通过Java类作为主配置</h3><ul>
-<li><code>@Configuration</code> 指定当前类是一个配置类</li>
-<li><code>@ComponentScan</code> 用于通过注解指定spring在创建容器时要扫描的包，通过<code>value</code>属性指定创建容器时要扫描的包</li>
-<li><code>@Bean</code> 用于把当前方法的返回值作为bean对象存入spring的ioc容器中，通过<code>name</code>属性指定bean的id。不写时，默认值是当前方法的名称</li>
-<li><code>@Import</code> 用于导入其他的配置类。当我们使用Import的注释之后，有Import注释的类就是父配置类，而导入的都是子配置类。<code>value</code>:其他配置类的字节码。</li>
-<li><code>@@EnableAspectJAutoProxy</code> 开启注解AOP的支持</li>
-<li><code>@EnableTransactionManagement</code> 开启Spring注解中事务的支持<h4 id="多个配置文件时-扫描方法"><a href="#多个配置文件时-扫描方法" class="headerlink" title="多个配置文件时 扫描方法"></a>多个配置文件时 扫描方法</h4></li>
-</ul>
-<ol>
-<li>通过创建容器对象时扫描加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new AnnotationConfigApplicationContext(SpringConfig.class,jdbcConfig.class);</span><br></pre></td></tr></table></figure>
-通过这种方式扫描，配置文件上面可以不写<code>@Configuration</code>,不过这样加载两个配置将会是同级别的</li>
-<li><code>@ComponentScan</code>扫描<code>@Configuration</code> 加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan(&quot;cn.test&quot;)</span><br><span class="line">public class SpringConfig &#123; &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class jdbcConfig &#123; &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new AnnotationConfigApplicationContext(SpringConfig.class);</span><br></pre></td></tr></table></figure>
-通过主配置文件上的<code>@ComponenScan</code>会自动扫描包下的配置文件</li>
-</ol>
+      <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><h2 id="1、配置文件"><a href="#1、配置文件" class="headerlink" title="1、配置文件"></a>1、配置文件</h2><p>SpringBoot使用一个全局的配置文件，配置文件名是固定的；</p>
+<p>•application.properties</p>
+<p>•application.yml</p>
+<p>配置文件的作用：修改SpringBoot自动配置的默认值；SpringBoot在底层都给我们自动配置好；</p>
+<p>YAML（YAML Ain’t Markup Language）</p>
+<p>​    YAML  A Markup Language：是一个标记语言</p>
+<p>​    YAML   isn’t Markup Language：不是一个标记语言；</p>
+<p>标记语言：</p>
+<p>​    以前的配置文件；大多都使用的是  <strong>xxxx.xml</strong>文件；</p>
+<p>​    YAML：<strong>以数据为中心</strong>，比json、xml等更适合做配置文件；</p>
+<p>​    YAML：配置例子</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br></pre></td></tr></table></figure>
+
+<p>​    XML：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">port</span>&gt;</span>8081<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure>
       
-      <a class="article-more-link" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/">阅读更多...</a>
+      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -474,7 +389,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
 
 
     </footer>
@@ -556,6 +471,95 @@
 <p>目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection</p>
       
       <a class="article-more-link" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring 注解配置" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/"
+    >Spring注解配置</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h3 id="通过XML进行主配置"><a href="#通过XML进行主配置" class="headerlink" title="通过XML进行主配置"></a>通过XML进行主配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;</span><br><span class="line">    xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">    xmlns:context&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context&quot;</span><br><span class="line">    xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans</span><br><span class="line">        https:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&#x2F;spring-beans.xsd</span><br><span class="line">        http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context</span><br><span class="line">        https:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context&#x2F;spring-context.xsd&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="通过Java类作为主配置"><a href="#通过Java类作为主配置" class="headerlink" title="通过Java类作为主配置"></a>通过Java类作为主配置</h3><ul>
+<li><code>@Configuration</code> 指定当前类是一个配置类</li>
+<li><code>@ComponentScan</code> 用于通过注解指定spring在创建容器时要扫描的包，通过<code>value</code>属性指定创建容器时要扫描的包</li>
+<li><code>@Bean</code> 用于把当前方法的返回值作为bean对象存入spring的ioc容器中，通过<code>name</code>属性指定bean的id。不写时，默认值是当前方法的名称</li>
+<li><code>@Import</code> 用于导入其他的配置类。当我们使用Import的注释之后，有Import注释的类就是父配置类，而导入的都是子配置类。<code>value</code>:其他配置类的字节码。</li>
+<li><code>@@EnableAspectJAutoProxy</code> 开启注解AOP的支持</li>
+<li><code>@EnableTransactionManagement</code> 开启Spring注解中事务的支持<h4 id="多个配置文件时-扫描方法"><a href="#多个配置文件时-扫描方法" class="headerlink" title="多个配置文件时 扫描方法"></a>多个配置文件时 扫描方法</h4></li>
+</ul>
+<ol>
+<li>通过创建容器对象时扫描加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new AnnotationConfigApplicationContext(SpringConfig.class,jdbcConfig.class);</span><br></pre></td></tr></table></figure>
+通过这种方式扫描，配置文件上面可以不写<code>@Configuration</code>,不过这样加载两个配置将会是同级别的</li>
+<li><code>@ComponentScan</code>扫描<code>@Configuration</code> 加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan(&quot;cn.test&quot;)</span><br><span class="line">public class SpringConfig &#123; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class jdbcConfig &#123; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new AnnotationConfigApplicationContext(SpringConfig.class);</span><br></pre></td></tr></table></figure>
+通过主配置文件上的<code>@ComponenScan</code>会自动扫描包下的配置文件</li>
+</ol>
+      
+      <a class="article-more-link" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/">阅读更多...</a>
       
       
       <!-- reward -->
