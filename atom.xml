@@ -65,152 +65,6 @@
   </entry>
   
   <entry>
-    <title>Spring AOP</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20AOP/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20AOP/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:02:35.367Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Spring-Aop是什么&quot;&gt;&lt;a href=&quot;#Spring-Aop是什么&quot; class=&quot;headerlink&quot; title=&quot;Spring Aop是什么&quot;&gt;&lt;/a&gt;Spring Aop是什么&lt;/h1&gt;&lt;p&gt;面向切面编程（AOP）和面向对象编程（OOP）类似，也是一种编程模式。Spring AOP 是基于 AOP 编程模式的一个框架，它的使用有效减少了系统间的重复代码，达到了模块间的松耦合目的。&lt;/p&gt;
-&lt;p&gt;AOP 的全称是“Aspect Oriented Programming”，即面向切面编程，它将业务逻辑的各个部分进行隔离，使开发人员在编写业务逻辑时可以专心于核心业务，从而提高了开发效率。&lt;/p&gt;
-&lt;p&gt;AOP 采取横向抽取机制，取代了传统纵向继承体系的重复性代码，其应用主要体现在事务处理、日志管理、权限控制、异常处理等方面。&lt;/p&gt;
-&lt;p&gt;为了更好地理解 AOP，就需要对 AOP 的相关术语有一些了解，这些专业术语主要包含 Joinpoint、Pointcut、Advice、Target、Weaving、Proxy 和 Aspect，它们的含义如下表所示。&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;Joinpoint（连接点）&lt;/td&gt;
-&lt;td&gt;指那些被拦截到的点，在 Spring 中，可以被动态代理拦截目标类的方法。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Pointcut（切入点）&lt;/td&gt;
-&lt;td&gt;指要对哪些 Joinpoint 进行拦截，即被拦截的连接点。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Advice（通知）&lt;/td&gt;
-&lt;td&gt;指拦截到 Joinpoint 之后要做的事情，即对切入点增强的内容。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Target（目标）&lt;/td&gt;
-&lt;td&gt;指代理的目标对象。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Weaving（植入）&lt;/td&gt;
-&lt;td&gt;指把增强代码应用到目标上，生成代理对象的过程。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Proxy（代理）&lt;/td&gt;
-&lt;td&gt;指生成的代理对象。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Aspect（切面）&lt;/td&gt;
-&lt;td&gt;切入点和通知的结合。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-&lt;h2 id=&quot;基于XML配置&quot;&gt;&lt;a href=&quot;#基于XML配置&quot; class=&quot;headerlink&quot; title=&quot;基于XML配置&quot;&gt;&lt;/a&gt;基于XML配置&lt;/h2&gt;&lt;p&gt;导入aspectjweaver坐标和spring-aop，因为导入spring-context坐标时，已经导入aop，所以不需要再导入&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.aspectj&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;aspectjweaver&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;version&amp;gt;1.9.5&amp;lt;&amp;#x2F;version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;sop:config&amp;gt;&lt;/code&gt; AOP配置&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:aspect&amp;gt;&lt;/code&gt;配置切面  位于AOP配置里面 &lt;code&gt;id&lt;/code&gt;给切面提供一个唯一标识，&lt;code&gt;ref&lt;/code&gt;指定通知类&lt;br&gt;以下标签都在&lt;code&gt;&amp;lt;aop:aspect&amp;gt;里面&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:pointcut&amp;gt;&lt;/code&gt; 切入点通过&lt;code&gt;expression&lt;/code&gt;属性来告诉要增强哪些方法，而&lt;code&gt;expression&lt;/code&gt;里使用的时切入表达式&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:before&amp;gt;&lt;/code&gt; 表示前置通知&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:after-returning&amp;gt;&lt;/code&gt; 后置通知&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:after-throwing&amp;gt;&lt;/code&gt; 抛出体重&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:after&amp;gt;&lt;/code&gt; 最终通知&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;aop:around&amp;gt;&lt;/code&gt; 环绕通知&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SpringBoot Web</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20Web/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20Web/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:03:47.381Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;使用SpringBoot&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;创建SpringBoot应用，选中我们需要的模块&lt;/li&gt;
-&lt;li&gt;SpringBoot已经默认将这些场景配置好了，只需要咋i配置文件中指定少量排至就可以运行起来&lt;/li&gt;
-&lt;li&gt;自己编写业务代码&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h4 id=&quot;自动配置原理&quot;&gt;&lt;a href=&quot;#自动配置原理&quot; class=&quot;headerlink&quot; title=&quot;自动配置原理&quot;&gt;&lt;/a&gt;自动配置原理&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;xxxxAutoCOnfiguration:帮我们给容器中自动配置组件；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;xxxxProperties:配置类来封装配置文件的内容&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;SpringBoot对静态资源的映射规则&quot;&gt;&lt;a href=&quot;#SpringBoot对静态资源的映射规则&quot; class=&quot;headerlink&quot; title=&quot;SpringBoot对静态资源的映射规则&quot;&gt;&lt;/a&gt;SpringBoot对静态资源的映射规则&lt;/h2&gt;&lt;h5 id=&quot;1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；&quot;&gt;&lt;a href=&quot;#1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；&quot; class=&quot;headerlink&quot; title=&quot;1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；&quot;&gt;&lt;/a&gt;1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;webjars：以jar包的方式引入静态资源； &lt;a href=&quot;https://www.webjars.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.webjars.org/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;访问的时候直接写&lt;code&gt;/包名/版本号/文件&lt;/code&gt;即可&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.webjars&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;jquery&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;version&amp;gt;2.2.4&amp;lt;&amp;#x2F;version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-访问路径&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;http:&amp;#x2F;&amp;#x2F;localhost:8080&amp;#x2F;webjars&amp;#x2F;jquery&amp;#x2F;2.2.4&amp;#x2F;jquery.js&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&quot;2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射&quot;&gt;&lt;a href=&quot;#2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射&quot; class=&quot;headerlink&quot; title=&quot;2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射&quot;&gt;&lt;/a&gt;2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;classpath:/META-INF/resources/&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;classpath:/resources/&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;classpath:/static/&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;classpath:/public/&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;private static final String[] CLASSPATH_RESOURCE_LOCATIONS &amp;#x3D; new String[]&amp;#123;&amp;quot;classpath:&amp;#x2F;META-INF&amp;#x2F;resources&amp;#x2F;&amp;quot;, &amp;quot;classpath:&amp;#x2F;resources&amp;#x2F;&amp;quot;, &amp;quot;classpath:&amp;#x2F;static&amp;#x2F;&amp;quot;, &amp;quot;classpath:&amp;#x2F;public&amp;#x2F;&amp;quot;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SpringBoot 配置嵌入式Servlet容器</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:03:23.382Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;配置嵌入式Servlet容器&quot;&gt;&lt;a href=&quot;#配置嵌入式Servlet容器&quot; class=&quot;headerlink&quot; title=&quot;配置嵌入式Servlet容器&quot;&gt;&lt;/a&gt;配置嵌入式Servlet容器&lt;/h2&gt;&lt;p&gt;SpringBoot默认使用Tomcat作为嵌入式的Servlet容器；&lt;/p&gt;
-&lt;h3 id=&quot;1）、如何定制和修改Servlet容器的相关配置；&quot;&gt;&lt;a href=&quot;#1）、如何定制和修改Servlet容器的相关配置；&quot; class=&quot;headerlink&quot; title=&quot;1）、如何定制和修改Servlet容器的相关配置；&quot;&gt;&lt;/a&gt;1）、如何定制和修改Servlet容器的相关配置；&lt;/h3&gt;&lt;p&gt;1、修改和server有关的配置（ServerProperties)&lt;/p&gt;
-&lt;figure class=&quot;highlight properties&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;server.port&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;8081&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;server.context-path&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;/crud&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;server.tomcat.uri-encoding&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;UTF-8&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;//通用的Servlet容器设置&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;server.xxx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;//Tomcat的设置&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;server.tomcat.xxx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;2、编写一个&lt;del&gt;EmbeddedServletContainerCustomizer&lt;/del&gt;，2.0以后改为&lt;code&gt;WebServerFactoryCustomizer&lt;/code&gt; : 嵌入式的Servlet容器的定制器；来修改Servlet容器的配置&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Bean&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public WebServerFactoryCustomizer webServerFactoryCustomizer()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return new WebServerFactoryCustomizer&amp;lt;ConfigurableWebServerFactory&amp;gt;() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#x2F;&amp;#x2F;定制嵌入式的Servlet容器相关的规则&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            @Override&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            public void customize(ConfigurableWebServerFactory factory) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                factory.setPort(8002);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Spring Bean 配置</title>
     <link href="http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/"/>
     <id>http://yoursite.com/2019/02/19/Spring%20Bean%E9%85%8D%E7%BD%AE/</id>
@@ -301,6 +155,157 @@
   </entry>
   
   <entry>
+    <title>Spring AOP</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20AOP/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20AOP/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:02:35.367Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Spring-Aop是什么&quot;&gt;&lt;a href=&quot;#Spring-Aop是什么&quot; class=&quot;headerlink&quot; title=&quot;Spring Aop是什么&quot;&gt;&lt;/a&gt;Spring Aop是什么&lt;/h1&gt;&lt;p&gt;面向切面编程（AOP）和面向对象编程（OOP）类似，也是一种编程模式。Spring AOP 是基于 AOP 编程模式的一个框架，它的使用有效减少了系统间的重复代码，达到了模块间的松耦合目的。&lt;/p&gt;
+&lt;p&gt;AOP 的全称是“Aspect Oriented Programming”，即面向切面编程，它将业务逻辑的各个部分进行隔离，使开发人员在编写业务逻辑时可以专心于核心业务，从而提高了开发效率。&lt;/p&gt;
+&lt;p&gt;AOP 采取横向抽取机制，取代了传统纵向继承体系的重复性代码，其应用主要体现在事务处理、日志管理、权限控制、异常处理等方面。&lt;/p&gt;
+&lt;p&gt;为了更好地理解 AOP，就需要对 AOP 的相关术语有一些了解，这些专业术语主要包含 Joinpoint、Pointcut、Advice、Target、Weaving、Proxy 和 Aspect，它们的含义如下表所示。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;名称&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;Joinpoint（连接点）&lt;/td&gt;
+&lt;td&gt;指那些被拦截到的点，在 Spring 中，可以被动态代理拦截目标类的方法。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Pointcut（切入点）&lt;/td&gt;
+&lt;td&gt;指要对哪些 Joinpoint 进行拦截，即被拦截的连接点。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Advice（通知）&lt;/td&gt;
+&lt;td&gt;指拦截到 Joinpoint 之后要做的事情，即对切入点增强的内容。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Target（目标）&lt;/td&gt;
+&lt;td&gt;指代理的目标对象。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Weaving（植入）&lt;/td&gt;
+&lt;td&gt;指把增强代码应用到目标上，生成代理对象的过程。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Proxy（代理）&lt;/td&gt;
+&lt;td&gt;指生成的代理对象。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Aspect（切面）&lt;/td&gt;
+&lt;td&gt;切入点和通知的结合。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&quot;基于XML配置&quot;&gt;&lt;a href=&quot;#基于XML配置&quot; class=&quot;headerlink&quot; title=&quot;基于XML配置&quot;&gt;&lt;/a&gt;基于XML配置&lt;/h2&gt;&lt;p&gt;导入aspectjweaver坐标和spring-aop，因为导入spring-context坐标时，已经导入aop，所以不需要再导入&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.aspectj&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;aspectjweaver&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;version&amp;gt;1.9.5&amp;lt;&amp;#x2F;version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;sop:config&amp;gt;&lt;/code&gt; AOP配置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:aspect&amp;gt;&lt;/code&gt;配置切面  位于AOP配置里面 &lt;code&gt;id&lt;/code&gt;给切面提供一个唯一标识，&lt;code&gt;ref&lt;/code&gt;指定通知类&lt;br&gt;以下标签都在&lt;code&gt;&amp;lt;aop:aspect&amp;gt;里面&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:pointcut&amp;gt;&lt;/code&gt; 切入点通过&lt;code&gt;expression&lt;/code&gt;属性来告诉要增强哪些方法，而&lt;code&gt;expression&lt;/code&gt;里使用的时切入表达式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:before&amp;gt;&lt;/code&gt; 表示前置通知&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:after-returning&amp;gt;&lt;/code&gt; 后置通知&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:after-throwing&amp;gt;&lt;/code&gt; 抛出体重&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:after&amp;gt;&lt;/code&gt; 最终通知&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;aop:around&amp;gt;&lt;/code&gt; 环绕通知&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot Thymeleaf</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:03:38.870Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Thymeleaf&quot;&gt;&lt;a href=&quot;#Thymeleaf&quot; class=&quot;headerlink&quot; title=&quot;Thymeleaf&quot;&gt;&lt;/a&gt;Thymeleaf&lt;/h2&gt;&lt;p&gt;SpringBoot推荐的模板引擎；&lt;/p&gt;
+&lt;p&gt;语法更简单，功能更强大；&lt;/p&gt;
+&lt;h3 id=&quot;1、引入thymeleaf；&quot;&gt;&lt;a href=&quot;#1、引入thymeleaf；&quot; class=&quot;headerlink&quot; title=&quot;1、引入thymeleaf；&quot;&gt;&lt;/a&gt;1、引入thymeleaf；&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;spring-boot-starter-thymeleaf&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;最新版的spring boot 会自动设置好最新的版本，如果需要以前的的版本则可以&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &amp;lt;thymeleaf.version&amp;gt;3.0.11.RELEASE&amp;lt;&amp;#x2F;thymeleaf.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;thymeleaf-layout-dialect.version&amp;gt;2.4.1&amp;lt;&amp;#x2F;thymeleaf-layout-dialect.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;2、Thymeleaf使用&quot;&gt;&lt;a href=&quot;#2、Thymeleaf使用&quot; class=&quot;headerlink&quot; title=&quot;2、Thymeleaf使用&quot;&gt;&lt;/a&gt;2、Thymeleaf使用&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@ConfigurationProperties(prefix &amp;#x3D; &amp;quot;spring.thymeleaf&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class ThymeleafProperties &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final Charset DEFAULT_ENCODING &amp;#x3D; Charset.forName(&amp;quot;UTF-8&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final MimeType DEFAULT_CONTENT_TYPE &amp;#x3D; MimeType.valueOf(&amp;quot;text&amp;#x2F;html&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_PREFIX &amp;#x3D; &amp;quot;classpath:&amp;#x2F;templates&amp;#x2F;&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_SUFFIX &amp;#x3D; &amp;quot;.html&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  	&amp;#x2F;&amp;#x2F;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;只要我们把HTML页面放在classpath:/templates/，thymeleaf就能自动渲染；&lt;/p&gt;
+&lt;p&gt;使用：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot Web</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20Web/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20Web/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:03:47.381Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;使用SpringBoot&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建SpringBoot应用，选中我们需要的模块&lt;/li&gt;
+&lt;li&gt;SpringBoot已经默认将这些场景配置好了，只需要咋i配置文件中指定少量排至就可以运行起来&lt;/li&gt;
+&lt;li&gt;自己编写业务代码&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;自动配置原理&quot;&gt;&lt;a href=&quot;#自动配置原理&quot; class=&quot;headerlink&quot; title=&quot;自动配置原理&quot;&gt;&lt;/a&gt;自动配置原理&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;xxxxAutoCOnfiguration:帮我们给容器中自动配置组件；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;xxxxProperties:配置类来封装配置文件的内容&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;SpringBoot对静态资源的映射规则&quot;&gt;&lt;a href=&quot;#SpringBoot对静态资源的映射规则&quot; class=&quot;headerlink&quot; title=&quot;SpringBoot对静态资源的映射规则&quot;&gt;&lt;/a&gt;SpringBoot对静态资源的映射规则&lt;/h2&gt;&lt;h5 id=&quot;1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；&quot;&gt;&lt;a href=&quot;#1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；&quot; class=&quot;headerlink&quot; title=&quot;1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；&quot;&gt;&lt;/a&gt;1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;webjars：以jar包的方式引入静态资源； &lt;a href=&quot;https://www.webjars.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.webjars.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;访问的时候直接写&lt;code&gt;/包名/版本号/文件&lt;/code&gt;即可&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.webjars&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;jquery&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;version&amp;gt;2.2.4&amp;lt;&amp;#x2F;version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+访问路径&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;http:&amp;#x2F;&amp;#x2F;localhost:8080&amp;#x2F;webjars&amp;#x2F;jquery&amp;#x2F;2.2.4&amp;#x2F;jquery.js&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&quot;2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射&quot;&gt;&lt;a href=&quot;#2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射&quot; class=&quot;headerlink&quot; title=&quot;2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射&quot;&gt;&lt;/a&gt;2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;classpath:/META-INF/resources/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;classpath:/resources/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;classpath:/static/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;classpath:/public/&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;private static final String[] CLASSPATH_RESOURCE_LOCATIONS &amp;#x3D; new String[]&amp;#123;&amp;quot;classpath:&amp;#x2F;META-INF&amp;#x2F;resources&amp;#x2F;&amp;quot;, &amp;quot;classpath:&amp;#x2F;resources&amp;#x2F;&amp;quot;, &amp;quot;classpath:&amp;#x2F;static&amp;#x2F;&amp;quot;, &amp;quot;classpath:&amp;#x2F;public&amp;#x2F;&amp;quot;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SpringBoot与数据访问</title>
     <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/"/>
     <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/</id>
@@ -372,6 +377,34 @@
   </entry>
   
   <entry>
+    <title>SpringBoot 配置嵌入式Servlet容器</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E5%B5%8C%E5%85%A5%E5%BC%8FServlet/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:03:23.382Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;配置嵌入式Servlet容器&quot;&gt;&lt;a href=&quot;#配置嵌入式Servlet容器&quot; class=&quot;headerlink&quot; title=&quot;配置嵌入式Servlet容器&quot;&gt;&lt;/a&gt;配置嵌入式Servlet容器&lt;/h2&gt;&lt;p&gt;SpringBoot默认使用Tomcat作为嵌入式的Servlet容器；&lt;/p&gt;
+&lt;h3 id=&quot;1）、如何定制和修改Servlet容器的相关配置；&quot;&gt;&lt;a href=&quot;#1）、如何定制和修改Servlet容器的相关配置；&quot; class=&quot;headerlink&quot; title=&quot;1）、如何定制和修改Servlet容器的相关配置；&quot;&gt;&lt;/a&gt;1）、如何定制和修改Servlet容器的相关配置；&lt;/h3&gt;&lt;p&gt;1、修改和server有关的配置（ServerProperties)&lt;/p&gt;
+&lt;figure class=&quot;highlight properties&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;server.port&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;8081&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;server.context-path&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;/crud&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;server.tomcat.uri-encoding&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;UTF-8&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;//通用的Servlet容器设置&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;server.xxx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;//Tomcat的设置&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;server.tomcat.xxx&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;2、编写一个&lt;del&gt;EmbeddedServletContainerCustomizer&lt;/del&gt;，2.0以后改为&lt;code&gt;WebServerFactoryCustomizer&lt;/code&gt; : 嵌入式的Servlet容器的定制器；来修改Servlet容器的配置&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Bean&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public WebServerFactoryCustomizer webServerFactoryCustomizer()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return new WebServerFactoryCustomizer&amp;lt;ConfigurableWebServerFactory&amp;gt;() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#x2F;&amp;#x2F;定制嵌入式的Servlet容器相关的规则&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            @Override&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            public void customize(ConfigurableWebServerFactory factory) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                factory.setPort(8002);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SpringBoot 配置文件</title>
     <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
     <id>http://yoursite.com/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</id>
@@ -409,27 +442,50 @@
   </entry>
   
   <entry>
-    <title>Spring 事务管理</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/</id>
+    <title>Spring IOC容器</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/</id>
     <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:02:18.045Z</updated>
+    <updated>2020-02-23T09:48:00.258Z</updated>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;Spring-事务控制我们要明确的&quot;&gt;&lt;a href=&quot;#Spring-事务控制我们要明确的&quot; class=&quot;headerlink&quot; title=&quot;Spring 事务控制我们要明确的&quot;&gt;&lt;/a&gt;Spring 事务控制我们要明确的&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;第一： JavaEE 体系进行分层开发，事务处理位于业务层，Spring提供了分层设计业务层的事务处理解决方案
-第二： Spring框架为我们提供了一组事务控制的接口。在spring-tx-3.2.13.RELEASE.jar 中
-第三：spring的事务控制都是基于AOP的，它既可以使用变成的方式的实现，也可以使用配置的方式实现&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;Spring-中的三个核心接口&quot;&gt;&lt;a href=&quot;#Spring-中的三个核心接口&quot; class=&quot;headerlink&quot; title=&quot;Spring 中的三个核心接口&quot;&gt;&lt;/a&gt;Spring 中的三个核心接口&lt;/h3&gt;&lt;h4 id=&quot;1-PlatformTransactionManager&quot;&gt;&lt;a href=&quot;#1-PlatformTransactionManager&quot; class=&quot;headerlink&quot; title=&quot;1. PlatformTransactionManager&quot;&gt;&lt;/a&gt;1. PlatformTransactionManager&lt;/h4&gt;&lt;p&gt;PlatformTransactionManager 接口是 Spring 提供的平台事务管理器，用于管理事务。该接口中提供了三个事务操作方法，具体如下。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;TransactionStatus getTransaction（TransactionDefinition definition）&lt;/code&gt;用于获取事务状态信息。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;void commit（TransactionStatus status）&lt;/code&gt;用于提交事务。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;void rollback（TransactionStatus status）&lt;/code&gt;用于回滚事务。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;真正管理事务的对象&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;org.springframework.jdbc.datasource.DataSourceTransactionManager&lt;/code&gt;使用SpringJDBC或Mybatis进行持久化数据时使用&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;org.springframework.orm.hibernate5.HibernateTransactionManager&lt;/code&gt; 使用Hibernate版本进行持久化数据时使用&lt;/li&gt;
-&lt;/ul&gt;
+      
+      
+        
+        
+          &lt;h2 id=&quot;BeanFactory容器&quot;&gt;&lt;a href=&quot;#BeanFactory容器&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring jdbcTemplate</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20jdbcTemplate/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20jdbcTemplate/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:03:57.593Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Spring-JDBCTemplate&quot;&gt;&lt;a href=&quot;#Spring-JDBCTemplate&quot; class=&quot;headerlink&quot; title=&quot;Spring JDBCTemplate&quot;&gt;&lt;/a&gt;Spring JDBCTemplate&lt;/h2&gt;&lt;p&gt;Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  &lt;/p&gt;
+&lt;p&gt;Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。&lt;/p&gt;
+&lt;h4 id=&quot;创建数据源对象&quot;&gt;&lt;a href=&quot;#创建数据源对象&quot; class=&quot;headerlink&quot; title=&quot;创建数据源对象&quot;&gt;&lt;/a&gt;创建数据源对象&lt;/h4&gt;&lt;p&gt;Spring内部提供了自己DataSource对象&lt;code&gt;DriverManagerDataSource&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;DriverManagerDataSource dataSource &amp;#x3D; new DriverManagerDataSource();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setDriverClassName(&amp;quot;com.mysql.cj.jdbc.Driver&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setUrl(&amp;quot;jdbc:mysql:&amp;#x2F;&amp;#x2F;localhost:3306&amp;#x2F;javatest?serverTimezone&amp;#x3D;UTC&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setUsername(&amp;quot;root&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setPassword(&amp;quot;123456&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h4 id=&quot;创建JDBCTemplate对象&quot;&gt;&lt;a href=&quot;#创建JDBCTemplate对象&quot; class=&quot;headerlink&quot; title=&quot;创建JDBCTemplate对象&quot;&gt;&lt;/a&gt;创建JDBCTemplate对象&lt;/h4&gt;&lt;p&gt;创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;JdbcTemplate jdbcTemplate &amp;#x3D; new JdbcTemplate();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;jdbcTemplate.setDataSource(dataSource);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;List&amp;lt;Account&amp;gt; accounts &amp;#x3D; jdbcTemplate.query(&amp;quot;select * from account&amp;quot;,new AccountRowMapper());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;for(Account account:accounts)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    System.out.println(account);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h5 id=&quot;在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象&quot;&gt;&lt;a href=&quot;#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象&quot; class=&quot;headerlink&quot; title=&quot;在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象&quot;&gt;&lt;/a&gt;在执行查询的时候我们需要提供一个继承于&lt;code&gt;RowMapper&lt;/code&gt;接口的实现类,用于封装结果对象&lt;/h5&gt;
     
     </summary>
     
@@ -471,91 +527,27 @@
   </entry>
   
   <entry>
-    <title>Spring jdbcTemplate</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20jdbcTemplate/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20jdbcTemplate/</id>
+    <title>Spring 事务管理</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/</id>
     <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:03:57.593Z</updated>
+    <updated>2020-02-23T10:02:18.045Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Spring-JDBCTemplate&quot;&gt;&lt;a href=&quot;#Spring-JDBCTemplate&quot; class=&quot;headerlink&quot; title=&quot;Spring JDBCTemplate&quot;&gt;&lt;/a&gt;Spring JDBCTemplate&lt;/h2&gt;&lt;p&gt;Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  &lt;/p&gt;
-&lt;p&gt;Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。&lt;/p&gt;
-&lt;h4 id=&quot;创建数据源对象&quot;&gt;&lt;a href=&quot;#创建数据源对象&quot; class=&quot;headerlink&quot; title=&quot;创建数据源对象&quot;&gt;&lt;/a&gt;创建数据源对象&lt;/h4&gt;&lt;p&gt;Spring内部提供了自己DataSource对象&lt;code&gt;DriverManagerDataSource&lt;/code&gt;&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;DriverManagerDataSource dataSource &amp;#x3D; new DriverManagerDataSource();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setDriverClassName(&amp;quot;com.mysql.cj.jdbc.Driver&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setUrl(&amp;quot;jdbc:mysql:&amp;#x2F;&amp;#x2F;localhost:3306&amp;#x2F;javatest?serverTimezone&amp;#x3D;UTC&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setUsername(&amp;quot;root&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataSource.setPassword(&amp;quot;123456&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h4 id=&quot;创建JDBCTemplate对象&quot;&gt;&lt;a href=&quot;#创建JDBCTemplate对象&quot; class=&quot;headerlink&quot; title=&quot;创建JDBCTemplate对象&quot;&gt;&lt;/a&gt;创建JDBCTemplate对象&lt;/h4&gt;&lt;p&gt;创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;JdbcTemplate jdbcTemplate &amp;#x3D; new JdbcTemplate();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;jdbcTemplate.setDataSource(dataSource);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;List&amp;lt;Account&amp;gt; accounts &amp;#x3D; jdbcTemplate.query(&amp;quot;select * from account&amp;quot;,new AccountRowMapper());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;for(Account account:accounts)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    System.out.println(account);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h5 id=&quot;在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象&quot;&gt;&lt;a href=&quot;#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象&quot; class=&quot;headerlink&quot; title=&quot;在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象&quot;&gt;&lt;/a&gt;在执行查询的时候我们需要提供一个继承于&lt;code&gt;RowMapper&lt;/code&gt;接口的实现类,用于封装结果对象&lt;/h5&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SpringBoot Thymeleaf</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20Boot%20Thymeleaf/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:03:38.870Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Thymeleaf&quot;&gt;&lt;a href=&quot;#Thymeleaf&quot; class=&quot;headerlink&quot; title=&quot;Thymeleaf&quot;&gt;&lt;/a&gt;Thymeleaf&lt;/h2&gt;&lt;p&gt;SpringBoot推荐的模板引擎；&lt;/p&gt;
-&lt;p&gt;语法更简单，功能更强大；&lt;/p&gt;
-&lt;h3 id=&quot;1、引入thymeleaf；&quot;&gt;&lt;a href=&quot;#1、引入thymeleaf；&quot; class=&quot;headerlink&quot; title=&quot;1、引入thymeleaf；&quot;&gt;&lt;/a&gt;1、引入thymeleaf；&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;&amp;#x2F;groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;artifactId&amp;gt;spring-boot-starter-thymeleaf&amp;lt;&amp;#x2F;artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&amp;#x2F;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;最新版的spring boot 会自动设置好最新的版本，如果需要以前的的版本则可以&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &amp;lt;thymeleaf.version&amp;gt;3.0.11.RELEASE&amp;lt;&amp;#x2F;thymeleaf.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;thymeleaf-layout-dialect.version&amp;gt;2.4.1&amp;lt;&amp;#x2F;thymeleaf-layout-dialect.version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;2、Thymeleaf使用&quot;&gt;&lt;a href=&quot;#2、Thymeleaf使用&quot; class=&quot;headerlink&quot; title=&quot;2、Thymeleaf使用&quot;&gt;&lt;/a&gt;2、Thymeleaf使用&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@ConfigurationProperties(prefix &amp;#x3D; &amp;quot;spring.thymeleaf&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class ThymeleafProperties &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final Charset DEFAULT_ENCODING &amp;#x3D; Charset.forName(&amp;quot;UTF-8&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	private static final MimeType DEFAULT_CONTENT_TYPE &amp;#x3D; MimeType.valueOf(&amp;quot;text&amp;#x2F;html&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_PREFIX &amp;#x3D; &amp;quot;classpath:&amp;#x2F;templates&amp;#x2F;&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	public static final String DEFAULT_SUFFIX &amp;#x3D; &amp;quot;.html&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  	&amp;#x2F;&amp;#x2F;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;只要我们把HTML页面放在classpath:/templates/，thymeleaf就能自动渲染；&lt;/p&gt;
-&lt;p&gt;使用：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Spring Boot" scheme="http://yoursite.com/categories/Spring-Boot/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring注解配置</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T10:02:29.064Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;通过XML进行主配置&quot;&gt;&lt;a href=&quot;#通过XML进行主配置&quot; class=&quot;headerlink&quot; title=&quot;通过XML进行主配置&quot;&gt;&lt;/a&gt;通过XML进行主配置&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version&amp;#x3D;&amp;quot;1.0&amp;quot; encoding&amp;#x3D;&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;beans xmlns&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;beans&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xmlns:xsi&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.w3.org&amp;#x2F;2001&amp;#x2F;XMLSchema-instance&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xmlns:context&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;context&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xsi:schemaLocation&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;beans&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        https:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;beans&amp;#x2F;spring-beans.xsd&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;context&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        https:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;context&amp;#x2F;spring-context.xsd&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;通过Java类作为主配置&quot;&gt;&lt;a href=&quot;#通过Java类作为主配置&quot; class=&quot;headerlink&quot; title=&quot;通过Java类作为主配置&quot;&gt;&lt;/a&gt;通过Java类作为主配置&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;@Configuration&lt;/code&gt; 指定当前类是一个配置类&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@ComponentScan&lt;/code&gt; 用于通过注解指定spring在创建容器时要扫描的包，通过&lt;code&gt;value&lt;/code&gt;属性指定创建容器时要扫描的包&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@Bean&lt;/code&gt; 用于把当前方法的返回值作为bean对象存入spring的ioc容器中，通过&lt;code&gt;name&lt;/code&gt;属性指定bean的id。不写时，默认值是当前方法的名称&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@Import&lt;/code&gt; 用于导入其他的配置类。当我们使用Import的注释之后，有Import注释的类就是父配置类，而导入的都是子配置类。&lt;code&gt;value&lt;/code&gt;:其他配置类的字节码。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@@EnableAspectJAutoProxy&lt;/code&gt; 开启注解AOP的支持&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@EnableTransactionManagement&lt;/code&gt; 开启Spring注解中事务的支持&lt;h4 id=&quot;多个配置文件时-扫描方法&quot;&gt;&lt;a href=&quot;#多个配置文件时-扫描方法&quot; class=&quot;headerlink&quot; title=&quot;多个配置文件时 扫描方法&quot;&gt;&lt;/a&gt;多个配置文件时 扫描方法&lt;/h4&gt;&lt;/li&gt;
+      &lt;h3 id=&quot;Spring-事务控制我们要明确的&quot;&gt;&lt;a href=&quot;#Spring-事务控制我们要明确的&quot; class=&quot;headerlink&quot; title=&quot;Spring 事务控制我们要明确的&quot;&gt;&lt;/a&gt;Spring 事务控制我们要明确的&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;第一： JavaEE 体系进行分层开发，事务处理位于业务层，Spring提供了分层设计业务层的事务处理解决方案
+第二： Spring框架为我们提供了一组事务控制的接口。在spring-tx-3.2.13.RELEASE.jar 中
+第三：spring的事务控制都是基于AOP的，它既可以使用变成的方式的实现，也可以使用配置的方式实现&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;Spring-中的三个核心接口&quot;&gt;&lt;a href=&quot;#Spring-中的三个核心接口&quot; class=&quot;headerlink&quot; title=&quot;Spring 中的三个核心接口&quot;&gt;&lt;/a&gt;Spring 中的三个核心接口&lt;/h3&gt;&lt;h4 id=&quot;1-PlatformTransactionManager&quot;&gt;&lt;a href=&quot;#1-PlatformTransactionManager&quot; class=&quot;headerlink&quot; title=&quot;1. PlatformTransactionManager&quot;&gt;&lt;/a&gt;1. PlatformTransactionManager&lt;/h4&gt;&lt;p&gt;PlatformTransactionManager 接口是 Spring 提供的平台事务管理器，用于管理事务。该接口中提供了三个事务操作方法，具体如下。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;TransactionStatus getTransaction（TransactionDefinition definition）&lt;/code&gt;用于获取事务状态信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;void commit（TransactionStatus status）&lt;/code&gt;用于提交事务。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;void rollback（TransactionStatus status）&lt;/code&gt;用于回滚事务。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ol&gt;
-&lt;li&gt;通过创建容器对象时扫描加载&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ApplicationContext context &amp;#x3D; new AnnotationConfigApplicationContext(SpringConfig.class,jdbcConfig.class);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-通过这种方式扫描，配置文件上面可以不写&lt;code&gt;@Configuration&lt;/code&gt;,不过这样加载两个配置将会是同级别的&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@ComponentScan&lt;/code&gt;扫描&lt;code&gt;@Configuration&lt;/code&gt; 加载&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@ComponentScan(&amp;quot;cn.test&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class SpringConfig &amp;#123; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Configuration&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class jdbcConfig &amp;#123; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ApplicationContext context &amp;#x3D; new AnnotationConfigApplicationContext(SpringConfig.class);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-通过主配置文件上的&lt;code&gt;@ComponenScan&lt;/code&gt;会自动扫描包下的配置文件&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;真正管理事务的对象&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;org.springframework.jdbc.datasource.DataSourceTransactionManager&lt;/code&gt;使用SpringJDBC或Mybatis进行持久化数据时使用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;org.springframework.orm.hibernate5.HibernateTransactionManager&lt;/code&gt; 使用Hibernate版本进行持久化数据时使用&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
@@ -564,35 +556,6 @@
     
     
       <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring IOC容器</title>
-    <link href="http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"/>
-    <id>http://yoursite.com/2019/02/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/</id>
-    <published>2019-02-19T04:40:58.000Z</published>
-    <updated>2020-02-23T09:48:00.258Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;BeanFactory容器&quot;&gt;&lt;a href=&quot;#BeanFactory容器&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-    
-      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
     
   </entry>
   
@@ -627,6 +590,43 @@
 &lt;/tbody&gt;&lt;/table&gt;
 &lt;h4 id=&quot;1-编写Service层的事务接口&quot;&gt;&lt;a href=&quot;#1-编写Service层的事务接口&quot; class=&quot;headerlink&quot; title=&quot;1. 编写Service层的事务接口&quot;&gt;&lt;/a&gt;1. 编写Service层的事务接口&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Override&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public void transfer(int sourceId, int targetId, double money) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;1.获取转出账户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Account sourceAccount &amp;#x3D; accountDao.findOne(sourceId);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;2. 获取转入账户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Account targetAccount &amp;#x3D; accountDao.findOne(targetId);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;3. 转出账户减钱&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        sourceAccount.setMoney(sourceAccount.getMoney()-money);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;4. 转入账户加钱&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        targetAccount.setMoney(targetAccount.getMoney()+money);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;5. 更新转出账户信息&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        accountDao.updateAccount(sourceAccount);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int i &amp;#x3D;1&amp;#x2F;0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F;6. 更新转入账户信息&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        accountDao.updateAccount(targetAccount);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="学习" scheme="http://yoursite.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring注解配置</title>
+    <link href="http://yoursite.com/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/</id>
+    <published>2019-02-19T04:40:58.000Z</published>
+    <updated>2020-02-23T10:02:29.064Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;通过XML进行主配置&quot;&gt;&lt;a href=&quot;#通过XML进行主配置&quot; class=&quot;headerlink&quot; title=&quot;通过XML进行主配置&quot;&gt;&lt;/a&gt;通过XML进行主配置&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version&amp;#x3D;&amp;quot;1.0&amp;quot; encoding&amp;#x3D;&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;beans xmlns&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;beans&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xmlns:xsi&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.w3.org&amp;#x2F;2001&amp;#x2F;XMLSchema-instance&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xmlns:context&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;context&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xsi:schemaLocation&amp;#x3D;&amp;quot;http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;beans&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        https:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;beans&amp;#x2F;spring-beans.xsd&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        http:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;context&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        https:&amp;#x2F;&amp;#x2F;www.springframework.org&amp;#x2F;schema&amp;#x2F;context&amp;#x2F;spring-context.xsd&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;通过Java类作为主配置&quot;&gt;&lt;a href=&quot;#通过Java类作为主配置&quot; class=&quot;headerlink&quot; title=&quot;通过Java类作为主配置&quot;&gt;&lt;/a&gt;通过Java类作为主配置&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;@Configuration&lt;/code&gt; 指定当前类是一个配置类&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@ComponentScan&lt;/code&gt; 用于通过注解指定spring在创建容器时要扫描的包，通过&lt;code&gt;value&lt;/code&gt;属性指定创建容器时要扫描的包&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@Bean&lt;/code&gt; 用于把当前方法的返回值作为bean对象存入spring的ioc容器中，通过&lt;code&gt;name&lt;/code&gt;属性指定bean的id。不写时，默认值是当前方法的名称&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@Import&lt;/code&gt; 用于导入其他的配置类。当我们使用Import的注释之后，有Import注释的类就是父配置类，而导入的都是子配置类。&lt;code&gt;value&lt;/code&gt;:其他配置类的字节码。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@@EnableAspectJAutoProxy&lt;/code&gt; 开启注解AOP的支持&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@EnableTransactionManagement&lt;/code&gt; 开启Spring注解中事务的支持&lt;h4 id=&quot;多个配置文件时-扫描方法&quot;&gt;&lt;a href=&quot;#多个配置文件时-扫描方法&quot; class=&quot;headerlink&quot; title=&quot;多个配置文件时 扫描方法&quot;&gt;&lt;/a&gt;多个配置文件时 扫描方法&lt;/h4&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;通过创建容器对象时扫描加载&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ApplicationContext context &amp;#x3D; new AnnotationConfigApplicationContext(SpringConfig.class,jdbcConfig.class);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+通过这种方式扫描，配置文件上面可以不写&lt;code&gt;@Configuration&lt;/code&gt;,不过这样加载两个配置将会是同级别的&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@ComponentScan&lt;/code&gt;扫描&lt;code&gt;@Configuration&lt;/code&gt; 加载&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@ComponentScan(&amp;quot;cn.test&amp;quot;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class SpringConfig &amp;#123; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;@Configuration&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;public class jdbcConfig &amp;#123; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ApplicationContext context &amp;#x3D; new AnnotationConfigApplicationContext(SpringConfig.class);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+通过主配置文件上的&lt;code&gt;@ComponenScan&lt;/code&gt;会自动扫描包下的配置文件&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
