@@ -19,6 +19,24 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Dao冗余代码问题</title>
+    <url>/2019/02/19/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>我们已经学会了jdbcTemplate，但是每个Dao类中都少不了下面这几句代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">public void setJdbcTemplate(JdbcTemplate jdbcTemplate) &#123;</span><br><span class="line">    this.jdbcTemplate &#x3D; jdbcTemplate;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而为了使代码更简洁，我可可以使用继承父类的方式解决代码冗余</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Dao层的父类，负责提供jdbcTemplate对象</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class JdbcSuperDao &#123;</span><br><span class="line">    private JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">    public JdbcTemplate getJdbcTemplate() &#123;</span><br><span class="line">        return jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setDataSource(DataSource dataSource)&#123;</span><br><span class="line">        if(this.jdbcTemplate &#x3D;&#x3D; null)&#123;</span><br><span class="line">            this.jdbcTemplate &#x3D; createJdbcTemplate();</span><br><span class="line">        &#125;</span><br><span class="line">        this.jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line">    private JdbcTemplate createJdbcTemplate()&#123;</span><br><span class="line">        return new JdbcTemplate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Spring中其实也提供了这样的一个用来让Dao层继承的父类<br>==但是由于无法修改源码的原因，无法再父类上添加注解，也就导致了不能使用注解方式的Ioc容器==</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public abstract class JdbcDaoSupport extends DaoSupport &#123;</span><br><span class="line">    @Nullable</span><br><span class="line">    private JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">    public JdbcDaoSupport() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public final void setDataSource(DataSource dataSource) &#123;</span><br><span class="line">        if (this.jdbcTemplate &#x3D;&#x3D; null || dataSource !&#x3D; this.jdbcTemplate.getDataSource()) &#123;</span><br><span class="line">            this.jdbcTemplate &#x3D; this.createJdbcTemplate(dataSource);</span><br><span class="line">            this.initTemplateConfig();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected JdbcTemplate createJdbcTemplate(DataSource dataSource) &#123;</span><br><span class="line">        return new JdbcTemplate(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    public final DataSource getDataSource() &#123;</span><br><span class="line">        return this.jdbcTemplate !&#x3D; null ? this.jdbcTemplate.getDataSource() : null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public final void setJdbcTemplate(@Nullable JdbcTemplate jdbcTemplate) &#123;</span><br><span class="line">        this.jdbcTemplate &#x3D; jdbcTemplate;</span><br><span class="line">        this.initTemplateConfig();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    public final JdbcTemplate getJdbcTemplate() &#123;</span><br><span class="line">        return this.jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected void initTemplateConfig() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected void checkDaoConfig() &#123;</span><br><span class="line">        if (this.jdbcTemplate &#x3D;&#x3D; null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;&#39;dataSource&#39; or &#39;jdbcTemplate&#39; is required&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected final SQLExceptionTranslator getExceptionTranslator() &#123;</span><br><span class="line">        JdbcTemplate jdbcTemplate &#x3D; this.getJdbcTemplate();</span><br><span class="line">        Assert.state(jdbcTemplate !&#x3D; null, &quot;No JdbcTemplate set&quot;);</span><br><span class="line">        return jdbcTemplate.getExceptionTranslator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected final Connection getConnection() throws CannotGetJdbcConnectionException &#123;</span><br><span class="line">        DataSource dataSource &#x3D; this.getDataSource();</span><br><span class="line">        Assert.state(dataSource !&#x3D; null, &quot;No DataSource set&quot;);</span><br><span class="line">        return DataSourceUtils.getConnection(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected final void releaseConnection(Connection con) &#123;</span><br><span class="line">        DataSourceUtils.releaseConnection(con, this.getDataSource());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring AOP</title>
     <url>/2019/02/19/Spring%20AOP/</url>
     <content><![CDATA[<h1 id="Spring-Aop是什么"><a href="#Spring-Aop是什么" class="headerlink" title="Spring Aop是什么"></a>Spring Aop是什么</h1><p>面向切面编程（AOP）和面向对象编程（OOP）类似，也是一种编程模式。Spring AOP 是基于 AOP 编程模式的一个框架，它的使用有效减少了系统间的重复代码，达到了模块间的松耦合目的。</p>
@@ -121,6 +139,98 @@
       </categories>
       <tags>
         <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot Thymeleaf</title>
+    <url>/2019/02/19/Spring%20Boot%20Thymeleaf/</url>
+    <content><![CDATA[<h2 id="Thymeleaf"><a href="#Thymeleaf" class="headerlink" title="Thymeleaf"></a>Thymeleaf</h2><p>SpringBoot推荐的模板引擎；</p>
+<p>语法更简单，功能更强大；</p>
+<h3 id="1、引入thymeleaf；"><a href="#1、引入thymeleaf；" class="headerlink" title="1、引入thymeleaf；"></a>1、引入thymeleaf；</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最新版的spring boot 会自动设置好最新的版本，如果需要以前的的版本则可以</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &lt;thymeleaf.version&gt;3.0.11.RELEASE&lt;&#x2F;thymeleaf.version&gt;</span><br><span class="line">&lt;thymeleaf-layout-dialect.version&gt;2.4.1&lt;&#x2F;thymeleaf-layout-dialect.version&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、Thymeleaf使用"><a href="#2、Thymeleaf使用" class="headerlink" title="2、Thymeleaf使用"></a>2、Thymeleaf使用</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ConfigurationProperties(prefix &#x3D; &quot;spring.thymeleaf&quot;)</span><br><span class="line">public class ThymeleafProperties &#123;</span><br><span class="line"></span><br><span class="line">	private static final Charset DEFAULT_ENCODING &#x3D; Charset.forName(&quot;UTF-8&quot;);</span><br><span class="line"></span><br><span class="line">	private static final MimeType DEFAULT_CONTENT_TYPE &#x3D; MimeType.valueOf(&quot;text&#x2F;html&quot;);</span><br><span class="line"></span><br><span class="line">	public static final String DEFAULT_PREFIX &#x3D; &quot;classpath:&#x2F;templates&#x2F;&quot;;</span><br><span class="line"></span><br><span class="line">	public static final String DEFAULT_SUFFIX &#x3D; &quot;.html&quot;;</span><br><span class="line">  	&#x2F;&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>只要我们把HTML页面放在classpath:/templates/，thymeleaf就能自动渲染；</p>
+<p>使用：</p>
+<a id="more"></a>
+
+<p>1、导入thymeleaf的名称空间</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2、使用thymeleaf语法；</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>成功！<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--th:text 将div里面的文本内容设置为 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:text</span>=<span class="string">"$&#123;hello&#125;"</span>&gt;</span>这是显示欢迎信息<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、语法规则"><a href="#3、语法规则" class="headerlink" title="3、语法规则"></a>3、语法规则</h3><h4 id="1）、th-text；改变当前元素里面的文本内容；"><a href="#1）、th-text；改变当前元素里面的文本内容；" class="headerlink" title="1）、th:text；改变当前元素里面的文本内容；"></a>1）、th:text；改变当前元素里面的文本内容；</h4><p><code>th:html属性</code>任意html属性；来替换原生属性的值</p>
+<p><img src="https://note.youdao.com/yws/public/resource/cc5b76a769febafc3c8751c8c98a7edd/xmlnote/C51DFDBDAC57429A840C981B303F9A79/8271" alt=""></p>
+<h4 id="2）、Simple-expressions-（表达式语法）"><a href="#2）、Simple-expressions-（表达式语法）" class="headerlink" title="2）、Simple expressions:（表达式语法）"></a>2）、Simple expressions:（表达式语法）</h4><h5 id="Variable-Expressions-…-：获取变量值；OGNL；"><a href="#Variable-Expressions-…-：获取变量值；OGNL；" class="headerlink" title="Variable Expressions: ${…}：获取变量值；OGNL；"></a>Variable Expressions: ${…}：获取变量值；OGNL；</h5><p>1）、获取对象的属性、调用方法</p>
+<p>2）、使用内置的基本对象：</p>
+<ul>
+<li><code>#ctx</code> the context object.</li>
+<li><code>#vars</code>the context variables.</li>
+<li><code>#locale</code> the context locale.</li>
+<li><code>#request</code> (only in Web Contexts) the HttpServletRequest object.</li>
+<li><code>#response</code> (only in Web Contexts) the HttpServletResponse object.</li>
+<li><code>#session</code>(only in Web Contexts) the HttpSession object.</li>
+<li><code>#servletContext</code>  (only in Web Contexts) the ServletContext object.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$&#123;session.foo&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>3）、内置的一些工具对象：</p>
+<ul>
+<li><code>#execInfo</code> : information about the template being processed.</li>
+<li><code>#messages</code> : methods for obtaining externalized messages inside variables expressions, in the same way as they would be obtained using #{…} syntax.</li>
+<li><code>#uris</code> : methods for escaping parts of URLs/URIs</li>
+<li><code>#conversions</code> : methods for executing the configured conversion service (if any).</li>
+<li><code>#dates</code> : methods for java.util.Date objects: formatting, component extraction, etc.</li>
+<li><code>#calendars</code> : analogous to #dates , but for java.util.Calendar objects.</li>
+<li><code>#numbers</code> : methods for formatting numeric objects.</li>
+<li><code>#strings</code> : methods for String objects: contains, startsWith, prepending/appending, etc.</li>
+<li><code>#objects</code> : methods for objects in general.</li>
+<li><code>#bools</code> : methods for boolean evaluation.</li>
+<li><code>#arrays</code> : methods for arrays.</li>
+<li><code>#lists</code> : methods for lists.</li>
+<li><code>#sets</code> : methods for sets.</li>
+<li><code>#maps</code> : methods for maps.</li>
+<li><code>#aggregates</code> : methods for creating aggregates on arrays or collections.</li>
+<li><code>#ids</code> : methods for dealing with id attributes that might be repeated (for example, as a result of an iteration).</li>
+</ul>
+<h5 id="Selection-Variable-Expressions-…-：选择表达式：和-在功能上是一样；"><a href="#Selection-Variable-Expressions-…-：选择表达式：和-在功能上是一样；" class="headerlink" title="Selection Variable Expressions:*{…}：选择表达式：和${}在功能上是一样；"></a>Selection Variable Expressions:*{…}：选择表达式：和${}在功能上是一样；</h5><p>补充：配合 th:object=”${session.user}：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div th:object&#x3D;&quot;$&#123;session.user&#125;&quot;&gt;</span><br><span class="line">    &lt;p&gt;Name: &lt;span th:text&#x3D;&quot;*&#123;firstName&#125;&quot;&gt;Sebastian&lt;&#x2F;span&gt;.&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;p&gt;Surname: &lt;span th:text&#x3D;&quot;*&#123;lastName&#125;&quot;&gt;Pepper&lt;&#x2F;span&gt;.&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;p&gt;Nationality: &lt;span th:text&#x3D;&quot;*&#123;nationality&#125;&quot;&gt;Saturn&lt;&#x2F;span&gt;.&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="Message-Expressions-…-：获取国际化内容"><a href="#Message-Expressions-…-：获取国际化内容" class="headerlink" title="Message Expressions: #{…}：获取国际化内容"></a>Message Expressions: #{…}：获取国际化内容</h5><h5 id="Link-URL-Expressions-…-：定义URL；"><a href="#Link-URL-Expressions-…-：定义URL；" class="headerlink" title="Link URL Expressions: @{…}：定义URL；"></a>Link URL Expressions: @{…}：定义URL；</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@&#123;&#x2F;order&#x2F;process(execId&#x3D;$&#123;execId&#125;,execType&#x3D;&#39;FAST&#39;)&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Fragment-Expressions-…-：片段引用表达式"><a href="#Fragment-Expressions-…-：片段引用表达式" class="headerlink" title="Fragment Expressions: ~{…}：片段引用表达式"></a>Fragment Expressions: ~{…}：片段引用表达式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div th:insert&#x3D;&quot;~&#123;commons :: main&#125;&quot;&gt;...&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Literals（字面量）</span><br><span class="line">      Text literals: &#39;one text&#39; , &#39;Another one!&#39; ,…</span><br><span class="line">      Number literals: 0 , 34 , 3.0 , 12.3 ,…</span><br><span class="line">      Boolean literals: true , false</span><br><span class="line">      Null literal: null</span><br><span class="line">      Literal tokens: one , sometext , main ,…</span><br><span class="line">Text operations:（文本操作）</span><br><span class="line">    String concatenation: +</span><br><span class="line">    Literal substitutions: |The name is $&#123;name&#125;|</span><br><span class="line">Arithmetic operations:（数学运算）</span><br><span class="line">    Binary operators: + , - , * , &#x2F; , %</span><br><span class="line">    Minus sign (unary operator): -</span><br><span class="line">Boolean operations:（布尔运算）</span><br><span class="line">    Binary operators: and , or</span><br><span class="line">    Boolean negation (unary operator): ! , not</span><br><span class="line">Comparisons and equality:（比较运算）</span><br><span class="line">    Comparators: &gt; , &lt; , &gt;&#x3D; , &lt;&#x3D; ( gt , lt , ge , le )</span><br><span class="line">    Equality operators: &#x3D;&#x3D; , !&#x3D; ( eq , ne )</span><br><span class="line">Conditional operators:条件运算（三元运算符）</span><br><span class="line">    If-then: (if) ? (then)</span><br><span class="line">    If-then-else: (if) ? (then) : (else)</span><br><span class="line">    Default: (value) ?: (defaultvalue)</span><br><span class="line">Special tokens:</span><br><span class="line">    No-Operation: _</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="3）、thymeleaf公共页面元素抽取"><a href="#3）、thymeleaf公共页面元素抽取" class="headerlink" title="3）、thymeleaf公共页面元素抽取"></a>3）、thymeleaf公共页面元素抽取</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">1、抽取公共片段</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:fragment</span>=<span class="string">"copy"</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">2、引入公共片段</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"~&#123;footer :: copy&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">~&#123;templatename::selector&#125;：模板名::选择器</span><br><span class="line">~&#123;templatename::fragmentname&#125;:模板名::片段名</span><br><span class="line"></span><br><span class="line">3、默认效果：</span><br><span class="line">insert的公共片段在div标签中</span><br><span class="line">如果使用th:insert等属性进行引入，可以不用写~&#123;&#125;：</span><br><span class="line">行内写法可以加上：[[~&#123;&#125;]];[(~&#123;&#125;)]；</span><br></pre></td></tr></table></figure>
+
+
+
+<p>三种引入公共片段的th属性：</p>
+<p><strong>th:insert</strong>：将公共片段整个插入到声明引入的元素中</p>
+<p><strong>th:replace</strong>：将声明引入的元素替换为公共片段</p>
+<p><strong>th:include</strong>：将被引入的片段的内容包含进这个标签中</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">footer</span> <span class="attr">th:fragment</span>=<span class="string">"copy"</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line">引入方式</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:include</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">效果</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    <span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line">    <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>引入片段的时候传入参数： </p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">"col-md-2 d-none d-md-block bg-light sidebar"</span> <span class="attr">id</span>=<span class="string">"sidebar"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"sidebar-sticky"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"nav flex-column"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"nav-item"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"nav-link active"</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">th:class</span>=<span class="string">"$&#123;activeUri=='main.html'?'nav-link active':'nav-link'&#125;"</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">th:href</span>=<span class="string">"@&#123;/main.html&#125;"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">width</span>=<span class="string">"24"</span> <span class="attr">height</span>=<span class="string">"24"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 24 24"</span> <span class="attr">fill</span>=<span class="string">"none"</span> <span class="attr">stroke</span>=<span class="string">"currentColor"</span> <span class="attr">stroke-width</span>=<span class="string">"2"</span> <span class="attr">stroke-linecap</span>=<span class="string">"round"</span> <span class="attr">stroke-linejoin</span>=<span class="string">"round"</span> <span class="attr">class</span>=<span class="string">"feather feather-home"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">"9 22 9 12 15 12 15 22"</span>&gt;</span><span class="tag">&lt;/<span class="name">polyline</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">                    Dashboard <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"sr-only"</span>&gt;</span>(current)<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--引入侧边栏;传入参数--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"commons/bar::#sidebar(activeUri='emps')"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Spring Boot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -239,297 +349,6 @@
       </categories>
       <tags>
         <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot Thymeleaf</title>
-    <url>/2019/02/19/Spring%20Boot%20Thymeleaf/</url>
-    <content><![CDATA[<h2 id="Thymeleaf"><a href="#Thymeleaf" class="headerlink" title="Thymeleaf"></a>Thymeleaf</h2><p>SpringBoot推荐的模板引擎；</p>
-<p>语法更简单，功能更强大；</p>
-<h3 id="1、引入thymeleaf；"><a href="#1、引入thymeleaf；" class="headerlink" title="1、引入thymeleaf；"></a>1、引入thymeleaf；</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>最新版的spring boot 会自动设置好最新的版本，如果需要以前的的版本则可以</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &lt;thymeleaf.version&gt;3.0.11.RELEASE&lt;&#x2F;thymeleaf.version&gt;</span><br><span class="line">&lt;thymeleaf-layout-dialect.version&gt;2.4.1&lt;&#x2F;thymeleaf-layout-dialect.version&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2、Thymeleaf使用"><a href="#2、Thymeleaf使用" class="headerlink" title="2、Thymeleaf使用"></a>2、Thymeleaf使用</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ConfigurationProperties(prefix &#x3D; &quot;spring.thymeleaf&quot;)</span><br><span class="line">public class ThymeleafProperties &#123;</span><br><span class="line"></span><br><span class="line">	private static final Charset DEFAULT_ENCODING &#x3D; Charset.forName(&quot;UTF-8&quot;);</span><br><span class="line"></span><br><span class="line">	private static final MimeType DEFAULT_CONTENT_TYPE &#x3D; MimeType.valueOf(&quot;text&#x2F;html&quot;);</span><br><span class="line"></span><br><span class="line">	public static final String DEFAULT_PREFIX &#x3D; &quot;classpath:&#x2F;templates&#x2F;&quot;;</span><br><span class="line"></span><br><span class="line">	public static final String DEFAULT_SUFFIX &#x3D; &quot;.html&quot;;</span><br><span class="line">  	&#x2F;&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>只要我们把HTML页面放在classpath:/templates/，thymeleaf就能自动渲染；</p>
-<p>使用：</p>
-<a id="more"></a>
-
-<p>1、导入thymeleaf的名称空间</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>2、使用thymeleaf语法；</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>成功！<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--th:text 将div里面的文本内容设置为 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:text</span>=<span class="string">"$&#123;hello&#125;"</span>&gt;</span>这是显示欢迎信息<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3、语法规则"><a href="#3、语法规则" class="headerlink" title="3、语法规则"></a>3、语法规则</h3><h4 id="1）、th-text；改变当前元素里面的文本内容；"><a href="#1）、th-text；改变当前元素里面的文本内容；" class="headerlink" title="1）、th:text；改变当前元素里面的文本内容；"></a>1）、th:text；改变当前元素里面的文本内容；</h4><p><code>th:html属性</code>任意html属性；来替换原生属性的值</p>
-<p><img src="https://note.youdao.com/yws/public/resource/cc5b76a769febafc3c8751c8c98a7edd/xmlnote/C51DFDBDAC57429A840C981B303F9A79/8271" alt=""></p>
-<h4 id="2）、Simple-expressions-（表达式语法）"><a href="#2）、Simple-expressions-（表达式语法）" class="headerlink" title="2）、Simple expressions:（表达式语法）"></a>2）、Simple expressions:（表达式语法）</h4><h5 id="Variable-Expressions-…-：获取变量值；OGNL；"><a href="#Variable-Expressions-…-：获取变量值；OGNL；" class="headerlink" title="Variable Expressions: ${…}：获取变量值；OGNL；"></a>Variable Expressions: ${…}：获取变量值；OGNL；</h5><p>1）、获取对象的属性、调用方法</p>
-<p>2）、使用内置的基本对象：</p>
-<ul>
-<li><code>#ctx</code> the context object.</li>
-<li><code>#vars</code>the context variables.</li>
-<li><code>#locale</code> the context locale.</li>
-<li><code>#request</code> (only in Web Contexts) the HttpServletRequest object.</li>
-<li><code>#response</code> (only in Web Contexts) the HttpServletResponse object.</li>
-<li><code>#session</code>(only in Web Contexts) the HttpSession object.</li>
-<li><code>#servletContext</code>  (only in Web Contexts) the ServletContext object.<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$&#123;session.foo&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>3）、内置的一些工具对象：</p>
-<ul>
-<li><code>#execInfo</code> : information about the template being processed.</li>
-<li><code>#messages</code> : methods for obtaining externalized messages inside variables expressions, in the same way as they would be obtained using #{…} syntax.</li>
-<li><code>#uris</code> : methods for escaping parts of URLs/URIs</li>
-<li><code>#conversions</code> : methods for executing the configured conversion service (if any).</li>
-<li><code>#dates</code> : methods for java.util.Date objects: formatting, component extraction, etc.</li>
-<li><code>#calendars</code> : analogous to #dates , but for java.util.Calendar objects.</li>
-<li><code>#numbers</code> : methods for formatting numeric objects.</li>
-<li><code>#strings</code> : methods for String objects: contains, startsWith, prepending/appending, etc.</li>
-<li><code>#objects</code> : methods for objects in general.</li>
-<li><code>#bools</code> : methods for boolean evaluation.</li>
-<li><code>#arrays</code> : methods for arrays.</li>
-<li><code>#lists</code> : methods for lists.</li>
-<li><code>#sets</code> : methods for sets.</li>
-<li><code>#maps</code> : methods for maps.</li>
-<li><code>#aggregates</code> : methods for creating aggregates on arrays or collections.</li>
-<li><code>#ids</code> : methods for dealing with id attributes that might be repeated (for example, as a result of an iteration).</li>
-</ul>
-<h5 id="Selection-Variable-Expressions-…-：选择表达式：和-在功能上是一样；"><a href="#Selection-Variable-Expressions-…-：选择表达式：和-在功能上是一样；" class="headerlink" title="Selection Variable Expressions:*{…}：选择表达式：和${}在功能上是一样；"></a>Selection Variable Expressions:*{…}：选择表达式：和${}在功能上是一样；</h5><p>补充：配合 th:object=”${session.user}：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div th:object&#x3D;&quot;$&#123;session.user&#125;&quot;&gt;</span><br><span class="line">    &lt;p&gt;Name: &lt;span th:text&#x3D;&quot;*&#123;firstName&#125;&quot;&gt;Sebastian&lt;&#x2F;span&gt;.&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;p&gt;Surname: &lt;span th:text&#x3D;&quot;*&#123;lastName&#125;&quot;&gt;Pepper&lt;&#x2F;span&gt;.&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;p&gt;Nationality: &lt;span th:text&#x3D;&quot;*&#123;nationality&#125;&quot;&gt;Saturn&lt;&#x2F;span&gt;.&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="Message-Expressions-…-：获取国际化内容"><a href="#Message-Expressions-…-：获取国际化内容" class="headerlink" title="Message Expressions: #{…}：获取国际化内容"></a>Message Expressions: #{…}：获取国际化内容</h5><h5 id="Link-URL-Expressions-…-：定义URL；"><a href="#Link-URL-Expressions-…-：定义URL；" class="headerlink" title="Link URL Expressions: @{…}：定义URL；"></a>Link URL Expressions: @{…}：定义URL；</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@&#123;&#x2F;order&#x2F;process(execId&#x3D;$&#123;execId&#125;,execType&#x3D;&#39;FAST&#39;)&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="Fragment-Expressions-…-：片段引用表达式"><a href="#Fragment-Expressions-…-：片段引用表达式" class="headerlink" title="Fragment Expressions: ~{…}：片段引用表达式"></a>Fragment Expressions: ~{…}：片段引用表达式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div th:insert&#x3D;&quot;~&#123;commons :: main&#125;&quot;&gt;...&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Literals（字面量）</span><br><span class="line">      Text literals: &#39;one text&#39; , &#39;Another one!&#39; ,…</span><br><span class="line">      Number literals: 0 , 34 , 3.0 , 12.3 ,…</span><br><span class="line">      Boolean literals: true , false</span><br><span class="line">      Null literal: null</span><br><span class="line">      Literal tokens: one , sometext , main ,…</span><br><span class="line">Text operations:（文本操作）</span><br><span class="line">    String concatenation: +</span><br><span class="line">    Literal substitutions: |The name is $&#123;name&#125;|</span><br><span class="line">Arithmetic operations:（数学运算）</span><br><span class="line">    Binary operators: + , - , * , &#x2F; , %</span><br><span class="line">    Minus sign (unary operator): -</span><br><span class="line">Boolean operations:（布尔运算）</span><br><span class="line">    Binary operators: and , or</span><br><span class="line">    Boolean negation (unary operator): ! , not</span><br><span class="line">Comparisons and equality:（比较运算）</span><br><span class="line">    Comparators: &gt; , &lt; , &gt;&#x3D; , &lt;&#x3D; ( gt , lt , ge , le )</span><br><span class="line">    Equality operators: &#x3D;&#x3D; , !&#x3D; ( eq , ne )</span><br><span class="line">Conditional operators:条件运算（三元运算符）</span><br><span class="line">    If-then: (if) ? (then)</span><br><span class="line">    If-then-else: (if) ? (then) : (else)</span><br><span class="line">    Default: (value) ?: (defaultvalue)</span><br><span class="line">Special tokens:</span><br><span class="line">    No-Operation: _</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="3）、thymeleaf公共页面元素抽取"><a href="#3）、thymeleaf公共页面元素抽取" class="headerlink" title="3）、thymeleaf公共页面元素抽取"></a>3）、thymeleaf公共页面元素抽取</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">1、抽取公共片段</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:fragment</span>=<span class="string">"copy"</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">2、引入公共片段</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"~&#123;footer :: copy&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">~&#123;templatename::selector&#125;：模板名::选择器</span><br><span class="line">~&#123;templatename::fragmentname&#125;:模板名::片段名</span><br><span class="line"></span><br><span class="line">3、默认效果：</span><br><span class="line">insert的公共片段在div标签中</span><br><span class="line">如果使用th:insert等属性进行引入，可以不用写~&#123;&#125;：</span><br><span class="line">行内写法可以加上：[[~&#123;&#125;]];[(~&#123;&#125;)]；</span><br></pre></td></tr></table></figure>
-
-
-
-<p>三种引入公共片段的th属性：</p>
-<p><strong>th:insert</strong>：将公共片段整个插入到声明引入的元素中</p>
-<p><strong>th:replace</strong>：将声明引入的元素替换为公共片段</p>
-<p><strong>th:include</strong>：将被引入的片段的内容包含进这个标签中</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">footer</span> <span class="attr">th:fragment</span>=<span class="string">"copy"</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line">引入方式</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:include</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">效果</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    <span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line">    <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>引入片段的时候传入参数： </p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">"col-md-2 d-none d-md-block bg-light sidebar"</span> <span class="attr">id</span>=<span class="string">"sidebar"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"sidebar-sticky"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"nav flex-column"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"nav-item"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"nav-link active"</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">th:class</span>=<span class="string">"$&#123;activeUri=='main.html'?'nav-link active':'nav-link'&#125;"</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">th:href</span>=<span class="string">"@&#123;/main.html&#125;"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">width</span>=<span class="string">"24"</span> <span class="attr">height</span>=<span class="string">"24"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 24 24"</span> <span class="attr">fill</span>=<span class="string">"none"</span> <span class="attr">stroke</span>=<span class="string">"currentColor"</span> <span class="attr">stroke-width</span>=<span class="string">"2"</span> <span class="attr">stroke-linecap</span>=<span class="string">"round"</span> <span class="attr">stroke-linejoin</span>=<span class="string">"round"</span> <span class="attr">class</span>=<span class="string">"feather feather-home"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">"9 22 9 12 15 12 15 22"</span>&gt;</span><span class="tag">&lt;/<span class="name">polyline</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">                    Dashboard <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"sr-only"</span>&gt;</span>(current)<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--引入侧边栏;传入参数--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"commons/bar::#sidebar(activeUri='emps')"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Spring Boot</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Dao冗余代码问题</title>
-    <url>/2019/02/19/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>我们已经学会了jdbcTemplate，但是每个Dao类中都少不了下面这几句代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">public void setJdbcTemplate(JdbcTemplate jdbcTemplate) &#123;</span><br><span class="line">    this.jdbcTemplate &#x3D; jdbcTemplate;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>而为了使代码更简洁，我可可以使用继承父类的方式解决代码冗余</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Dao层的父类，负责提供jdbcTemplate对象</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class JdbcSuperDao &#123;</span><br><span class="line">    private JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">    public JdbcTemplate getJdbcTemplate() &#123;</span><br><span class="line">        return jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setDataSource(DataSource dataSource)&#123;</span><br><span class="line">        if(this.jdbcTemplate &#x3D;&#x3D; null)&#123;</span><br><span class="line">            this.jdbcTemplate &#x3D; createJdbcTemplate();</span><br><span class="line">        &#125;</span><br><span class="line">        this.jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line">    private JdbcTemplate createJdbcTemplate()&#123;</span><br><span class="line">        return new JdbcTemplate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Spring中其实也提供了这样的一个用来让Dao层继承的父类<br>==但是由于无法修改源码的原因，无法再父类上添加注解，也就导致了不能使用注解方式的Ioc容器==</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public abstract class JdbcDaoSupport extends DaoSupport &#123;</span><br><span class="line">    @Nullable</span><br><span class="line">    private JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">    public JdbcDaoSupport() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public final void setDataSource(DataSource dataSource) &#123;</span><br><span class="line">        if (this.jdbcTemplate &#x3D;&#x3D; null || dataSource !&#x3D; this.jdbcTemplate.getDataSource()) &#123;</span><br><span class="line">            this.jdbcTemplate &#x3D; this.createJdbcTemplate(dataSource);</span><br><span class="line">            this.initTemplateConfig();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected JdbcTemplate createJdbcTemplate(DataSource dataSource) &#123;</span><br><span class="line">        return new JdbcTemplate(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    public final DataSource getDataSource() &#123;</span><br><span class="line">        return this.jdbcTemplate !&#x3D; null ? this.jdbcTemplate.getDataSource() : null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public final void setJdbcTemplate(@Nullable JdbcTemplate jdbcTemplate) &#123;</span><br><span class="line">        this.jdbcTemplate &#x3D; jdbcTemplate;</span><br><span class="line">        this.initTemplateConfig();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Nullable</span><br><span class="line">    public final JdbcTemplate getJdbcTemplate() &#123;</span><br><span class="line">        return this.jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected void initTemplateConfig() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected void checkDaoConfig() &#123;</span><br><span class="line">        if (this.jdbcTemplate &#x3D;&#x3D; null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;&#39;dataSource&#39; or &#39;jdbcTemplate&#39; is required&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected final SQLExceptionTranslator getExceptionTranslator() &#123;</span><br><span class="line">        JdbcTemplate jdbcTemplate &#x3D; this.getJdbcTemplate();</span><br><span class="line">        Assert.state(jdbcTemplate !&#x3D; null, &quot;No JdbcTemplate set&quot;);</span><br><span class="line">        return jdbcTemplate.getExceptionTranslator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected final Connection getConnection() throws CannotGetJdbcConnectionException &#123;</span><br><span class="line">        DataSource dataSource &#x3D; this.getDataSource();</span><br><span class="line">        Assert.state(dataSource !&#x3D; null, &quot;No DataSource set&quot;);</span><br><span class="line">        return DataSourceUtils.getConnection(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected final void releaseConnection(Connection con) &#123;</span><br><span class="line">        DataSourceUtils.releaseConnection(con, this.getDataSource());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot Web</title>
-    <url>/2019/02/19/Spring%20Boot%20Web/</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>使用SpringBoot</p>
-<ol>
-<li>创建SpringBoot应用，选中我们需要的模块</li>
-<li>SpringBoot已经默认将这些场景配置好了，只需要咋i配置文件中指定少量排至就可以运行起来</li>
-<li>自己编写业务代码</li>
-</ol>
-<h4 id="自动配置原理"><a href="#自动配置原理" class="headerlink" title="自动配置原理"></a>自动配置原理</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xxxxAutoCOnfiguration:帮我们给容器中自动配置组件；</span><br><span class="line">xxxxProperties:配置类来封装配置文件的内容</span><br></pre></td></tr></table></figure>
-
-<h2 id="SpringBoot对静态资源的映射规则"><a href="#SpringBoot对静态资源的映射规则" class="headerlink" title="SpringBoot对静态资源的映射规则"></a>SpringBoot对静态资源的映射规则</h2><h5 id="1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；"><a href="#1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；" class="headerlink" title="1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；"></a>1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；</h5><ul>
-<li>webjars：以jar包的方式引入静态资源； <a href="https://www.webjars.org/" target="_blank" rel="noopener">https://www.webjars.org/</a></li>
-<li>访问的时候直接写<code>/包名/版本号/文件</code>即可<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.webjars&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jquery&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.2.4&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-访问路径<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:8080&#x2F;webjars&#x2F;jquery&#x2F;2.2.4&#x2F;jquery.js</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<h5 id="2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射"><a href="#2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射" class="headerlink" title="2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射"></a>2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射</h5><ul>
-<li><code>classpath:/META-INF/resources/</code></li>
-<li><code>classpath:/resources/</code></li>
-<li><code>classpath:/static/</code></li>
-<li><code>classpath:/public/</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static final String[] CLASSPATH_RESOURCE_LOCATIONS &#x3D; new String[]&#123;&quot;classpath:&#x2F;META-INF&#x2F;resources&#x2F;&quot;, &quot;classpath:&#x2F;resources&#x2F;&quot;, &quot;classpath:&#x2F;static&#x2F;&quot;, &quot;classpath:&#x2F;public&#x2F;&quot;&#125;;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h5 id="3-欢迎页；-静态资源文件夹下的所有index-html页面；被”-”映射；"><a href="#3-欢迎页；-静态资源文件夹下的所有index-html页面；被”-”映射；" class="headerlink" title="3. 欢迎页； 静态资源文件夹下的所有index.html页面；被”/**”映射；"></a>3. 欢迎页； 静态资源文件夹下的所有index.html页面；被”/**”映射；</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public WelcomePageHandlerMapping welcomePageHandlerMapping(ApplicationContext applicationContext, FormattingConversionService mvcConversionService, ResourceUrlProvider mvcResourceUrlProvider) &#123;</span><br><span class="line">    WelcomePageHandlerMapping welcomePageHandlerMapping &#x3D; new WelcomePageHandlerMapping(new TemplateAvailabilityProviders(applicationContext), applicationContext, this.getWelcomePage(), this.mvcProperties.getStaticPathPattern());</span><br><span class="line">    welcomePageHandlerMapping.setInterceptors(this.getInterceptors(mvcConversionService, mvcResourceUrlProvider));</span><br><span class="line">    return welcomePageHandlerMapping;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private Optional&lt;Resource&gt; getWelcomePage() &#123;</span><br><span class="line">            String[] locations &#x3D; WebMvcAutoConfiguration.getResourceLocations(this.resourceProperties.getStaticLocations());</span><br><span class="line">            return Arrays.stream(locations).map(this::getIndexHtml).filter(this::isReadable).findFirst();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private Resource getIndexHtml(String location) &#123;</span><br><span class="line">            return this.resourceLoader.getResource(location + &quot;index.html&quot;);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="4-所有的-favicon-ico-都是在静态资源文件下找；"><a href="#4-所有的-favicon-ico-都是在静态资源文件下找；" class="headerlink" title="4. 所有的 **/favicon.ico  都是在静态资源文件下找；"></a>4. 所有的 **/favicon.ico  都是在静态资源文件下找；</h5><h2 id="4、SpringMVC自动配置"><a href="#4、SpringMVC自动配置" class="headerlink" title="4、SpringMVC自动配置"></a>4、SpringMVC自动配置</h2><p><a href="https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications</a></p>
-<h3 id="1-Spring-MVC-auto-configuration"><a href="#1-Spring-MVC-auto-configuration" class="headerlink" title="1. Spring MVC auto-configuration"></a>1. Spring MVC auto-configuration</h3><p>Spring Boot 自动配置好了SpringMVC</p>
-<p>以下是SpringBoot对SpringMVC的默认配置:<strong>==（WebMvcAutoConfiguration）==</strong></p>
-<ul>
-<li><p>Inclusion of <code>ContentNegotiatingViewResolver</code> and <code>BeanNameViewResolver</code> beans.</p>
-<ul>
-<li>自动配置了ViewResolver（视图解析器：根据方法的返回值得到视图对象（View），视图对象决定如何渲染（转发？重定向？））</li>
-<li>ContentNegotiatingViewResolver：组合所有的视图解析器的；</li>
-<li>==如何定制：我们可以自己给容器中添加一个视图解析器；自动的将其组合进来；==</li>
-</ul>
-</li>
-<li><p>Support for serving static resources, including support for WebJars (see below).静态资源文件夹路径,webjars</p>
-</li>
-<li><p>Static <code>index.html</code> support. 静态首页访问</p>
-</li>
-<li><p>Custom <code>Favicon</code> support (see below).  favicon.ico</p>
-</li>
-</ul>
-<ul>
-<li><p>自动注册了 of <code>Converter</code>, <code>GenericConverter</code>, <code>Formatter</code> beans.</p>
-<ul>
-<li>Converter：转换器；  public String hello(User user)：类型转换使用Converter</li>
-<li><code>Formatter</code>  格式化器；  2017.12.17===Date；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(prefix = <span class="string">"spring.mvc"</span>, name = <span class="string">"date-format"</span>)<span class="comment">//在文件中配置日期格式化的规则</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Formatter&lt;Date&gt; <span class="title">dateFormatter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DateFormatter(<span class="keyword">this</span>.mvcProperties.getDateFormat());<span class="comment">//日期格式化组件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​    ==自己添加的格式化器转换器，我们只需要放在容器中即可==</p>
-<ul>
-<li><p>Support for <code>HttpMessageConverters</code> (see below).</p>
-<ul>
-<li><p>HttpMessageConverter：SpringMVC用来转换Http请求和响应的；User—Json；</p>
-</li>
-<li><p><code>HttpMessageConverters</code> 是从容器中确定；获取所有的HttpMessageConverter；</p>
-<p>==自己给容器中添加HttpMessageConverter，只需要将自己的组件注册容器中（@Bean,@Component）==</p>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Automatic registration of <code>MessageCodesResolver</code> (see below).定义错误代码生成规则</p>
-</li>
-<li><p>Automatic use of a <code>ConfigurableWebBindingInitializer</code> bean (see below).</p>
-<p>==我们可以配置一个ConfigurableWebBindingInitializer来替换默认的；（添加到容器）==</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">初始化WebDataBinder；</span><br><span class="line">请求数据&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;JavaBean；</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><strong>org.springframework.boot.autoconfigure.web：web的所有自动场景；</strong></p>
-<p>If you want to keep Spring Boot MVC features, and you just want to add additional <a href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/spring-framework-reference/htmlsingle#mvc" target="_blank" rel="noopener">MVC configuration</a> (interceptors, formatters, view controllers etc.) you can add your own <code>@Configuration</code> class of type <code>WebMvcConfigurerAdapter</code>, but <strong>without</strong> <code>@EnableWebMvc</code>. If you wish to provide custom instances of <code>RequestMappingHandlerMapping</code>, <code>RequestMappingHandlerAdapter</code> or <code>ExceptionHandlerExceptionResolver</code> you can declare a <code>WebMvcRegistrationsAdapter</code> instance providing such components.</p>
-<p>If you want to take complete control of Spring MVC, you can add your own <code>@Configuration</code> annotated with <code>@EnableWebMvc</code>.</p>
-<h3 id="2、扩展SpringMVC"><a href="#2、扩展SpringMVC" class="headerlink" title="2、扩展SpringMVC"></a>2、扩展SpringMVC</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:view-controller</span> <span class="attr">path</span>=<span class="string">"/hello"</span> <span class="attr">view-name</span>=<span class="string">"success"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">"/hello"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>==编写一个配置类（@Configuration），是WebMvcConfigurerAdapter类型；不能标注@EnableWebMvc==</strong>;</p>
-<p>既保留了所有的自动配置，也能用我们扩展的配置；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// super.addViewControllers(registry);</span></span><br><span class="line">        <span class="comment">//浏览器发送 /atguigu 请求来到 success</span></span><br><span class="line">        registry.addViewController(<span class="string">"/atguigu"</span>).setViewName(<span class="string">"success"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>原理：</p>
-<p>​    1）、WebMvcAutoConfiguration是SpringMVC的自动配置类</p>
-<p>​    2）、在做其他自动配置时会导入；@Import(<strong>EnableWebMvcConfiguration</strong>.class)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   <span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">EnableWebMvcConfiguration</span> <span class="keyword">extends</span> <span class="title">DelegatingWebMvcConfiguration</span> </span>&#123;</span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">final</span> WebMvcConfigurerComposite configurers = <span class="keyword">new</span> WebMvcConfigurerComposite();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//从容器中获取所有的WebMvcConfigurer</span></span><br><span class="line">     <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setConfigurers</span><span class="params">(List&lt;WebMvcConfigurer&gt; configurers)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (!CollectionUtils.isEmpty(configurers)) &#123;</span><br><span class="line">             <span class="keyword">this</span>.configurers.addWebMvcConfigurers(configurers);</span><br><span class="line">           	<span class="comment">//一个参考实现；将所有的WebMvcConfigurer相关配置都来一起调用；  </span></span><br><span class="line">           	<span class="meta">@Override</span></span><br><span class="line">            <span class="comment">// public void addViewControllers(ViewControllerRegistry registry) &#123;</span></span><br><span class="line">             <span class="comment">//    for (WebMvcConfigurer delegate : this.delegates) &#123;</span></span><br><span class="line">              <span class="comment">//       delegate.addViewControllers(registry);</span></span><br><span class="line">              <span class="comment">//   &#125;</span></span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​    3）、容器中所有的WebMvcConfigurer都会一起起作用；</p>
-<p>​    4）、我们的配置类也会被调用；</p>
-<p>​    效果：SpringMVC的自动配置和我们的扩展配置都会起作用；</p>
-<h3 id="3、全面接管SpringMVC；"><a href="#3、全面接管SpringMVC；" class="headerlink" title="3、全面接管SpringMVC；"></a>3、全面接管SpringMVC；</h3><p>SpringBoot对SpringMVC的自动配置不需要了，所有都是我们自己配置；所有的SpringMVC的自动配置都失效了</p>
-<p><strong>我们需要在配置类中添加@EnableWebMvc即可；</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// super.addViewControllers(registry);</span></span><br><span class="line">        <span class="comment">//浏览器发送 /atguigu 请求来到 success</span></span><br><span class="line">        registry.addViewController(<span class="string">"/atguigu"</span>).setViewName(<span class="string">"success"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>原理：</p>
-<p>为什么@EnableWebMvc自动配置就失效了；</p>
-<p>1）@EnableWebMvc的核心</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import</span>(DelegatingWebMvcConfiguration<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">EnableWebMvc</span> </span>&#123;</span><br></pre></td></tr></table></figure>
-
-<p>2）、</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelegatingWebMvcConfiguration</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurationSupport</span> </span>&#123;</span><br></pre></td></tr></table></figure>
-
-<p>3）、</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(&#123; Servlet<span class="class">.<span class="keyword">class</span>, <span class="title">DispatcherServlet</span>.<span class="title">class</span>,</span></span><br><span class="line"><span class="class">		<span class="title">WebMvcConfigurerAdapter</span>.<span class="title">class</span> &#125;)</span></span><br><span class="line"><span class="class">//容器中没有这个组件的时候，这个自动配置类才生效</span></span><br><span class="line"><span class="class">@<span class="title">ConditionalOnMissingBean</span>(<span class="title">WebMvcConfigurationSupport</span>.<span class="title">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">AutoConfigureOrder</span>(<span class="title">Ordered</span>.<span class="title">HIGHEST_PRECEDENCE</span> + 10)</span></span><br><span class="line"><span class="class">@<span class="title">AutoConfigureAfter</span>(</span>&#123; DispatcherServletAutoConfiguration<span class="class">.<span class="keyword">class</span>,</span></span><br><span class="line"><span class="class">		<span class="title">ValidationAutoConfiguration</span>.<span class="title">class</span> &#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">WebMvcAutoConfiguration</span> </span>&#123;</span><br></pre></td></tr></table></figure>
-
-<p>4）、@EnableWebMvc将WebMvcConfigurationSupport组件导入进来；</p>
-<p>5）、导入的WebMvcConfigurationSupport只是SpringMVC最基本的功能；</p>
-<h2 id="如何修改SpringBoot的默认配置"><a href="#如何修改SpringBoot的默认配置" class="headerlink" title="如何修改SpringBoot的默认配置"></a>如何修改SpringBoot的默认配置</h2><p>模式：</p>
-<p>​    1）、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean、@Component）如果有就用用户配置的，如果没有，才自动配置；如果有些组件可以有多个（ViewResolver）将用户配置的和自己默认的组合起来；</p>
-<p>​    2）、在SpringBoot中会有非常多的xxxConfigurer帮助我们进行扩展配置</p>
-<p>​    3）、在SpringBoot中会有很多的xxxCustomizer帮助我们进行定制配置</p>
-<h2 id="错误处理机制"><a href="#错误处理机制" class="headerlink" title="错误处理机制"></a>错误处理机制</h2><h3 id="1）、SpringBoot默认的错误处理机制"><a href="#1）、SpringBoot默认的错误处理机制" class="headerlink" title="1）、SpringBoot默认的错误处理机制"></a>1）、SpringBoot默认的错误处理机制</h3><p>​    可以参照ErrorMvcAutoConfiguration；错误处理的自动配置；</p>
-<pre><code>给容器中添加了以下组件</code></pre><p>​    1、DefaultErrorAttributes：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">帮我们在页面共享信息；</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getErrorAttributes</span><span class="params">(RequestAttributes requestAttributes,</span></span></span><br><span class="line"><span class="function"><span class="params">			<span class="keyword">boolean</span> includeStackTrace)</span> </span>&#123;</span><br><span class="line">		Map&lt;String, Object&gt; errorAttributes = <span class="keyword">new</span> LinkedHashMap&lt;String, Object&gt;();</span><br><span class="line">		errorAttributes.put(<span class="string">"timestamp"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">		addStatus(errorAttributes, requestAttributes);</span><br><span class="line">		addErrorDetails(errorAttributes, requestAttributes, includeStackTrace);</span><br><span class="line">		addPath(errorAttributes, requestAttributes);</span><br><span class="line">		<span class="keyword">return</span> errorAttributes;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>​    2、BasicErrorController：处理默认/error请求</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"$&#123;server.error.path:$&#123;error.path:/error&#125;&#125;"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicErrorController</span> <span class="keyword">extends</span> <span class="title">AbstractErrorController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping</span>(produces = <span class="string">"text/html"</span>)<span class="comment">//产生html类型的数据；浏览器发送的请求来到这个方法处理</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ModelAndView <span class="title">errorHtml</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">			HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">		HttpStatus status = getStatus(request);</span><br><span class="line">		Map&lt;String, Object&gt; model = Collections.unmodifiableMap(getErrorAttributes(</span><br><span class="line">				request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));</span><br><span class="line">		response.setStatus(status.value());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//去哪个页面作为错误页面；包含页面地址和页面内容</span></span><br><span class="line">		ModelAndView modelAndView = resolveErrorView(request, response, status, model);</span><br><span class="line">		<span class="keyword">return</span> (modelAndView == <span class="keyword">null</span> ? <span class="keyword">new</span> ModelAndView(<span class="string">"error"</span>, model) : modelAndView);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@RequestMapping</span></span><br><span class="line">	<span class="meta">@ResponseBody</span>    <span class="comment">//产生json数据，其他客户端来到这个方法处理；</span></span><br><span class="line">	<span class="keyword">public</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt; error(HttpServletRequest request) &#123;</span><br><span class="line">		Map&lt;String, Object&gt; body = getErrorAttributes(request,</span><br><span class="line">				isIncludeStackTrace(request, MediaType.ALL));</span><br><span class="line">		HttpStatus status = getStatus(request);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt;(body, status);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>​    3、ErrorPageCustomizer：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;error.path:/error&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String path = <span class="string">"/error"</span>;  系统出现错误以后来到error请求进行处理；（web.xml注册的错误页面规则）</span><br></pre></td></tr></table></figure>
-
-
-
-<p>​    4、DefaultErrorViewResolver：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveErrorView</span><span class="params">(HttpServletRequest request, HttpStatus status,</span></span></span><br><span class="line"><span class="function"><span class="params">			Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">		ModelAndView modelAndView = resolve(String.valueOf(status), model);</span><br><span class="line">		<span class="keyword">if</span> (modelAndView == <span class="keyword">null</span> &amp;&amp; SERIES_VIEWS.containsKey(status.series())) &#123;</span><br><span class="line">			modelAndView = resolve(SERIES_VIEWS.get(status.series()), model);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> modelAndView;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> ModelAndView <span class="title">resolve</span><span class="params">(String viewName, Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//默认SpringBoot可以去找到一个页面？  error/404</span></span><br><span class="line">		String errorViewName = <span class="string">"error/"</span> + viewName;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//模板引擎可以解析这个页面地址就用模板引擎解析</span></span><br><span class="line">		TemplateAvailabilityProvider provider = <span class="keyword">this</span>.templateAvailabilityProviders</span><br><span class="line">				.getProvider(errorViewName, <span class="keyword">this</span>.applicationContext);</span><br><span class="line">		<span class="keyword">if</span> (provider != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//模板引擎可用的情况下返回到errorViewName指定的视图地址</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(errorViewName, model);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">//模板引擎不可用，就在静态资源文件夹下找errorViewName对应的页面   error/404.html</span></span><br><span class="line">		<span class="keyword">return</span> resolveResource(errorViewName, model);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>​    步骤：</p>
-<p>​        一但系统出现4xx或者5xx之类的错误；ErrorPageCustomizer就会生效（定制错误的响应规则）；就会来到/error请求；就会被<strong>BasicErrorController</strong>处理；</p>
-<p>​        1）响应页面；去哪个页面是由<strong>DefaultErrorViewResolver</strong>解析得到的；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">resolveErrorView</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">      HttpServletResponse response, HttpStatus status, Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//所有的ErrorViewResolver得到ModelAndView</span></span><br><span class="line">   <span class="keyword">for</span> (ErrorViewResolver resolver : <span class="keyword">this</span>.errorViewResolvers) &#123;</span><br><span class="line">      ModelAndView modelAndView = resolver.resolveErrorView(request, status, model);</span><br><span class="line">      <span class="keyword">if</span> (modelAndView != <span class="keyword">null</span>) &#123;</span><br><span class="line">         <span class="keyword">return</span> modelAndView;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2）、如果定制错误响应："><a href="#2）、如果定制错误响应：" class="headerlink" title="2）、如果定制错误响应："></a>2）、如果定制错误响应：</h3><h4 id="1）、如何定制错误的页面；"><a href="#1）、如何定制错误的页面；" class="headerlink" title="1）、如何定制错误的页面；"></a><strong>1）、如何定制错误的页面；</strong></h4><p>​            <strong>1）、有模板引擎的情况下；error/状态码;</strong> 【将错误页面命名为  错误状态码.html 放在模板引擎文件夹里面的 error文件夹下】，发生此状态码的错误就会来到  对应的页面；</p>
-<p>​            我们可以使用4xx和5xx作为错误页面的文件名来匹配这种类型的所有错误，精确优先（优先寻找精确的状态码.html）；        </p>
-<p>​            页面能获取的信息；</p>
-<p>​                timestamp：时间戳</p>
-<p>​                status：状态码</p>
-<p>​                error：错误提示</p>
-<p>​                exception：异常对象</p>
-<p>​                message：异常消息</p>
-<p>​                errors：JSR303数据校验的错误都在这里</p>
-<p>​            2）、没有模板引擎（模板引擎找不到这个错误页面），静态资源文件夹下找；</p>
-<p>​            3）、以上都没有错误页面，就是默认来到SpringBoot默认的错误提示页面；</p>
-<h4 id="2）、如何定制错误的json数据；"><a href="#2）、如何定制错误的json数据；" class="headerlink" title="2）、如何定制错误的json数据；"></a>2）、如何定制错误的json数据；</h4><p>​        1）、自定义异常处理&amp;返回定制json数据；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(UserNotExistException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">Map</span>&lt;<span class="title">String</span>,<span class="title">Object</span>&gt; <span class="title">handleException</span>(<span class="title">Exception</span> <span class="title">e</span>)</span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"code"</span>,<span class="string">"user.notexist"</span>);</span><br><span class="line">        map.put(<span class="string">"message"</span>,e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//没有自适应效果...</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>​        2）、转发到/error进行自适应响应效果处理</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ExceptionHandler</span>(UserNotExistException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">   <span class="title">public</span> <span class="title">String</span> <span class="title">handleException</span>(<span class="title">Exception</span> <span class="title">e</span>, <span class="title">HttpServletRequest</span> <span class="title">request</span>)</span>&#123;</span><br><span class="line">       Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="comment">//传入我们自己的错误状态码  4xx 5xx，否则就不会进入定制错误页面的解析流程</span></span><br><span class="line">       <span class="comment">/**</span></span><br><span class="line"><span class="comment">        * Integer statusCode = (Integer) request</span></span><br><span class="line"><span class="comment">        .getAttribute("javax.servlet.error.status_code");</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       request.setAttribute(<span class="string">"javax.servlet.error.status_code"</span>,<span class="number">500</span>);</span><br><span class="line">       map.put(<span class="string">"code"</span>,<span class="string">"user.notexist"</span>);</span><br><span class="line">       map.put(<span class="string">"message"</span>,e.getMessage());</span><br><span class="line">       <span class="comment">//转发到/error</span></span><br><span class="line">       <span class="keyword">return</span> <span class="string">"forward:/error"</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3）、将我们的定制数据携带出去；"><a href="#3）、将我们的定制数据携带出去；" class="headerlink" title="3）、将我们的定制数据携带出去；"></a>3）、将我们的定制数据携带出去；</h4><p>出现错误以后，会来到/error请求，会被BasicErrorController处理，响应出去可以获取的数据是由getErrorAttributes得到的（是AbstractErrorController（ErrorController）规定的方法）；</p>
-<p>​    1、完全来编写一个ErrorController的实现类【或者是编写AbstractErrorController的子类】，放在容器中；</p>
-<p>​    2、页面上能用的数据，或者是json返回能用的数据都是通过errorAttributes.getErrorAttributes得到；</p>
-<p>​            容器中DefaultErrorAttributes.getErrorAttributes()；默认进行数据处理的；</p>
-<p>自定义ErrorAttributes</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//给容器中加入我们自己定义的ErrorAttributes</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyErrorAttributes</span> <span class="keyword">extends</span> <span class="title">DefaultErrorAttributes</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getErrorAttributes</span><span class="params">(RequestAttributes requestAttributes, <span class="keyword">boolean</span> includeStackTrace)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">super</span>.getErrorAttributes(requestAttributes, includeStackTrace);</span><br><span class="line">        map.put(<span class="string">"company"</span>,<span class="string">"atguigu"</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最终的效果：响应是自适应的，可以通过定制ErrorAttributes改变需要返回的内容，</p>
-]]></content>
-      <categories>
-        <category>Spring Boot</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -720,6 +539,187 @@
 
 
 <p>==启动Servlet容器，再启动SpringBoot应用==</p>
+]]></content>
+      <categories>
+        <category>Spring Boot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot Web</title>
+    <url>/2019/02/19/Spring%20Boot%20Web/</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>使用SpringBoot</p>
+<ol>
+<li>创建SpringBoot应用，选中我们需要的模块</li>
+<li>SpringBoot已经默认将这些场景配置好了，只需要咋i配置文件中指定少量排至就可以运行起来</li>
+<li>自己编写业务代码</li>
+</ol>
+<h4 id="自动配置原理"><a href="#自动配置原理" class="headerlink" title="自动配置原理"></a>自动配置原理</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xxxxAutoCOnfiguration:帮我们给容器中自动配置组件；</span><br><span class="line">xxxxProperties:配置类来封装配置文件的内容</span><br></pre></td></tr></table></figure>
+
+<h2 id="SpringBoot对静态资源的映射规则"><a href="#SpringBoot对静态资源的映射规则" class="headerlink" title="SpringBoot对静态资源的映射规则"></a>SpringBoot对静态资源的映射规则</h2><h5 id="1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；"><a href="#1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；" class="headerlink" title="1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；"></a>1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；</h5><ul>
+<li>webjars：以jar包的方式引入静态资源； <a href="https://www.webjars.org/" target="_blank" rel="noopener">https://www.webjars.org/</a></li>
+<li>访问的时候直接写<code>/包名/版本号/文件</code>即可<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.webjars&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jquery&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.2.4&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+访问路径<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:8080&#x2F;webjars&#x2F;jquery&#x2F;2.2.4&#x2F;jquery.js</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h5 id="2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射"><a href="#2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射" class="headerlink" title="2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射"></a>2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射</h5><ul>
+<li><code>classpath:/META-INF/resources/</code></li>
+<li><code>classpath:/resources/</code></li>
+<li><code>classpath:/static/</code></li>
+<li><code>classpath:/public/</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static final String[] CLASSPATH_RESOURCE_LOCATIONS &#x3D; new String[]&#123;&quot;classpath:&#x2F;META-INF&#x2F;resources&#x2F;&quot;, &quot;classpath:&#x2F;resources&#x2F;&quot;, &quot;classpath:&#x2F;static&#x2F;&quot;, &quot;classpath:&#x2F;public&#x2F;&quot;&#125;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h5 id="3-欢迎页；-静态资源文件夹下的所有index-html页面；被”-”映射；"><a href="#3-欢迎页；-静态资源文件夹下的所有index-html页面；被”-”映射；" class="headerlink" title="3. 欢迎页； 静态资源文件夹下的所有index.html页面；被”/**”映射；"></a>3. 欢迎页； 静态资源文件夹下的所有index.html页面；被”/**”映射；</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public WelcomePageHandlerMapping welcomePageHandlerMapping(ApplicationContext applicationContext, FormattingConversionService mvcConversionService, ResourceUrlProvider mvcResourceUrlProvider) &#123;</span><br><span class="line">    WelcomePageHandlerMapping welcomePageHandlerMapping &#x3D; new WelcomePageHandlerMapping(new TemplateAvailabilityProviders(applicationContext), applicationContext, this.getWelcomePage(), this.mvcProperties.getStaticPathPattern());</span><br><span class="line">    welcomePageHandlerMapping.setInterceptors(this.getInterceptors(mvcConversionService, mvcResourceUrlProvider));</span><br><span class="line">    return welcomePageHandlerMapping;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private Optional&lt;Resource&gt; getWelcomePage() &#123;</span><br><span class="line">            String[] locations &#x3D; WebMvcAutoConfiguration.getResourceLocations(this.resourceProperties.getStaticLocations());</span><br><span class="line">            return Arrays.stream(locations).map(this::getIndexHtml).filter(this::isReadable).findFirst();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private Resource getIndexHtml(String location) &#123;</span><br><span class="line">            return this.resourceLoader.getResource(location + &quot;index.html&quot;);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-所有的-favicon-ico-都是在静态资源文件下找；"><a href="#4-所有的-favicon-ico-都是在静态资源文件下找；" class="headerlink" title="4. 所有的 **/favicon.ico  都是在静态资源文件下找；"></a>4. 所有的 **/favicon.ico  都是在静态资源文件下找；</h5><h2 id="4、SpringMVC自动配置"><a href="#4、SpringMVC自动配置" class="headerlink" title="4、SpringMVC自动配置"></a>4、SpringMVC自动配置</h2><p><a href="https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications</a></p>
+<h3 id="1-Spring-MVC-auto-configuration"><a href="#1-Spring-MVC-auto-configuration" class="headerlink" title="1. Spring MVC auto-configuration"></a>1. Spring MVC auto-configuration</h3><p>Spring Boot 自动配置好了SpringMVC</p>
+<p>以下是SpringBoot对SpringMVC的默认配置:<strong>==（WebMvcAutoConfiguration）==</strong></p>
+<ul>
+<li><p>Inclusion of <code>ContentNegotiatingViewResolver</code> and <code>BeanNameViewResolver</code> beans.</p>
+<ul>
+<li>自动配置了ViewResolver（视图解析器：根据方法的返回值得到视图对象（View），视图对象决定如何渲染（转发？重定向？））</li>
+<li>ContentNegotiatingViewResolver：组合所有的视图解析器的；</li>
+<li>==如何定制：我们可以自己给容器中添加一个视图解析器；自动的将其组合进来；==</li>
+</ul>
+</li>
+<li><p>Support for serving static resources, including support for WebJars (see below).静态资源文件夹路径,webjars</p>
+</li>
+<li><p>Static <code>index.html</code> support. 静态首页访问</p>
+</li>
+<li><p>Custom <code>Favicon</code> support (see below).  favicon.ico</p>
+</li>
+</ul>
+<ul>
+<li><p>自动注册了 of <code>Converter</code>, <code>GenericConverter</code>, <code>Formatter</code> beans.</p>
+<ul>
+<li>Converter：转换器；  public String hello(User user)：类型转换使用Converter</li>
+<li><code>Formatter</code>  格式化器；  2017.12.17===Date；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(prefix = <span class="string">"spring.mvc"</span>, name = <span class="string">"date-format"</span>)<span class="comment">//在文件中配置日期格式化的规则</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Formatter&lt;Date&gt; <span class="title">dateFormatter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DateFormatter(<span class="keyword">this</span>.mvcProperties.getDateFormat());<span class="comment">//日期格式化组件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    ==自己添加的格式化器转换器，我们只需要放在容器中即可==</p>
+<ul>
+<li><p>Support for <code>HttpMessageConverters</code> (see below).</p>
+<ul>
+<li><p>HttpMessageConverter：SpringMVC用来转换Http请求和响应的；User—Json；</p>
+</li>
+<li><p><code>HttpMessageConverters</code> 是从容器中确定；获取所有的HttpMessageConverter；</p>
+<p>==自己给容器中添加HttpMessageConverter，只需要将自己的组件注册容器中（@Bean,@Component）==</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Automatic registration of <code>MessageCodesResolver</code> (see below).定义错误代码生成规则</p>
+</li>
+<li><p>Automatic use of a <code>ConfigurableWebBindingInitializer</code> bean (see below).</p>
+<p>==我们可以配置一个ConfigurableWebBindingInitializer来替换默认的；（添加到容器）==</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">初始化WebDataBinder；</span><br><span class="line">请求数据&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;JavaBean；</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><strong>org.springframework.boot.autoconfigure.web：web的所有自动场景；</strong></p>
+<p>If you want to keep Spring Boot MVC features, and you just want to add additional <a href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/spring-framework-reference/htmlsingle#mvc" target="_blank" rel="noopener">MVC configuration</a> (interceptors, formatters, view controllers etc.) you can add your own <code>@Configuration</code> class of type <code>WebMvcConfigurerAdapter</code>, but <strong>without</strong> <code>@EnableWebMvc</code>. If you wish to provide custom instances of <code>RequestMappingHandlerMapping</code>, <code>RequestMappingHandlerAdapter</code> or <code>ExceptionHandlerExceptionResolver</code> you can declare a <code>WebMvcRegistrationsAdapter</code> instance providing such components.</p>
+<p>If you want to take complete control of Spring MVC, you can add your own <code>@Configuration</code> annotated with <code>@EnableWebMvc</code>.</p>
+<h3 id="2、扩展SpringMVC"><a href="#2、扩展SpringMVC" class="headerlink" title="2、扩展SpringMVC"></a>2、扩展SpringMVC</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:view-controller</span> <span class="attr">path</span>=<span class="string">"/hello"</span> <span class="attr">view-name</span>=<span class="string">"success"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">"/hello"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>==编写一个配置类（@Configuration），是WebMvcConfigurerAdapter类型；不能标注@EnableWebMvc==</strong>;</p>
+<p>既保留了所有的自动配置，也能用我们扩展的配置；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// super.addViewControllers(registry);</span></span><br><span class="line">        <span class="comment">//浏览器发送 /atguigu 请求来到 success</span></span><br><span class="line">        registry.addViewController(<span class="string">"/atguigu"</span>).setViewName(<span class="string">"success"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理：</p>
+<p>​    1）、WebMvcAutoConfiguration是SpringMVC的自动配置类</p>
+<p>​    2）、在做其他自动配置时会导入；@Import(<strong>EnableWebMvcConfiguration</strong>.class)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   <span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">EnableWebMvcConfiguration</span> <span class="keyword">extends</span> <span class="title">DelegatingWebMvcConfiguration</span> </span>&#123;</span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">final</span> WebMvcConfigurerComposite configurers = <span class="keyword">new</span> WebMvcConfigurerComposite();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//从容器中获取所有的WebMvcConfigurer</span></span><br><span class="line">     <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setConfigurers</span><span class="params">(List&lt;WebMvcConfigurer&gt; configurers)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (!CollectionUtils.isEmpty(configurers)) &#123;</span><br><span class="line">             <span class="keyword">this</span>.configurers.addWebMvcConfigurers(configurers);</span><br><span class="line">           	<span class="comment">//一个参考实现；将所有的WebMvcConfigurer相关配置都来一起调用；  </span></span><br><span class="line">           	<span class="meta">@Override</span></span><br><span class="line">            <span class="comment">// public void addViewControllers(ViewControllerRegistry registry) &#123;</span></span><br><span class="line">             <span class="comment">//    for (WebMvcConfigurer delegate : this.delegates) &#123;</span></span><br><span class="line">              <span class="comment">//       delegate.addViewControllers(registry);</span></span><br><span class="line">              <span class="comment">//   &#125;</span></span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    3）、容器中所有的WebMvcConfigurer都会一起起作用；</p>
+<p>​    4）、我们的配置类也会被调用；</p>
+<p>​    效果：SpringMVC的自动配置和我们的扩展配置都会起作用；</p>
+<h3 id="3、全面接管SpringMVC；"><a href="#3、全面接管SpringMVC；" class="headerlink" title="3、全面接管SpringMVC；"></a>3、全面接管SpringMVC；</h3><p>SpringBoot对SpringMVC的自动配置不需要了，所有都是我们自己配置；所有的SpringMVC的自动配置都失效了</p>
+<p><strong>我们需要在配置类中添加@EnableWebMvc即可；</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// super.addViewControllers(registry);</span></span><br><span class="line">        <span class="comment">//浏览器发送 /atguigu 请求来到 success</span></span><br><span class="line">        registry.addViewController(<span class="string">"/atguigu"</span>).setViewName(<span class="string">"success"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理：</p>
+<p>为什么@EnableWebMvc自动配置就失效了；</p>
+<p>1）@EnableWebMvc的核心</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import</span>(DelegatingWebMvcConfiguration<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">EnableWebMvc</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>2）、</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelegatingWebMvcConfiguration</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurationSupport</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>3）、</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(&#123; Servlet<span class="class">.<span class="keyword">class</span>, <span class="title">DispatcherServlet</span>.<span class="title">class</span>,</span></span><br><span class="line"><span class="class">		<span class="title">WebMvcConfigurerAdapter</span>.<span class="title">class</span> &#125;)</span></span><br><span class="line"><span class="class">//容器中没有这个组件的时候，这个自动配置类才生效</span></span><br><span class="line"><span class="class">@<span class="title">ConditionalOnMissingBean</span>(<span class="title">WebMvcConfigurationSupport</span>.<span class="title">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">AutoConfigureOrder</span>(<span class="title">Ordered</span>.<span class="title">HIGHEST_PRECEDENCE</span> + 10)</span></span><br><span class="line"><span class="class">@<span class="title">AutoConfigureAfter</span>(</span>&#123; DispatcherServletAutoConfiguration<span class="class">.<span class="keyword">class</span>,</span></span><br><span class="line"><span class="class">		<span class="title">ValidationAutoConfiguration</span>.<span class="title">class</span> &#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">WebMvcAutoConfiguration</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>4）、@EnableWebMvc将WebMvcConfigurationSupport组件导入进来；</p>
+<p>5）、导入的WebMvcConfigurationSupport只是SpringMVC最基本的功能；</p>
+<h2 id="如何修改SpringBoot的默认配置"><a href="#如何修改SpringBoot的默认配置" class="headerlink" title="如何修改SpringBoot的默认配置"></a>如何修改SpringBoot的默认配置</h2><p>模式：</p>
+<p>​    1）、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean、@Component）如果有就用用户配置的，如果没有，才自动配置；如果有些组件可以有多个（ViewResolver）将用户配置的和自己默认的组合起来；</p>
+<p>​    2）、在SpringBoot中会有非常多的xxxConfigurer帮助我们进行扩展配置</p>
+<p>​    3）、在SpringBoot中会有很多的xxxCustomizer帮助我们进行定制配置</p>
+<h2 id="错误处理机制"><a href="#错误处理机制" class="headerlink" title="错误处理机制"></a>错误处理机制</h2><h3 id="1）、SpringBoot默认的错误处理机制"><a href="#1）、SpringBoot默认的错误处理机制" class="headerlink" title="1）、SpringBoot默认的错误处理机制"></a>1）、SpringBoot默认的错误处理机制</h3><p>​    可以参照ErrorMvcAutoConfiguration；错误处理的自动配置；</p>
+<pre><code>给容器中添加了以下组件</code></pre><p>​    1、DefaultErrorAttributes：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">帮我们在页面共享信息；</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getErrorAttributes</span><span class="params">(RequestAttributes requestAttributes,</span></span></span><br><span class="line"><span class="function"><span class="params">			<span class="keyword">boolean</span> includeStackTrace)</span> </span>&#123;</span><br><span class="line">		Map&lt;String, Object&gt; errorAttributes = <span class="keyword">new</span> LinkedHashMap&lt;String, Object&gt;();</span><br><span class="line">		errorAttributes.put(<span class="string">"timestamp"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">		addStatus(errorAttributes, requestAttributes);</span><br><span class="line">		addErrorDetails(errorAttributes, requestAttributes, includeStackTrace);</span><br><span class="line">		addPath(errorAttributes, requestAttributes);</span><br><span class="line">		<span class="keyword">return</span> errorAttributes;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    2、BasicErrorController：处理默认/error请求</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"$&#123;server.error.path:$&#123;error.path:/error&#125;&#125;"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicErrorController</span> <span class="keyword">extends</span> <span class="title">AbstractErrorController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping</span>(produces = <span class="string">"text/html"</span>)<span class="comment">//产生html类型的数据；浏览器发送的请求来到这个方法处理</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ModelAndView <span class="title">errorHtml</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">			HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">		HttpStatus status = getStatus(request);</span><br><span class="line">		Map&lt;String, Object&gt; model = Collections.unmodifiableMap(getErrorAttributes(</span><br><span class="line">				request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));</span><br><span class="line">		response.setStatus(status.value());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//去哪个页面作为错误页面；包含页面地址和页面内容</span></span><br><span class="line">		ModelAndView modelAndView = resolveErrorView(request, response, status, model);</span><br><span class="line">		<span class="keyword">return</span> (modelAndView == <span class="keyword">null</span> ? <span class="keyword">new</span> ModelAndView(<span class="string">"error"</span>, model) : modelAndView);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@RequestMapping</span></span><br><span class="line">	<span class="meta">@ResponseBody</span>    <span class="comment">//产生json数据，其他客户端来到这个方法处理；</span></span><br><span class="line">	<span class="keyword">public</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt; error(HttpServletRequest request) &#123;</span><br><span class="line">		Map&lt;String, Object&gt; body = getErrorAttributes(request,</span><br><span class="line">				isIncludeStackTrace(request, MediaType.ALL));</span><br><span class="line">		HttpStatus status = getStatus(request);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt;(body, status);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    3、ErrorPageCustomizer：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;error.path:/error&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String path = <span class="string">"/error"</span>;  系统出现错误以后来到error请求进行处理；（web.xml注册的错误页面规则）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    4、DefaultErrorViewResolver：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveErrorView</span><span class="params">(HttpServletRequest request, HttpStatus status,</span></span></span><br><span class="line"><span class="function"><span class="params">			Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">		ModelAndView modelAndView = resolve(String.valueOf(status), model);</span><br><span class="line">		<span class="keyword">if</span> (modelAndView == <span class="keyword">null</span> &amp;&amp; SERIES_VIEWS.containsKey(status.series())) &#123;</span><br><span class="line">			modelAndView = resolve(SERIES_VIEWS.get(status.series()), model);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> modelAndView;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> ModelAndView <span class="title">resolve</span><span class="params">(String viewName, Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//默认SpringBoot可以去找到一个页面？  error/404</span></span><br><span class="line">		String errorViewName = <span class="string">"error/"</span> + viewName;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//模板引擎可以解析这个页面地址就用模板引擎解析</span></span><br><span class="line">		TemplateAvailabilityProvider provider = <span class="keyword">this</span>.templateAvailabilityProviders</span><br><span class="line">				.getProvider(errorViewName, <span class="keyword">this</span>.applicationContext);</span><br><span class="line">		<span class="keyword">if</span> (provider != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//模板引擎可用的情况下返回到errorViewName指定的视图地址</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(errorViewName, model);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">//模板引擎不可用，就在静态资源文件夹下找errorViewName对应的页面   error/404.html</span></span><br><span class="line">		<span class="keyword">return</span> resolveResource(errorViewName, model);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    步骤：</p>
+<p>​        一但系统出现4xx或者5xx之类的错误；ErrorPageCustomizer就会生效（定制错误的响应规则）；就会来到/error请求；就会被<strong>BasicErrorController</strong>处理；</p>
+<p>​        1）响应页面；去哪个页面是由<strong>DefaultErrorViewResolver</strong>解析得到的；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">resolveErrorView</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">      HttpServletResponse response, HttpStatus status, Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//所有的ErrorViewResolver得到ModelAndView</span></span><br><span class="line">   <span class="keyword">for</span> (ErrorViewResolver resolver : <span class="keyword">this</span>.errorViewResolvers) &#123;</span><br><span class="line">      ModelAndView modelAndView = resolver.resolveErrorView(request, status, model);</span><br><span class="line">      <span class="keyword">if</span> (modelAndView != <span class="keyword">null</span>) &#123;</span><br><span class="line">         <span class="keyword">return</span> modelAndView;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2）、如果定制错误响应："><a href="#2）、如果定制错误响应：" class="headerlink" title="2）、如果定制错误响应："></a>2）、如果定制错误响应：</h3><h4 id="1）、如何定制错误的页面；"><a href="#1）、如何定制错误的页面；" class="headerlink" title="1）、如何定制错误的页面；"></a><strong>1）、如何定制错误的页面；</strong></h4><p>​            <strong>1）、有模板引擎的情况下；error/状态码;</strong> 【将错误页面命名为  错误状态码.html 放在模板引擎文件夹里面的 error文件夹下】，发生此状态码的错误就会来到  对应的页面；</p>
+<p>​            我们可以使用4xx和5xx作为错误页面的文件名来匹配这种类型的所有错误，精确优先（优先寻找精确的状态码.html）；        </p>
+<p>​            页面能获取的信息；</p>
+<p>​                timestamp：时间戳</p>
+<p>​                status：状态码</p>
+<p>​                error：错误提示</p>
+<p>​                exception：异常对象</p>
+<p>​                message：异常消息</p>
+<p>​                errors：JSR303数据校验的错误都在这里</p>
+<p>​            2）、没有模板引擎（模板引擎找不到这个错误页面），静态资源文件夹下找；</p>
+<p>​            3）、以上都没有错误页面，就是默认来到SpringBoot默认的错误提示页面；</p>
+<h4 id="2）、如何定制错误的json数据；"><a href="#2）、如何定制错误的json数据；" class="headerlink" title="2）、如何定制错误的json数据；"></a>2）、如何定制错误的json数据；</h4><p>​        1）、自定义异常处理&amp;返回定制json数据；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(UserNotExistException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">Map</span>&lt;<span class="title">String</span>,<span class="title">Object</span>&gt; <span class="title">handleException</span>(<span class="title">Exception</span> <span class="title">e</span>)</span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"code"</span>,<span class="string">"user.notexist"</span>);</span><br><span class="line">        map.put(<span class="string">"message"</span>,e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//没有自适应效果...</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>​        2）、转发到/error进行自适应响应效果处理</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ExceptionHandler</span>(UserNotExistException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">   <span class="title">public</span> <span class="title">String</span> <span class="title">handleException</span>(<span class="title">Exception</span> <span class="title">e</span>, <span class="title">HttpServletRequest</span> <span class="title">request</span>)</span>&#123;</span><br><span class="line">       Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="comment">//传入我们自己的错误状态码  4xx 5xx，否则就不会进入定制错误页面的解析流程</span></span><br><span class="line">       <span class="comment">/**</span></span><br><span class="line"><span class="comment">        * Integer statusCode = (Integer) request</span></span><br><span class="line"><span class="comment">        .getAttribute("javax.servlet.error.status_code");</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       request.setAttribute(<span class="string">"javax.servlet.error.status_code"</span>,<span class="number">500</span>);</span><br><span class="line">       map.put(<span class="string">"code"</span>,<span class="string">"user.notexist"</span>);</span><br><span class="line">       map.put(<span class="string">"message"</span>,e.getMessage());</span><br><span class="line">       <span class="comment">//转发到/error</span></span><br><span class="line">       <span class="keyword">return</span> <span class="string">"forward:/error"</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3）、将我们的定制数据携带出去；"><a href="#3）、将我们的定制数据携带出去；" class="headerlink" title="3）、将我们的定制数据携带出去；"></a>3）、将我们的定制数据携带出去；</h4><p>出现错误以后，会来到/error请求，会被BasicErrorController处理，响应出去可以获取的数据是由getErrorAttributes得到的（是AbstractErrorController（ErrorController）规定的方法）；</p>
+<p>​    1、完全来编写一个ErrorController的实现类【或者是编写AbstractErrorController的子类】，放在容器中；</p>
+<p>​    2、页面上能用的数据，或者是json返回能用的数据都是通过errorAttributes.getErrorAttributes得到；</p>
+<p>​            容器中DefaultErrorAttributes.getErrorAttributes()；默认进行数据处理的；</p>
+<p>自定义ErrorAttributes</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//给容器中加入我们自己定义的ErrorAttributes</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyErrorAttributes</span> <span class="keyword">extends</span> <span class="title">DefaultErrorAttributes</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getErrorAttributes</span><span class="params">(RequestAttributes requestAttributes, <span class="keyword">boolean</span> includeStackTrace)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">super</span>.getErrorAttributes(requestAttributes, includeStackTrace);</span><br><span class="line">        map.put(<span class="string">"company"</span>,<span class="string">"atguigu"</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终的效果：响应是自适应的，可以通过定制ErrorAttributes改变需要返回的内容，</p>
 ]]></content>
       <categories>
         <category>Spring Boot</category>
@@ -1154,6 +1154,25 @@
       </tags>
   </entry>
   <entry>
+    <title>Spring 整合Junit</title>
+    <url>/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/</url>
+    <content><![CDATA[<ol>
+<li>导入spring整合junit的jar(坐标)(spring-test)</li>
+<li>使用Junit提供的<code>@Runwith</code>注解把原有的main方法替换了，替换成spring提供的<code>SpringJunit4ClassRunner</code></li>
+<li>使用<code>@ContextConfiguration</code>注解告知spring的运行器，spring和ioc创建时基于xml还是注解的，并且说明位置  <blockquote>
+<p><strong>locations</strong>：指定xml文件的位置，加上classpath关键字，表示在类路径下<br><strong>classes</strong>:指定注解类的class</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(classes &#x3D; SpringConfig.class)</span><br><span class="line">public class mainApp &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    @Qualifier(&quot;userServiceImpl&quot;)</span><br><span class="line">    UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void Test()&#123;</span><br><span class="line">        List&lt;User&gt; userList &#x3D; userService.findAllUser();</span><br><span class="line">        for(User user:userList)&#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring 事务管理</title>
     <url>/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<h3 id="Spring-事务控制我们要明确的"><a href="#Spring-事务控制我们要明确的" class="headerlink" title="Spring 事务控制我们要明确的"></a>Spring 事务控制我们要明确的</h3><pre><code>第一： JavaEE 体系进行分层开发，事务处理位于业务层，Spring提供了分层设计业务层的事务处理解决方案
@@ -1288,25 +1307,6 @@
 <ul>
 <li><code>value</code> 属性：指定文件的名称和路径。关键字：<code>classpath</code>表示类路径下<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@PropertySource(&quot;classpath:jdbc.properties&quot;)</span><br><span class="line">public class jdbcConfig &#123;</span><br><span class="line">    @Value(&quot;$&#123;jdbc.driver&#125;&quot;)</span><br><span class="line">    private String driver;</span><br><span class="line">    @Value(&quot;$&#123;jdbc.url&#125;&quot;)</span><br><span class="line">    private String url;</span><br><span class="line">    @Value(&quot;$&#123;jdbc.user&#125;&quot;)</span><br><span class="line">    private String user;</span><br><span class="line">    @Value(&quot;$&#123;jdbc.password&#125;&quot;)</span><br><span class="line">    private String password;</span><br><span class="line"></span><br><span class="line">    @Bean(&quot;runner&quot;)</span><br><span class="line">    public QueryRunner createQueryRunner(DataSource dataSource)&#123;</span><br><span class="line">        return new QueryRunner(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean(&quot;dataSource&quot;)</span><br><span class="line">    public  DataSource createDataSources()&#123;</span><br><span class="line">        ComboPooledDataSource ds &#x3D; new ComboPooledDataSource();</span><br><span class="line">        try&#123;</span><br><span class="line">            ds.setDriverClass(this.driver);</span><br><span class="line">            ds.setJdbcUrl(this.url);</span><br><span class="line">            ds.setUser(this.user);</span><br><span class="line">            ds.setPassword(this.password);</span><br><span class="line">            return ds;</span><br><span class="line">        &#125;catch (Exception e)&#123;</span><br><span class="line">            throw new RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-]]></content>
-      <categories>
-        <category>Spring</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring 整合Junit</title>
-    <url>/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/</url>
-    <content><![CDATA[<ol>
-<li>导入spring整合junit的jar(坐标)(spring-test)</li>
-<li>使用Junit提供的<code>@Runwith</code>注解把原有的main方法替换了，替换成spring提供的<code>SpringJunit4ClassRunner</code></li>
-<li>使用<code>@ContextConfiguration</code>注解告知spring的运行器，spring和ioc创建时基于xml还是注解的，并且说明位置  <blockquote>
-<p><strong>locations</strong>：指定xml文件的位置，加上classpath关键字，表示在类路径下<br><strong>classes</strong>:指定注解类的class</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(classes &#x3D; SpringConfig.class)</span><br><span class="line">public class mainApp &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    @Qualifier(&quot;userServiceImpl&quot;)</span><br><span class="line">    UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void Test()&#123;</span><br><span class="line">        List&lt;User&gt; userList &#x3D; userService.findAllUser();</span><br><span class="line">        for(User user:userList)&#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
 ]]></content>
       <categories>
         <category>Spring</category>
