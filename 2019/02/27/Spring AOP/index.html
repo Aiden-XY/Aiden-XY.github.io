@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Spring AOP |  xy
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="xy" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-Spring AOP" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Spring AOP
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/27/Spring%20AOP/" class="article-date">
+  <time datetime="2019-02-27T04:00:00.000Z" itemprop="datePublished">2019-02-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.5k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">6分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h1 id="Spring-Aop是什么"><a href="#Spring-Aop是什么" class="headerlink" title="Spring Aop是什么"></a>Spring Aop是什么</h1><p>面向切面编程（AOP）和面向对象编程（OOP）类似，也是一种编程模式。Spring AOP 是基于 AOP 编程模式的一个框架，它的使用有效减少了系统间的重复代码，达到了模块间的松耦合目的。</p>
+<p>AOP 的全称是“Aspect Oriented Programming”，即面向切面编程，它将业务逻辑的各个部分进行隔离，使开发人员在编写业务逻辑时可以专心于核心业务，从而提高了开发效率。</p>
+<p>AOP 采取横向抽取机制，取代了传统纵向继承体系的重复性代码，其应用主要体现在事务处理、日志管理、权限控制、异常处理等方面。</p>
+<p>为了更好地理解 AOP，就需要对 AOP 的相关术语有一些了解，这些专业术语主要包含 Joinpoint、Pointcut、Advice、Target、Weaving、Proxy 和 Aspect，它们的含义如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Joinpoint（连接点）</td>
+<td>指那些被拦截到的点，在 Spring 中，可以被动态代理拦截目标类的方法。</td>
+</tr>
+<tr>
+<td>Pointcut（切入点）</td>
+<td>指要对哪些 Joinpoint 进行拦截，即被拦截的连接点。</td>
+</tr>
+<tr>
+<td>Advice（通知）</td>
+<td>指拦截到 Joinpoint 之后要做的事情，即对切入点增强的内容。</td>
+</tr>
+<tr>
+<td>Target（目标）</td>
+<td>指代理的目标对象。</td>
+</tr>
+<tr>
+<td>Weaving（植入）</td>
+<td>指把增强代码应用到目标上，生成代理对象的过程。</td>
+</tr>
+<tr>
+<td>Proxy（代理）</td>
+<td>指生成的代理对象。</td>
+</tr>
+<tr>
+<td>Aspect（切面）</td>
+<td>切入点和通知的结合。</td>
+</tr>
+</tbody></table>
+<h2 id="基于XML配置"><a href="#基于XML配置" class="headerlink" title="基于XML配置"></a>基于XML配置</h2><p>导入aspectjweaver坐标和spring-aop，因为导入spring-context坐标时，已经导入aop，所以不需要再导入</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;sop:config&gt;</code> AOP配置</li>
+<li><code>&lt;aop:aspect&gt;</code>配置切面  位于AOP配置里面 <code>id</code>给切面提供一个唯一标识，<code>ref</code>指定通知类<br>以下标签都在<code>&lt;aop:aspect&gt;里面</code></li>
+<li><code>&lt;aop:pointcut&gt;</code> 切入点通过<code>expression</code>属性来告诉要增强哪些方法，而<code>expression</code>里使用的时切入表达式</li>
+<li><code>&lt;aop:before&gt;</code> 表示前置通知</li>
+<li><code>&lt;aop:after-returning&gt;</code> 后置通知</li>
+<li><code>&lt;aop:after-throwing&gt;</code> 抛出体重</li>
+<li><code>&lt;aop:after&gt;</code> 最终通知</li>
+<li><code>&lt;aop:around&gt;</code> 环绕通知</li>
+</ul>
+<a id="more"></a>
+
+<blockquote>
+<p>通知的属性</p>
+<ul>
+<li><code>method</code> 指定通知类中哪个方法是此通知</li>
+<li><code>printcut</code> 指定切入点表达式</li>
+<li><code>printcut-ref</code> 指定<code>pointcut</code></li>
+</ul>
+</blockquote>
+<h4 id="切入表达式"><a href="#切入表达式" class="headerlink" title="切入表达式"></a>切入表达式</h4><p>关键字：execution(表达式)<br>表达式:（访问修饰符） 返回值 包名.包名.包名..类名.方法名(参数列表)  </p>
+<h6 id="表达式用法"><a href="#表达式用法" class="headerlink" title="表达式用法"></a>表达式用法</h6><ul>
+<li><code>访问修饰符</code>可以省略</li>
+<li><code>返回值</code>、<code>类名</code> 和<code>方法名</code>可以使用通配符<code>*</code></li>
+<li><code>包名</code>可以使用通配符，表示任意包。但是有几级包，就需要写几个*.</li>
+<li><code>包名</code>可以使用<code>..</code>表示当前包及其子包</li>
+<li>参数列表可以直接使用数据类型(int)，引用类型写包名.类名的方式(java.lang.String)</li>
+<li>参数列表可以使用<code>..</code>表示有无参数均可</li>
+<li>全通配写法 <code>* *..*.*(..)</code></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">"transactionManager"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"pi"</span> <span class="attr">expression</span>=<span class="string">"execution(* cn.test.service.impl.AccountServiceImpl.*(..))"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"beginTransaction"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pi"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">"commit"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pi"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">"rollback"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pi"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">"release"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pi"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="环绕通知的用法"><a href="#环绕通知的用法" class="headerlink" title="环绕通知的用法"></a>环绕通知的用法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">aroundAdvice</span><span class="params">(ProceedingJoinPoint pro)</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//1.获取方法参数</span></span><br><span class="line">        Object[] args = pro.getArgs();</span><br><span class="line">        <span class="comment">//2. 开启事务</span></span><br><span class="line">        <span class="keyword">this</span>.beginTransaction();</span><br><span class="line">        <span class="comment">//3.执行方法</span></span><br><span class="line">        Object rtValue = pro.proceed(args);</span><br><span class="line">        <span class="comment">//4. 提交事务</span></span><br><span class="line">        <span class="keyword">this</span>.commit();</span><br><span class="line">        <span class="comment">//5. 返回结果</span></span><br><span class="line">        <span class="keyword">return</span> rtValue;</span><br><span class="line">    &#125;<span class="keyword">catch</span> (Throwable t)&#123;</span><br><span class="line">        <span class="keyword">this</span>.rollback();</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(t);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">//6.释放连接</span></span><br><span class="line">        <span class="keyword">this</span>.release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实跟动态代理一样，增强执行方法。</p>
+<h2 id="基于注解配置"><a href="#基于注解配置" class="headerlink" title="基于注解配置"></a>基于注解配置</h2><ul>
+<li><code>@Aspect</code> 表示当前类是个切面类，记住要和<code>@Component</code>联用，不然会扫描不到</li>
+<li><code>@Before</code>    用于定义前置通知，相当于 BeforeAdvice。</li>
+<li><code>@AfterReturning</code>    用于定义后置通知，相当于 AfterReturningAdvice。</li>
+<li><code>@AfterThrowing</code>    用于定义抛出通知，相当于ThrowAdvice。</li>
+<li><code>@After</code>    用于定义最终final通知，不管是否异常，该通知都会执行。</li>
+<li><code>@Around</code>    用于定义环绕通知，相当于MethodInterceptor。</li>
+</ul>
+<h5 id="注解中的切入点（-Pointcut）"><a href="#注解中的切入点（-Pointcut）" class="headerlink" title="注解中的切入点（@Pointcut）"></a>注解中的切入点（<code>@Pointcut</code>）</h5><p>用于取代<code>&lt;aop:pointcut id=&quot;pi&quot; expression=&quot;execution(* cn.test.service.impl.AccountServiceImpl.*(..))&quot;/&gt;</code><br>要求：方法必须是private，没有值，名称自定义，没有参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"execution(* cn.test.service.impl.AccountServiceImpl.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">myPointCut</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后<code>通知方法</code>的注解就可以指定<code>切入点方法</code></p>
+<h5 id="配置文件中开启Spring注解AOP的支持"><a href="#配置文件中开启Spring注解AOP的支持" class="headerlink" title="配置文件中开启Spring注解AOP的支持"></a>配置文件中开启Spring注解AOP的支持</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:aspectj-autoproxy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置案例为"><a href="#配置案例为" class="headerlink" title="配置案例为"></a>配置案例为</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span>(<span class="string">"transactionManager"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionManager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ConnectionUtil connectionUtil;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"connectionUtil"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setConnectionUtil</span><span class="params">(ConnectionUtil connectionUtil)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.connectionUtil = connectionUtil;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(* cn.test.service.impl.AccountServiceImpl.*(..))"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">myPointCut</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 开启事务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"myPointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beginTransaction</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"前置通知执行了"</span>);</span><br><span class="line">            <span class="keyword">this</span>.connectionUtil.getThreadConnection().setAutoCommit(<span class="keyword">false</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 提交事务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@AfterReturning</span>(<span class="string">"myPointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"后置通知执行了"</span>);</span><br><span class="line">            <span class="keyword">this</span>.connectionUtil.getThreadConnection().commit();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事务回滚</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@AfterThrowing</span>(<span class="string">"myPointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rollback</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"抛出通知执行了"</span>);</span><br><span class="line">            <span class="keyword">this</span>.connectionUtil.getThreadConnection().rollback();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 释放连接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@After</span>(<span class="string">"myPointCut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"最终通知执行了"</span>);</span><br><span class="line">            <span class="keyword">this</span>.connectionUtil.getThreadConnection().close();</span><br><span class="line">            <span class="keyword">this</span>.connectionUtil.removeConnection();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过以上配置调用的结果为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">前置通知执行了</span><br><span class="line">最终通知执行了</span><br><span class="line">后置通知执行了</span><br></pre></td></tr></table></figure>
+<p>我们发现spring aop 注解中有着很操蛋的执行顺序，这在实际开发不可取的，尤其是事务操作中<br>因此我们选择使用环绕通知</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 环绕通知</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Around</span>(<span class="string">"myPointCut()"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">aroundAdvice</span><span class="params">(ProceedingJoinPoint pro)</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//1.获取方法参数</span></span><br><span class="line">        Object[] args = pro.getArgs();</span><br><span class="line">        <span class="comment">//2. 开启事务</span></span><br><span class="line">        <span class="keyword">this</span>.beginTransaction();</span><br><span class="line">        <span class="comment">//3.执行方法</span></span><br><span class="line">        Object rtValue = pro.proceed(args);</span><br><span class="line">        <span class="comment">//4. 提交事务</span></span><br><span class="line">        <span class="keyword">this</span>.commit();</span><br><span class="line">        <span class="comment">//5. 返回结果</span></span><br><span class="line">        <span class="keyword">return</span> rtValue;</span><br><span class="line">    &#125;<span class="keyword">catch</span> (Throwable t)&#123;</span><br><span class="line">        <span class="keyword">this</span>.rollback();</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(t);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">//6.释放连接</span></span><br><span class="line">        <span class="keyword">this</span>.release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2019/02/27/Spring%20AOP/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2019/12/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Spring IOC容器
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/02/20/Spring%20%E6%95%B4%E5%90%88Junit/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Spring 整合Junit</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '175ec3903088201643df',
+    clientSecret: 'a4fbc813f8cb97febddb12e306e784771265e0ef',
+    repo: 'blog-gittalk',
+    owner: 'chuqiy',
+    admin: ['chuqiy'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2015-2020
+        John Doe
+      </li>
+      <li>
+        
+          Powered by
+        
+        
+        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+      <aside class="sidebar">
+        <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/portrait.jpg" alt="xy"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="http://shenyu-vip.lofter.com" target="_blank" rel="noopener">摄影</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+      </aside>
+      <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+      
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+    strings: ['面朝大海，春暖花开','愿你一生努力，一生被爱','想要的都拥有，得不到的都释怀'],
+    startDelay: 0,
+    typeSpeed: 200,
+    loop: true,
+    backSpeed: 100,
+    showCursor: true
+    });
+  } catch (err) {
+  }
+  
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer:'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+<script>
+  var ayerConfig = {
+    mathjax: false
+  }
+</script>
+
+
+<script src="/js/ayer.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+  </div>
+</body>
+
+</html>

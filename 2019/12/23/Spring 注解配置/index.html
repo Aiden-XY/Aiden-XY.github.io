@@ -6,7 +6,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hello World |  xy
+    Spring注解配置 |  xy
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-hello-world" class="article article-type-post" itemscope
+  <article id="post-Spring 注解配置" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hello World
+  Spring注解配置
 </h1>
   
 
@@ -49,10 +49,14 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/21/hello-world/" class="article-date">
-  <time datetime="2020-02-21T08:48:07.582Z" itemprop="datePublished">2020-02-21</time>
+      <a href="/2019/12/23/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2019-12-23T04:40:58.000Z" itemprop="datePublished">2019-12-23</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -60,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">73字</span>
+            <span class="post-count">913字</span>
         </span>
     </span>
 
@@ -69,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">3分钟</span>
         </span>
     </span>
 </div>
@@ -96,19 +100,50 @@
       
 
       
-      <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+      <h3 id="通过XML进行主配置"><a href="#通过XML进行主配置" class="headerlink" title="通过XML进行主配置"></a>通过XML进行主配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/context/spring-context.xsd"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="通过Java类作为主配置"><a href="#通过Java类作为主配置" class="headerlink" title="通过Java类作为主配置"></a>通过Java类作为主配置</h3><ul>
+<li><code>@Configuration</code> 指定当前类是一个配置类</li>
+<li><code>@ComponentScan</code> 用于通过注解指定spring在创建容器时要扫描的包，通过<code>value</code>属性指定创建容器时要扫描的包</li>
+<li><code>@Bean</code> 用于把当前方法的返回值作为bean对象存入spring的ioc容器中，通过<code>name</code>属性指定bean的id。不写时，默认值是当前方法的名称</li>
+<li><code>@Import</code> 用于导入其他的配置类。当我们使用Import的注释之后，有Import注释的类就是父配置类，而导入的都是子配置类。<code>value</code>:其他配置类的字节码。</li>
+<li><code>@@EnableAspectJAutoProxy</code> 开启注解AOP的支持</li>
+<li><code>@EnableTransactionManagement</code> 开启Spring注解中事务的支持<h4 id="多个配置文件时-扫描方法"><a href="#多个配置文件时-扫描方法" class="headerlink" title="多个配置文件时 扫描方法"></a>多个配置文件时 扫描方法</h4></li>
+</ul>
+<ol>
+<li>通过创建容器对象时扫描加载<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(SpringConfig<span class="class">.<span class="keyword">class</span>,<span class="title">jdbcConfig</span>.<span class="title">class</span>)</span>;</span><br></pre></td></tr></table></figure>
+通过这种方式扫描，配置文件上面可以不写<code>@Configuration</code>,不过这样加载两个配置将会是同级别的</li>
+<li><code>@ComponentScan</code>扫描<code>@Configuration</code> 加载<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ComponentScan</span>(<span class="string">"cn.test"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringConfig</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">jdbcConfig</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(SpringConfig<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
+通过主配置文件上的<code>@ComponenScan</code>会自动扫描包下的配置文件</li>
+</ol>
+<a id="more"></a>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<ol start="3">
+<li>通过<code>@Import</code> 导入<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ComponentScan</span>(<span class="string">"cn.test"</span>)</span><br><span class="line"><span class="meta">@Import</span>(jdbcConfig<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">SpringConfig</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+通过<code>@Import</code>可以其他Java配置文件<h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><h4 id="Bean注解"><a href="#Bean注解" class="headerlink" title="Bean注解"></a>Bean注解</h4>通过<code>value</code>值可以指定bean的id</li>
+</ol>
+<ul>
+<li><code>@Component</code> 可以使用此注解描述 Spring 中的 Bean，但它是一个泛化的概念，仅仅表示一个组件（Bean），并且可以作用在任何层次。使用时只需将该注解标注在相应类上即可。</li>
+<li><code>@Repository</code> 用于将数据访问层（DAO层）的类标识为 Spring 中的 Bean</li>
+<li><code>@Service</code> 通常作用在业务层（Service 层），用于将业务层的类标识为 Spring 中的 Bean</li>
+<li><code>@Controller</code> 通常作用在控制层，用于将控制层的类标识为 Spring 中的 Bean</li>
+</ul>
+<h4 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h4><ul>
+<li><code>@Autowired</code>用于对 Bean 的属性变量、属性的 Set 方法及构造函数进行标注，配合对应的注解处理器完成 Bean 的自动配置工作。默认按照 Bean 的类型进行装配。</li>
+<li><code>@Qualifier</code> 和<code>@Autowired</code>搭配使用，在根据类型注入的基础上再根据名称注入。不能单独使用</li>
+<li><code>@Resource</code> 作用与<code>@Autowired</code>一样,其区别在于 <code>@Autowired</code> 默认按照 Bean 类型装配，而 <code>@Resource</code> 默认按照 Bean 实例名称进行装配。</li>
+</ul>
+<blockquote>
+<p><code>@Resource</code>有两个属性 <code>name</code>(value)根据bean名称匹配，<code>type</code>指定类型匹配，如果都不指定，则先按 Bean 实例名称装配，如果不能匹配，则再按照 Bean 类型进行装配；如果都无法匹配，则抛出 NoSuchBeanDefinitionException 异常。</p>
+</blockquote>
+<ul>
+<li><code>@Value</code> 用于注入基本类型的和String类型的数据。可以使用spring中的SpEL(也就是spring重的el表达式<code>${表达式}</code>)</li>
+</ul>
+<h4 id="读取配置文件"><a href="#读取配置文件" class="headerlink" title="读取配置文件"></a>读取配置文件</h4><p>通过<code>@PropertySource</code>可以指定properties文件的位置</p>
+<ul>
+<li><code>value</code> 属性：指定文件的名称和路径。关键字：<code>classpath</code>表示类路径下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PropertySource</span>(<span class="string">"classpath:jdbc.properties"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">jdbcConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.driver&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String driver;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.url&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.user&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String user;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;jdbc.password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"runner"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> QueryRunner <span class="title">createQueryRunner</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> QueryRunner(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"dataSource"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span>  DataSource <span class="title">createDataSources</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ComboPooledDataSource ds = <span class="keyword">new</span> ComboPooledDataSource();</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            ds.setDriverClass(<span class="keyword">this</span>.driver);</span><br><span class="line">            ds.setJdbcUrl(<span class="keyword">this</span>.url);</span><br><span class="line">            ds.setUser(<span class="keyword">this</span>.user);</span><br><span class="line">            ds.setPassword(<span class="keyword">this</span>.password);</span><br><span class="line">            <span class="keyword">return</span> ds;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 
       
       <!-- reward -->
@@ -178,13 +213,15 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/02/21/hello-world/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2019/12/23/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
 
     </footer>
 
@@ -194,10 +231,19 @@
   
   <nav class="article-nav">
     
+      <a href="/2019/12/24/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            事务管理（不使用spring）
+          
+        </div>
+      </a>
     
-      <a href="/2020/01/05/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" class="article-nav-link">
+    
+      <a href="/2019/12/23/Spring%20Bean%E9%85%8D%E7%BD%AE/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">SpringBoot 启动配置原理</div>
+        <div class="article-nav-title">Spring Bean 配置</div>
       </a>
     
   </nav>

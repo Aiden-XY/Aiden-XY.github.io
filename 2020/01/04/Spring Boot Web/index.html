@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    SpringBoot Web |  xy
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="xy" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-Spring Boot Web" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  SpringBoot Web
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/01/04/Spring%20Boot%20Web/" class="article-date">
+  <time datetime="2020-01-04T04:00:00.000Z" itemprop="datePublished">2020-01-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.7k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">12分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>使用SpringBoot</p>
+<ol>
+<li>创建SpringBoot应用，选中我们需要的模块</li>
+<li>SpringBoot已经默认将这些场景配置好了，只需要咋i配置文件中指定少量排至就可以运行起来</li>
+<li>自己编写业务代码</li>
+</ol>
+<h4 id="自动配置原理"><a href="#自动配置原理" class="headerlink" title="自动配置原理"></a>自动配置原理</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">xxxxAutoCOnfiguration</span>: <span class="string">帮我们给容器中自动配置组件；</span></span><br><span class="line"><span class="attr">xxxxProperties</span>: <span class="string">配置类来封装配置文件的内容</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="SpringBoot对静态资源的映射规则"><a href="#SpringBoot对静态资源的映射规则" class="headerlink" title="SpringBoot对静态资源的映射规则"></a>SpringBoot对静态资源的映射规则</h2><h5 id="1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；"><a href="#1-所有-webjars-，都去-classpath-META-INF-resources-webjars-找资源；" class="headerlink" title="1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；"></a>1. 所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；</h5><ul>
+<li>webjars：以jar包的方式引入静态资源； <a href="https://www.webjars.org/" target="_blank" rel="noopener">https://www.webjars.org/</a></li>
+<li>访问的时候直接写<code>/包名/版本号/文件</code>即可<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.webjars<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jquery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+访问路径<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:8080&#x2F;webjars&#x2F;jquery&#x2F;2.2.4&#x2F;jquery.js</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h5 id="2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射"><a href="#2-“-”-访问当前项目的任何资源，都去（静态资源的文件夹）找映射" class="headerlink" title="2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射"></a>2. “/**” 访问当前项目的任何资源，都去（静态资源的文件夹）找映射</h5><ul>
+<li><code>classpath:/META-INF/resources/</code></li>
+<li><code>classpath:/resources/</code></li>
+<li><code>classpath:/static/</code></li>
+<li><code>classpath:/public/</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static final String[] CLASSPATH_RESOURCE_LOCATIONS &#x3D; new String[]&#123;&quot;classpath:&#x2F;META-INF&#x2F;resources&#x2F;&quot;, &quot;classpath:&#x2F;resources&#x2F;&quot;, &quot;classpath:&#x2F;static&#x2F;&quot;, &quot;classpath:&#x2F;public&#x2F;&quot;&#125;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h5 id="3-欢迎页；-静态资源文件夹下的所有index-html页面；被”-”映射；"><a href="#3-欢迎页；-静态资源文件夹下的所有index-html页面；被”-”映射；" class="headerlink" title="3. 欢迎页； 静态资源文件夹下的所有index.html页面；被”/**”映射；"></a>3. 欢迎页； 静态资源文件夹下的所有index.html页面；被”/**”映射；</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public WelcomePageHandlerMapping welcomePageHandlerMapping(ApplicationContext applicationContext, FormattingConversionService mvcConversionService, ResourceUrlProvider mvcResourceUrlProvider) &#123;</span><br><span class="line">    WelcomePageHandlerMapping welcomePageHandlerMapping &#x3D; new WelcomePageHandlerMapping(new TemplateAvailabilityProviders(applicationContext), applicationContext, this.getWelcomePage(), this.mvcProperties.getStaticPathPattern());</span><br><span class="line">    welcomePageHandlerMapping.setInterceptors(this.getInterceptors(mvcConversionService, mvcResourceUrlProvider));</span><br><span class="line">    return welcomePageHandlerMapping;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private Optional&lt;Resource&gt; getWelcomePage() &#123;</span><br><span class="line">            String[] locations &#x3D; WebMvcAutoConfiguration.getResourceLocations(this.resourceProperties.getStaticLocations());</span><br><span class="line">            return Arrays.stream(locations).map(this::getIndexHtml).filter(this::isReadable).findFirst();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private Resource getIndexHtml(String location) &#123;</span><br><span class="line">            return this.resourceLoader.getResource(location + &quot;index.html&quot;);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-所有的-favicon-ico-都是在静态资源文件下找；"><a href="#4-所有的-favicon-ico-都是在静态资源文件下找；" class="headerlink" title="4. 所有的 **/favicon.ico  都是在静态资源文件下找；"></a>4. 所有的 **/favicon.ico  都是在静态资源文件下找；</h5><h2 id="4、SpringMVC自动配置"><a href="#4、SpringMVC自动配置" class="headerlink" title="4、SpringMVC自动配置"></a>4、SpringMVC自动配置</h2><p><a href="https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications</a></p>
+<h3 id="1-Spring-MVC-auto-configuration"><a href="#1-Spring-MVC-auto-configuration" class="headerlink" title="1. Spring MVC auto-configuration"></a>1. Spring MVC auto-configuration</h3><p>Spring Boot 自动配置好了SpringMVC</p>
+<p>以下是SpringBoot对SpringMVC的默认配置:<strong>==（WebMvcAutoConfiguration）==</strong></p>
+<ul>
+<li><p>Inclusion of <code>ContentNegotiatingViewResolver</code> and <code>BeanNameViewResolver</code> beans.</p>
+<ul>
+<li>自动配置了ViewResolver（视图解析器：根据方法的返回值得到视图对象（View），视图对象决定如何渲染（转发？重定向？））</li>
+<li>ContentNegotiatingViewResolver：组合所有的视图解析器的；</li>
+<li>==如何定制：我们可以自己给容器中添加一个视图解析器；自动的将其组合进来；==</li>
+</ul>
+</li>
+<li><p>Support for serving static resources, including support for WebJars (see below).静态资源文件夹路径,webjars</p>
+</li>
+<li><p>Static <code>index.html</code> support. 静态首页访问</p>
+</li>
+<li><p>Custom <code>Favicon</code> support (see below).  favicon.ico</p>
+</li>
+</ul>
+<ul>
+<li><p>自动注册了 of <code>Converter</code>, <code>GenericConverter</code>, <code>Formatter</code> beans.</p>
+<ul>
+<li>Converter：转换器；  public String hello(User user)：类型转换使用Converter</li>
+<li><code>Formatter</code>  格式化器；  2017.12.17===Date；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(prefix = <span class="string">"spring.mvc"</span>, name = <span class="string">"date-format"</span>)<span class="comment">//在文件中配置日期格式化的规则</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Formatter&lt;Date&gt; <span class="title">dateFormatter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DateFormatter(<span class="keyword">this</span>.mvcProperties.getDateFormat());<span class="comment">//日期格式化组件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    ==自己添加的格式化器转换器，我们只需要放在容器中即可==</p>
+<ul>
+<li><p>Support for <code>HttpMessageConverters</code> (see below).</p>
+<ul>
+<li><p>HttpMessageConverter：SpringMVC用来转换Http请求和响应的；User—Json；</p>
+</li>
+<li><p><code>HttpMessageConverters</code> 是从容器中确定；获取所有的HttpMessageConverter；</p>
+<p>==自己给容器中添加HttpMessageConverter，只需要将自己的组件注册容器中（@Bean,@Component）==</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Automatic registration of <code>MessageCodesResolver</code> (see below).定义错误代码生成规则</p>
+</li>
+<li><p>Automatic use of a <code>ConfigurableWebBindingInitializer</code> bean (see below).</p>
+<p>==我们可以配置一个ConfigurableWebBindingInitializer来替换默认的；（添加到容器）==</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">初始化WebDataBinder；</span><br><span class="line">请求数据&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;JavaBean；</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><strong>org.springframework.boot.autoconfigure.web：web的所有自动场景；</strong></p>
+<p>If you want to keep Spring Boot MVC features, and you just want to add additional <a href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/spring-framework-reference/htmlsingle#mvc" target="_blank" rel="noopener">MVC configuration</a> (interceptors, formatters, view controllers etc.) you can add your own <code>@Configuration</code> class of type <code>WebMvcConfigurerAdapter</code>, but <strong>without</strong> <code>@EnableWebMvc</code>. If you wish to provide custom instances of <code>RequestMappingHandlerMapping</code>, <code>RequestMappingHandlerAdapter</code> or <code>ExceptionHandlerExceptionResolver</code> you can declare a <code>WebMvcRegistrationsAdapter</code> instance providing such components.</p>
+<p>If you want to take complete control of Spring MVC, you can add your own <code>@Configuration</code> annotated with <code>@EnableWebMvc</code>.</p>
+<h3 id="2、扩展SpringMVC"><a href="#2、扩展SpringMVC" class="headerlink" title="2、扩展SpringMVC"></a>2、扩展SpringMVC</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:view-controller</span> <span class="attr">path</span>=<span class="string">"/hello"</span> <span class="attr">view-name</span>=<span class="string">"success"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">"/hello"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>编写一个配置类（@Configuration），是WebMvcConfigurerAdapter类型；不能标@EnableWebMvc</strong>;</p>
+<p>既保留了所有的自动配置，也能用我们扩展的配置；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// super.addViewControllers(registry);</span></span><br><span class="line">        <span class="comment">//浏览器发送 /atguigu 请求来到 success</span></span><br><span class="line">        registry.addViewController(<span class="string">"/atguigu"</span>).setViewName(<span class="string">"success"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理：</p>
+<p>​    1）、WebMvcAutoConfiguration是SpringMVC的自动配置类</p>
+<p>​    2）、在做其他自动配置时会导入；@Import(<strong>EnableWebMvcConfiguration</strong>.class)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">EnableWebMvcConfiguration</span> <span class="keyword">extends</span> <span class="title">DelegatingWebMvcConfiguration</span> </span>&#123;</span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">final</span> WebMvcConfigurerComposite configurers = <span class="keyword">new</span> WebMvcConfigurerComposite();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//从容器中获取所有的WebMvcConfigurer</span></span><br><span class="line">     <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setConfigurers</span><span class="params">(List&lt;WebMvcConfigurer&gt; configurers)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (!CollectionUtils.isEmpty(configurers)) &#123;</span><br><span class="line">             <span class="keyword">this</span>.configurers.addWebMvcConfigurers(configurers);</span><br><span class="line">           	<span class="comment">//一个参考实现；将所有的WebMvcConfigurer相关配置都来一起调用；  </span></span><br><span class="line">           	<span class="meta">@Override</span></span><br><span class="line">            <span class="comment">// public void addViewControllers(ViewControllerRegistry registry) &#123;</span></span><br><span class="line">             <span class="comment">//    for (WebMvcConfigurer delegate : this.delegates) &#123;</span></span><br><span class="line">              <span class="comment">//       delegate.addViewControllers(registry);</span></span><br><span class="line">              <span class="comment">//   &#125;</span></span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    3）、容器中所有的WebMvcConfigurer都会一起起作用；</p>
+<p>​    4）、我们的配置类也会被调用；</p>
+<p>​    效果：SpringMVC的自动配置和我们的扩展配置都会起作用；</p>
+<h3 id="3、全面接管SpringMVC；"><a href="#3、全面接管SpringMVC；" class="headerlink" title="3、全面接管SpringMVC；"></a>3、全面接管SpringMVC；</h3><p>SpringBoot对SpringMVC的自动配置不需要了，所有都是我们自己配置；所有的SpringMVC的自动配置都失效了</p>
+<p><strong>我们需要在配置类中添加@EnableWebMvc即可；</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用WebMvcConfigurerAdapter可以来扩展SpringMVC的功能</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// super.addViewControllers(registry);</span></span><br><span class="line">        <span class="comment">//浏览器发送 /atguigu 请求来到 success</span></span><br><span class="line">        registry.addViewController(<span class="string">"/atguigu"</span>).setViewName(<span class="string">"success"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理：</p>
+<p>为什么@EnableWebMvc自动配置就失效了；</p>
+<p>1）@EnableWebMvc的核心</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Import</span>(DelegatingWebMvcConfiguration<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">EnableWebMvc</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>2）、</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelegatingWebMvcConfiguration</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurationSupport</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>3）、</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(&#123; Servlet<span class="class">.<span class="keyword">class</span>, <span class="title">DispatcherServlet</span>.<span class="title">class</span>,</span></span><br><span class="line"><span class="class">		<span class="title">WebMvcConfigurerAdapter</span>.<span class="title">class</span> &#125;)</span></span><br><span class="line"><span class="class">//容器中没有这个组件的时候，这个自动配置类才生效</span></span><br><span class="line"><span class="class">@<span class="title">ConditionalOnMissingBean</span>(<span class="title">WebMvcConfigurationSupport</span>.<span class="title">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">AutoConfigureOrder</span>(<span class="title">Ordered</span>.<span class="title">HIGHEST_PRECEDENCE</span> + 10)</span></span><br><span class="line"><span class="class">@<span class="title">AutoConfigureAfter</span>(</span>&#123; DispatcherServletAutoConfiguration<span class="class">.<span class="keyword">class</span>,</span></span><br><span class="line"><span class="class">		<span class="title">ValidationAutoConfiguration</span>.<span class="title">class</span> &#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">WebMvcAutoConfiguration</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>4）、@EnableWebMvc将WebMvcConfigurationSupport组件导入进来；</p>
+<p>5）、导入的WebMvcConfigurationSupport只是SpringMVC最基本的功能；</p>
+<h2 id="如何修改SpringBoot的默认配置"><a href="#如何修改SpringBoot的默认配置" class="headerlink" title="如何修改SpringBoot的默认配置"></a>如何修改SpringBoot的默认配置</h2><p>模式：</p>
+<p>​    1）、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean、@Component）如果有就用用户配置的，如果没有，才自动配置；如果有些组件可以有多个（ViewResolver）将用户配置的和自己默认的组合起来；</p>
+<p>​    2）、在SpringBoot中会有非常多的xxxConfigurer帮助我们进行扩展配置</p>
+<p>​    3）、在SpringBoot中会有很多的xxxCustomizer帮助我们进行定制配置</p>
+<h2 id="错误处理机制"><a href="#错误处理机制" class="headerlink" title="错误处理机制"></a>错误处理机制</h2><h3 id="1）、SpringBoot默认的错误处理机制"><a href="#1）、SpringBoot默认的错误处理机制" class="headerlink" title="1）、SpringBoot默认的错误处理机制"></a>1）、SpringBoot默认的错误处理机制</h3><p>​    可以参照ErrorMvcAutoConfiguration；错误处理的自动配置；</p>
+<pre><code>给容器中添加了以下组件</code></pre><p>​    1、DefaultErrorAttributes：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">帮我们在页面共享信息；</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getErrorAttributes</span><span class="params">(RequestAttributes requestAttributes,</span></span></span><br><span class="line"><span class="function"><span class="params">			<span class="keyword">boolean</span> includeStackTrace)</span> </span>&#123;</span><br><span class="line">		Map&lt;String, Object&gt; errorAttributes = <span class="keyword">new</span> LinkedHashMap&lt;String, Object&gt;();</span><br><span class="line">		errorAttributes.put(<span class="string">"timestamp"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">		addStatus(errorAttributes, requestAttributes);</span><br><span class="line">		addErrorDetails(errorAttributes, requestAttributes, includeStackTrace);</span><br><span class="line">		addPath(errorAttributes, requestAttributes);</span><br><span class="line">		<span class="keyword">return</span> errorAttributes;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    2、BasicErrorController：处理默认/error请求</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"$&#123;server.error.path:$&#123;error.path:/error&#125;&#125;"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicErrorController</span> <span class="keyword">extends</span> <span class="title">AbstractErrorController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping</span>(produces = <span class="string">"text/html"</span>)<span class="comment">//产生html类型的数据；浏览器发送的请求来到这个方法处理</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ModelAndView <span class="title">errorHtml</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">			HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">		HttpStatus status = getStatus(request);</span><br><span class="line">		Map&lt;String, Object&gt; model = Collections.unmodifiableMap(getErrorAttributes(</span><br><span class="line">				request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));</span><br><span class="line">		response.setStatus(status.value());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//去哪个页面作为错误页面；包含页面地址和页面内容</span></span><br><span class="line">		ModelAndView modelAndView = resolveErrorView(request, response, status, model);</span><br><span class="line">		<span class="keyword">return</span> (modelAndView == <span class="keyword">null</span> ? <span class="keyword">new</span> ModelAndView(<span class="string">"error"</span>, model) : modelAndView);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@RequestMapping</span></span><br><span class="line">	<span class="meta">@ResponseBody</span>    <span class="comment">//产生json数据，其他客户端来到这个方法处理；</span></span><br><span class="line">	<span class="keyword">public</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt; error(HttpServletRequest request) &#123;</span><br><span class="line">		Map&lt;String, Object&gt; body = getErrorAttributes(request,</span><br><span class="line">				isIncludeStackTrace(request, MediaType.ALL));</span><br><span class="line">		HttpStatus status = getStatus(request);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt;(body, status);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    3、ErrorPageCustomizer：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;error.path:/error&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String path = <span class="string">"/error"</span>;  系统出现错误以后来到error请求进行处理；（web.xml注册的错误页面规则）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    4、DefaultErrorViewResolver：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveErrorView</span><span class="params">(HttpServletRequest request, HttpStatus status,</span></span></span><br><span class="line"><span class="function"><span class="params">			Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">		ModelAndView modelAndView = resolve(String.valueOf(status), model);</span><br><span class="line">		<span class="keyword">if</span> (modelAndView == <span class="keyword">null</span> &amp;&amp; SERIES_VIEWS.containsKey(status.series())) &#123;</span><br><span class="line">			modelAndView = resolve(SERIES_VIEWS.get(status.series()), model);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> modelAndView;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> ModelAndView <span class="title">resolve</span><span class="params">(String viewName, Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//默认SpringBoot可以去找到一个页面？  error/404</span></span><br><span class="line">		String errorViewName = <span class="string">"error/"</span> + viewName;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//模板引擎可以解析这个页面地址就用模板引擎解析</span></span><br><span class="line">		TemplateAvailabilityProvider provider = <span class="keyword">this</span>.templateAvailabilityProviders</span><br><span class="line">				.getProvider(errorViewName, <span class="keyword">this</span>.applicationContext);</span><br><span class="line">		<span class="keyword">if</span> (provider != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//模板引擎可用的情况下返回到errorViewName指定的视图地址</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(errorViewName, model);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">//模板引擎不可用，就在静态资源文件夹下找errorViewName对应的页面   error/404.html</span></span><br><span class="line">		<span class="keyword">return</span> resolveResource(errorViewName, model);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    步骤：</p>
+<p>​        一但系统出现4xx或者5xx之类的错误；ErrorPageCustomizer就会生效（定制错误的响应规则）；就会来到/error请求；就会被<strong>BasicErrorController</strong>处理；</p>
+<p>​        1）响应页面；去哪个页面是由<strong>DefaultErrorViewResolver</strong>解析得到的；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">resolveErrorView</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">      HttpServletResponse response, HttpStatus status, Map&lt;String, Object&gt; model)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//所有的ErrorViewResolver得到ModelAndView</span></span><br><span class="line">   <span class="keyword">for</span> (ErrorViewResolver resolver : <span class="keyword">this</span>.errorViewResolvers) &#123;</span><br><span class="line">      ModelAndView modelAndView = resolver.resolveErrorView(request, status, model);</span><br><span class="line">      <span class="keyword">if</span> (modelAndView != <span class="keyword">null</span>) &#123;</span><br><span class="line">         <span class="keyword">return</span> modelAndView;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2）、如果定制错误响应："><a href="#2）、如果定制错误响应：" class="headerlink" title="2）、如果定制错误响应："></a>2）、如果定制错误响应：</h3><h4 id="1）、如何定制错误的页面；"><a href="#1）、如何定制错误的页面；" class="headerlink" title="1）、如何定制错误的页面；"></a><strong>1）、如何定制错误的页面；</strong></h4><p>​            <strong>1）、有模板引擎的情况下；error/状态码;</strong> 【将错误页面命名为  错误状态码.html 放在模板引擎文件夹里面的 error文件夹下】，发生此状态码的错误就会来到  对应的页面；</p>
+<p>​            我们可以使用4xx和5xx作为错误页面的文件名来匹配这种类型的所有错误，精确优先（优先寻找精确的状态码.html）；        </p>
+<p>​            页面能获取的信息；</p>
+<p>​                timestamp：时间戳</p>
+<p>​                status：状态码</p>
+<p>​                error：错误提示</p>
+<p>​                exception：异常对象</p>
+<p>​                message：异常消息</p>
+<p>​                errors：JSR303数据校验的错误都在这里</p>
+<p>​            2）、没有模板引擎（模板引擎找不到这个错误页面），静态资源文件夹下找；</p>
+<p>​            3）、以上都没有错误页面，就是默认来到SpringBoot默认的错误提示页面；</p>
+<h4 id="2）、如何定制错误的json数据；"><a href="#2）、如何定制错误的json数据；" class="headerlink" title="2）、如何定制错误的json数据；"></a>2）、如何定制错误的json数据；</h4><p>​        1）、自定义异常处理&amp;返回定制json数据；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(UserNotExistException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">Map</span>&lt;<span class="title">String</span>,<span class="title">Object</span>&gt; <span class="title">handleException</span>(<span class="title">Exception</span> <span class="title">e</span>)</span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"code"</span>,<span class="string">"user.notexist"</span>);</span><br><span class="line">        map.put(<span class="string">"message"</span>,e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//没有自适应效果...</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>​        2）、转发到/error进行自适应响应效果处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ExceptionHandler</span>(UserNotExistException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">   <span class="title">public</span> <span class="title">String</span> <span class="title">handleException</span>(<span class="title">Exception</span> <span class="title">e</span>, <span class="title">HttpServletRequest</span> <span class="title">request</span>)</span>&#123;</span><br><span class="line">       Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="comment">//传入我们自己的错误状态码  4xx 5xx，否则就不会进入定制错误页面的解析流程</span></span><br><span class="line">       <span class="comment">/**</span></span><br><span class="line"><span class="comment">        * Integer statusCode = (Integer) request</span></span><br><span class="line"><span class="comment">        .getAttribute("javax.servlet.error.status_code");</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       request.setAttribute(<span class="string">"javax.servlet.error.status_code"</span>,<span class="number">500</span>);</span><br><span class="line">       map.put(<span class="string">"code"</span>,<span class="string">"user.notexist"</span>);</span><br><span class="line">       map.put(<span class="string">"message"</span>,e.getMessage());</span><br><span class="line">       <span class="comment">//转发到/error</span></span><br><span class="line">       <span class="keyword">return</span> <span class="string">"forward:/error"</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3）、将我们的定制数据携带出去；"><a href="#3）、将我们的定制数据携带出去；" class="headerlink" title="3）、将我们的定制数据携带出去；"></a>3）、将我们的定制数据携带出去；</h4><p>出现错误以后，会来到/error请求，会被BasicErrorController处理，响应出去可以获取的数据是由getErrorAttributes得到的（是AbstractErrorController（ErrorController）规定的方法）；</p>
+<p>​    1、完全来编写一个ErrorController的实现类【或者是编写AbstractErrorController的子类】，放在容器中；</p>
+<p>​    2、页面上能用的数据，或者是json返回能用的数据都是通过errorAttributes.getErrorAttributes得到；</p>
+<p>​            容器中DefaultErrorAttributes.getErrorAttributes()；默认进行数据处理的；</p>
+<p>自定义ErrorAttributes</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//给容器中加入我们自己定义的ErrorAttributes</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyErrorAttributes</span> <span class="keyword">extends</span> <span class="title">DefaultErrorAttributes</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getErrorAttributes</span><span class="params">(RequestAttributes requestAttributes, <span class="keyword">boolean</span> includeStackTrace)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">super</span>.getErrorAttributes(requestAttributes, includeStackTrace);</span><br><span class="line">        map.put(<span class="string">"company"</span>,<span class="string">"atguigu"</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终的效果：响应是自适应的，可以通过定制ErrorAttributes改变需要返回的内容，</p>
+
+      
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong s>
+              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
+                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/01/04/Spring%20Boot%20Web/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+      <a href="/2020/01/05/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            SpringBoot 启动配置原理
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/01/04/Spring%20Boot%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">SpringBoot与数据访问</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+
+  
+  
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '175ec3903088201643df',
+    clientSecret: 'a4fbc813f8cb97febddb12e306e784771265e0ef',
+    repo: 'blog-gittalk',
+    owner: 'chuqiy',
+    admin: ['chuqiy'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2015-2020
+        John Doe
+      </li>
+      <li>
+        
+          Powered by
+        
+        
+        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+      <aside class="sidebar">
+        <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/portrait.jpg" alt="xy"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="http://shenyu-vip.lofter.com" target="_blank" rel="noopener">摄影</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+      </aside>
+      <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+      
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<script src="/js/share.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+    strings: ['面朝大海，春暖花开','愿你一生努力，一生被爱','想要的都拥有，得不到的都释怀'],
+    startDelay: 0,
+    typeSpeed: 200,
+    loop: true,
+    backSpeed: 100,
+    showCursor: true
+    });
+  } catch (err) {
+  }
+  
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer:'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+<script>
+  var ayerConfig = {
+    mathjax: false
+  }
+</script>
+
+
+<script src="/js/ayer.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+  </div>
+</body>
+
+</html>

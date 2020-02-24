@@ -6,7 +6,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hello World |  xy
+    Spring jdbcTemplate |  xy
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -32,7 +32,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-hello-world" class="article article-type-post" itemscope
+  <article id="post-Spring jdbcTemplate" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -40,7 +40,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hello World
+  Spring jdbcTemplate
 </h1>
   
 
@@ -49,10 +49,14 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/21/hello-world/" class="article-date">
-  <time datetime="2020-02-21T08:48:07.582Z" itemprop="datePublished">2020-02-21</time>
+      <a href="/2019/12/21/Spring%20jdbcTemplate/" class="article-date">
+  <time datetime="2019-12-21T06:40:00.000Z" itemprop="datePublished">2019-12-21</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -60,7 +64,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">73字</span>
+            <span class="post-count">435字</span>
         </span>
     </span>
 
@@ -96,20 +100,20 @@
       
 
       
-      <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+      <h2 id="Spring-JDBCTemplate"><a href="#Spring-JDBCTemplate" class="headerlink" title="Spring JDBCTemplate"></a>Spring JDBCTemplate</h2><p>Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  </p>
+<p>Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。</p>
+<h4 id="创建数据源对象"><a href="#创建数据源对象" class="headerlink" title="创建数据源对象"></a>创建数据源对象</h4><p>Spring内部提供了自己DataSource对象<code>DriverManagerDataSource</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DriverManagerDataSource dataSource = <span class="keyword">new</span> DriverManagerDataSource();</span><br><span class="line">dataSource.setDriverClassName(<span class="string">"com.mysql.cj.jdbc.Driver"</span>);</span><br><span class="line">dataSource.setUrl(<span class="string">"jdbc:mysql://localhost:3306/javatest?serverTimezone=UTC"</span>);</span><br><span class="line">dataSource.setUsername(<span class="string">"root"</span>);</span><br><span class="line">dataSource.setPassword(<span class="string">"123456"</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="创建JDBCTemplate对象"><a href="#创建JDBCTemplate对象" class="headerlink" title="创建JDBCTemplate对象"></a>创建JDBCTemplate对象</h4><p>创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JdbcTemplate jdbcTemplate = <span class="keyword">new</span> JdbcTemplate();</span><br><span class="line">jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">List&lt;Account&gt; accounts = jdbcTemplate.query(<span class="string">"select * from account"</span>,<span class="keyword">new</span> AccountRowMapper());</span><br><span class="line"><span class="keyword">for</span>(Account account:accounts)&#123;</span><br><span class="line">    System.out.println(account);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象"><a href="#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象" class="headerlink" title="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象"></a>在执行查询的时候我们需要提供一个继承于<code>RowMapper</code>接口的实现类,用于封装结果对象</h5><a id="more"></a>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定义Account的封装策略</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AccountRowMapper</span> <span class="keyword">implements</span> <span class="title">RowMapper</span>&lt;<span class="title">Account</span>&gt;</span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 把结果集重的数据封装到Account中，然后由Spring把每个Account加到集合当中</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> resultSet</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> i</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">mapRow</span><span class="params">(ResultSet resultSet, <span class="keyword">int</span> i)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        Account account = <span class="keyword">new</span> Account();</span><br><span class="line">        account.setId(resultSet.getInt(<span class="string">"id"</span>));</span><br><span class="line">        account.setName(resultSet.getString(<span class="string">"name"</span>));</span><br><span class="line">        account.setMoney(resultSet.getDouble(<span class="string">"money"</span>));</span><br><span class="line">        <span class="keyword">return</span> account;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="当然Spring中也提供自己的实现类-，可以直接进行调用"><a href="#当然Spring中也提供自己的实现类-，可以直接进行调用" class="headerlink" title="当然Spring中也提供自己的实现类``，可以直接进行调用"></a>当然Spring中也提供自己的实现类``，可以直接进行调用</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Account&gt; accounts = jdbcTemplate.query(<span class="string">"select * from account"</span>,<span class="keyword">new</span> BeanPropertyRowMapper&lt;Account&gt;(Account<span class="class">.<span class="keyword">class</span>))</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>和dbutils不同的是：dbutils的<code>query</code>方法可以返回泛型也可以返回集合，而jdbcTemplate同过使用不同方法来获取，<br>例如<code>queryForObject</code>来获取单个对象</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer accountCount = jdbcTemplate.queryForObject(<span class="string">"Select count(*) from account"</span>,Integer<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
       
       <!-- reward -->
       
@@ -178,13 +182,15 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/02/21/hello-world/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2019/12/21/Spring%20jdbcTemplate/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
 
     </footer>
 
@@ -194,10 +200,19 @@
   
   <nav class="article-nav">
     
+      <a href="/2019/12/23/Spring%20Bean%E9%85%8D%E7%BD%AE/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Spring Bean 配置
+          
+        </div>
+      </a>
     
-      <a href="/2020/01/05/Spring%20Boot%20%E5%90%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/" class="article-nav-link">
+    
+      <a href="/2019/12/21/about/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">SpringBoot 启动配置原理</div>
+        <div class="article-nav-title">About Me</div>
       </a>
     
   </nav>

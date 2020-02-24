@@ -71,7 +71,7 @@
     
     
     
-    <article id="post-Spring jdbcTemplate" class="article article-type-post" itemscope
+    <article id="post-Spring Bean配置" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -79,8 +79,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20jdbcTemplate/"
-    >Spring jdbcTemplate</a
+  <a class="article-title" href="/2019/12/23/Spring%20Bean%E9%85%8D%E7%BD%AE/"
+    >Spring Bean 配置</a
   >
 </h2>
   
@@ -90,8 +90,8 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/Spring%20jdbcTemplate/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+      <a href="/2019/12/23/Spring%20Bean%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2019-12-23T04:00:00.000Z" itemprop="datePublished">2019-12-23</time>
 </a>
       
   <div class="article-category">
@@ -114,15 +114,78 @@
       
 
       
-      <h2 id="Spring-JDBCTemplate"><a href="#Spring-JDBCTemplate" class="headerlink" title="Spring JDBCTemplate"></a>Spring JDBCTemplate</h2><p>Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  </p>
-<p>Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。</p>
-<h4 id="创建数据源对象"><a href="#创建数据源对象" class="headerlink" title="创建数据源对象"></a>创建数据源对象</h4><p>Spring内部提供了自己DataSource对象<code>DriverManagerDataSource</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DriverManagerDataSource dataSource &#x3D; new DriverManagerDataSource();</span><br><span class="line">dataSource.setDriverClassName(&quot;com.mysql.cj.jdbc.Driver&quot;);</span><br><span class="line">dataSource.setUrl(&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;javatest?serverTimezone&#x3D;UTC&quot;);</span><br><span class="line">dataSource.setUsername(&quot;root&quot;);</span><br><span class="line">dataSource.setPassword(&quot;123456&quot;);</span><br></pre></td></tr></table></figure>
-<h4 id="创建JDBCTemplate对象"><a href="#创建JDBCTemplate对象" class="headerlink" title="创建JDBCTemplate对象"></a>创建JDBCTemplate对象</h4><p>创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JdbcTemplate jdbcTemplate &#x3D; new JdbcTemplate();</span><br><span class="line">jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">List&lt;Account&gt; accounts &#x3D; jdbcTemplate.query(&quot;select * from account&quot;,new AccountRowMapper());</span><br><span class="line">for(Account account:accounts)&#123;</span><br><span class="line">    System.out.println(account);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象"><a href="#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象" class="headerlink" title="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象"></a>在执行查询的时候我们需要提供一个继承于<code>RowMapper</code>接口的实现类,用于封装结果对象</h5>
+      <h4 id="Bean配置的示例代码"><a href="#Bean配置的示例代码" class="headerlink" title="Bean配置的示例代码"></a>Bean配置的示例代码</h4><p>JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:p</span>=<span class="string">"http://www.springframework.org/schema/p"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 使用id属性定义person1，其对应的实现类为com.mengma.person1 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"person1"</span> <span class="attr">class</span>=<span class="string">"com.mengma.damain.Person1"</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--使用name属性定义person2，其对应的实现类为com.mengma.domain.Person2--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"Person2"</span> <span class="attr">class</span>=<span class="string">"com.mengma.domain.Person2"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Bean-属性"><a href="#Bean-属性" class="headerlink" title="Bean 属性"></a>Bean 属性</h4><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class</td>
+<td>指定bean类的全限定类名</td>
+</tr>
+<tr>
+<td>name/id</td>
+<td>bean标识符</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>用来指定特定bean定义创建的对象的作用域</td>
+</tr>
+<tr>
+<td>constructor-arg</td>
+<td>通过构造函数注入</td>
+</tr>
+<tr>
+<td>property</td>
+<td>通过setter注入</td>
+</tr>
+<tr>
+<td>autowiring mode</td>
+<td></td>
+</tr>
+<tr>
+<td>lazy-initalization mode</td>
+<td>延迟初始化</td>
+</tr>
+<tr>
+<td>init-method</td>
+<td>指定初始化方法</td>
+</tr>
+<tr>
+<td>destroy-method</td>
+<td>指定bean被销毁时执行方法。</td>
+</tr>
+</tbody></table>
+<h4 id="Spring-Bean作用域"><a href="#Spring-Bean作用域" class="headerlink" title="Spring Bean作用域"></a>Spring Bean作用域</h4><p>scope值：</p>
+<ul>
+<li><code>signleton</code> Bean实例以单例模式存在（创建容器时就会创建单例Bean对象），默认</li>
+<li><code>prototype</code> Bean实例以多例，并且在获取对象是创建</li>
+<li><code>request</code> 每次HTTP请求都会常见一个新的Bean，仅适用于web项目</li>
+<li><code>session</code> 同一个HTTP Sesssion共享一个Bean，不同Session使用不同的Bean。仅适用于web项目 * <code>golbal-session</code> 作用域集群环境的会话范围（全局会话范围），当不是集群环境时，它既是session</li>
+</ul>
+<h4 id="Spring-Bean-生命周期"><a href="#Spring-Bean-生命周期" class="headerlink" title="Spring Bean 生命周期"></a>Spring Bean 生命周期</h4><p>通过使用<code>init-method</code>和<code>destroy-method</code>属性来指定bean对象中的初始和销毁方法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"TestService"</span> <span class="attr">init-method</span>=<span class="string">"Init"</span> <span class="attr">destroy-method</span>=<span class="string">"Destroy"</span> <span class="attr">class</span>=<span class="string">"cn.test.service.impl.TestServiceImpl"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>单例对象</p>
+<ul>
+<li>出生：当容器创建对象时出生</li>
+<li>活着：只要容器还在，对象一直活着</li>
+<li>死亡：容器销毁，对象消亡</li>
+<li>总结：单例对象的生命周期和容器相同  </li>
+</ul>
+<p>多例对象</p>
+<ul>
+<li>出生：当我们使用对象spring框架为我们创建</li>
+<li>活着：当对象只要是在使用过程中就一直或者</li>
+<li>死亡：当对象长时间不用，且没有别的对象引用时，由Java的垃圾回收器回收</li>
+</ul>
+<h4 id="Spring-依赖注入"><a href="#Spring-依赖注入" class="headerlink" title="Spring 依赖注入"></a>Spring 依赖注入</h4>
       
-      <a class="article-more-link" href="/2019/02/19/Spring%20jdbcTemplate/">阅读更多...</a>
+      <a class="article-more-link" href="/2019/12/23/Spring%20Bean%E9%85%8D%E7%BD%AE/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -150,7 +213,7 @@
 
 </article>
     
-    <article id="post-Spring Boot 配置文件" class="article article-type-post" itemscope
+    <article id="post-Spring jdbcTemplate" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -158,8 +221,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
-    >SpringBoot 配置文件</a
+  <a class="article-title" href="/2019/12/21/Spring%20jdbcTemplate/"
+    >Spring jdbcTemplate</a
   >
 </h2>
   
@@ -169,12 +232,12 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+      <a href="/2019/12/21/Spring%20jdbcTemplate/" class="article-date">
+  <time datetime="2019-12-21T06:40:00.000Z" itemprop="datePublished">2019-12-21</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring-Boot/">Spring Boot</a>
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
   </div>
 
       
@@ -193,23 +256,373 @@
       
 
       
-      <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><h2 id="1、配置文件"><a href="#1、配置文件" class="headerlink" title="1、配置文件"></a>1、配置文件</h2><p>SpringBoot使用一个全局的配置文件，配置文件名是固定的；</p>
-<p>•application.properties</p>
-<p>•application.yml</p>
-<p>配置文件的作用：修改SpringBoot自动配置的默认值；SpringBoot在底层都给我们自动配置好；</p>
-<p>YAML（YAML Ain’t Markup Language）</p>
-<p>​    YAML  A Markup Language：是一个标记语言</p>
-<p>​    YAML   isn’t Markup Language：不是一个标记语言；</p>
-<p>标记语言：</p>
-<p>​    以前的配置文件；大多都使用的是  <strong>xxxx.xml</strong>文件；</p>
-<p>​    YAML：<strong>以数据为中心</strong>，比json、xml等更适合做配置文件；</p>
-<p>​    YAML：配置例子</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br></pre></td></tr></table></figure>
-
-<p>​    XML：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">port</span>&gt;</span>8081<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      <h2 id="Spring-JDBCTemplate"><a href="#Spring-JDBCTemplate" class="headerlink" title="Spring JDBCTemplate"></a>Spring JDBCTemplate</h2><p>Spring 框架针对数据库开发中的应用提供了 JDBCTemplate 类，该类是 Spring 对 JDBC 支持的核心，它提供了所有对数据库操作功能的支持。  </p>
+<p>Spring 框架提供的JDBC支持主要由四个包组成，分别是 core（核心包）、object（对象包）、dataSource（数据源包）和 support（支持包），org.springframework.jdbc.core.JdbcTemplate 类就包含在核心包中。作为 Spring JDBC 的核心，JdbcTemplate 类中包含了所有数据库操作的基本方法。</p>
+<h4 id="创建数据源对象"><a href="#创建数据源对象" class="headerlink" title="创建数据源对象"></a>创建数据源对象</h4><p>Spring内部提供了自己DataSource对象<code>DriverManagerDataSource</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DriverManagerDataSource dataSource = <span class="keyword">new</span> DriverManagerDataSource();</span><br><span class="line">dataSource.setDriverClassName(<span class="string">"com.mysql.cj.jdbc.Driver"</span>);</span><br><span class="line">dataSource.setUrl(<span class="string">"jdbc:mysql://localhost:3306/javatest?serverTimezone=UTC"</span>);</span><br><span class="line">dataSource.setUsername(<span class="string">"root"</span>);</span><br><span class="line">dataSource.setPassword(<span class="string">"123456"</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="创建JDBCTemplate对象"><a href="#创建JDBCTemplate对象" class="headerlink" title="创建JDBCTemplate对象"></a>创建JDBCTemplate对象</h4><p>创建时需要把数据源注入倒jdbcTemplate中，然后就可以执行sql啦</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JdbcTemplate jdbcTemplate = <span class="keyword">new</span> JdbcTemplate();</span><br><span class="line">jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">List&lt;Account&gt; accounts = jdbcTemplate.query(<span class="string">"select * from account"</span>,<span class="keyword">new</span> AccountRowMapper());</span><br><span class="line"><span class="keyword">for</span>(Account account:accounts)&#123;</span><br><span class="line">    System.out.println(account);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象"><a href="#在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类-用于封装结果对象" class="headerlink" title="在执行查询的时候我们需要提供一个继承于RowMapper接口的实现类,用于封装结果对象"></a>在执行查询的时候我们需要提供一个继承于<code>RowMapper</code>接口的实现类,用于封装结果对象</h5>
       
-      <a class="article-more-link" href="/2019/02/19/Spring%20Boot%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">阅读更多...</a>
+      <a class="article-more-link" href="/2019/12/21/Spring%20jdbcTemplate/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-about" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/12/21/about/"
+    >About Me</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/12/21/about/" class="article-date">
+  <time datetime="2019-12-20T16:00:00.000Z" itemprop="datePublished">2019-12-21</time>
+</a>
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <blockquote>
+<p> A Coder, live in Hebei, China.</p>
+</blockquote>
+<p>姓名：赵鑫源</p>
+<p>现居：河北邢台</p>
+<p>GitHub：<a href="https://github.com/chuqiy" target="_blank" rel="noopener">chuqiy</a></p>
+<p>QQ: <a href="http://wpa.qq.com/msgrd?v=3&uin=448766534&site=qq&menu=yes" target="_blank" rel="noopener">540925835</a></p>
+<p>微信：y1241349621</p>
+<img src="https://chuqiy.github.io/images/portrait.jpg" alt="avatar" width="300" style="border-radius:50%"/>
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Dao冗余代码问题" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/12/20/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/"
+    >Dao冗余代码问题</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/12/20/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2019-12-20T06:00:00.000Z" itemprop="datePublished">2019-12-20</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <p>我们已经学会了jdbcTemplate，但是每个Dao类中都少不了下面这几句代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setJdbcTemplate</span><span class="params">(JdbcTemplate jdbcTemplate)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.jdbcTemplate = jdbcTemplate;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而为了使代码更简洁，我可可以使用继承父类的方式解决代码冗余</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Dao层的父类，负责提供jdbcTemplate对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcSuperDao</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JdbcTemplate <span class="title">getJdbcTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> jdbcTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDataSource</span><span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.jdbcTemplate == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.jdbcTemplate = createJdbcTemplate();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.jdbcTemplate.setDataSource(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> JdbcTemplate <span class="title">createJdbcTemplate</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JdbcTemplate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Spring中其实也提供了这样的一个用来让Dao层继承的父类  </p>
+<blockquote>
+<p>但是由于无法修改源码的原因，无法再父类上添加注解，也就导致了不能使用注解方式的Ioc容器</p>
+</blockquote>
+      
+      <a class="article-more-link" href="/2019/12/20/Dao%E5%86%97%E4%BD%99%E4%BB%A3%E7%A0%81%E9%97%AE%E9%A2%98/">阅读更多...</a>
+      
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring IoC 容器" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/12/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/"
+    >Spring IOC容器</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/12/19/Spring%20IoC%20%E5%AE%B9%E5%99%A8/" class="article-date">
+  <time datetime="2019-12-19T04:40:58.000Z" itemprop="datePublished">2019-12-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="BeanFactory容器"><a href="#BeanFactory容器" class="headerlink" title="BeanFactory容器"></a>BeanFactory容器</h2><p>BeanFactory世纪初类型的IoC容器，它由org.springframework.beans.facytory.BeanFactory接口定义，并提供了完成的IoC服务支持。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ClassPathResource resource = <span class="keyword">new</span> ClassPathResource(<span class="string">"bean.xml"</span>);</span><br><span class="line">BeanFactory beanFactory = <span class="keyword">new</span> XmlBeanFactory(resource);</span><br><span class="line">TestServiceImpl test = (TestServiceImpl) (beanFactory.getBean(<span class="string">"TestService"</span>));</span><br><span class="line">test.say();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从BeanFactory获取Bean对象时，BeanFactory是延迟加载的。获取时才创建对象</p>
+</blockquote>
+<h2 id="Spring-ApplicationContext容器"><a href="#Spring-ApplicationContext容器" class="headerlink" title="Spring ApplicationContext容器"></a>Spring ApplicationContext容器</h2><p>Application Context是BeanFactory的子接口，也被称为Spring上下文 ，它可以加载配置文件中定义的bean，将所有的bean集中在一起，当有请求的时候分配bean。</p>
+<h4 id="常用被试用的ApplicationContext接口实现"><a href="#常用被试用的ApplicationContext接口实现" class="headerlink" title="常用被试用的ApplicationContext接口实现"></a>常用被试用的ApplicationContext接口实现</h4><ul>
+<li>ClassPathXmlApplciationContext：通过类路径下加载xml配置文件</li>
+<li>FileSystemXmlApplicationContext: 通过磁盘路径加载配置文件（要有访问权限）</li>
+<li>AnnotationFigApplicationContext：读取注解创建容器的</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"bean.xml"</span>);</span><br><span class="line">TestServiceImpl te = (TestServiceImpl) (context.getBean(<span class="string">"TestService"</span>));</span><br><span class="line">te.say();</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spring AOP" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/02/27/Spring%20AOP/"
+    >Spring AOP</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/02/27/Spring%20AOP/" class="article-date">
+  <time datetime="2019-02-27T04:00:00.000Z" itemprop="datePublished">2019-02-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h1 id="Spring-Aop是什么"><a href="#Spring-Aop是什么" class="headerlink" title="Spring Aop是什么"></a>Spring Aop是什么</h1><p>面向切面编程（AOP）和面向对象编程（OOP）类似，也是一种编程模式。Spring AOP 是基于 AOP 编程模式的一个框架，它的使用有效减少了系统间的重复代码，达到了模块间的松耦合目的。</p>
+<p>AOP 的全称是“Aspect Oriented Programming”，即面向切面编程，它将业务逻辑的各个部分进行隔离，使开发人员在编写业务逻辑时可以专心于核心业务，从而提高了开发效率。</p>
+<p>AOP 采取横向抽取机制，取代了传统纵向继承体系的重复性代码，其应用主要体现在事务处理、日志管理、权限控制、异常处理等方面。</p>
+<p>为了更好地理解 AOP，就需要对 AOP 的相关术语有一些了解，这些专业术语主要包含 Joinpoint、Pointcut、Advice、Target、Weaving、Proxy 和 Aspect，它们的含义如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Joinpoint（连接点）</td>
+<td>指那些被拦截到的点，在 Spring 中，可以被动态代理拦截目标类的方法。</td>
+</tr>
+<tr>
+<td>Pointcut（切入点）</td>
+<td>指要对哪些 Joinpoint 进行拦截，即被拦截的连接点。</td>
+</tr>
+<tr>
+<td>Advice（通知）</td>
+<td>指拦截到 Joinpoint 之后要做的事情，即对切入点增强的内容。</td>
+</tr>
+<tr>
+<td>Target（目标）</td>
+<td>指代理的目标对象。</td>
+</tr>
+<tr>
+<td>Weaving（植入）</td>
+<td>指把增强代码应用到目标上，生成代理对象的过程。</td>
+</tr>
+<tr>
+<td>Proxy（代理）</td>
+<td>指生成的代理对象。</td>
+</tr>
+<tr>
+<td>Aspect（切面）</td>
+<td>切入点和通知的结合。</td>
+</tr>
+</tbody></table>
+<h2 id="基于XML配置"><a href="#基于XML配置" class="headerlink" title="基于XML配置"></a>基于XML配置</h2><p>导入aspectjweaver坐标和spring-aop，因为导入spring-context坐标时，已经导入aop，所以不需要再导入</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;sop:config&gt;</code> AOP配置</li>
+<li><code>&lt;aop:aspect&gt;</code>配置切面  位于AOP配置里面 <code>id</code>给切面提供一个唯一标识，<code>ref</code>指定通知类<br>以下标签都在<code>&lt;aop:aspect&gt;里面</code></li>
+<li><code>&lt;aop:pointcut&gt;</code> 切入点通过<code>expression</code>属性来告诉要增强哪些方法，而<code>expression</code>里使用的时切入表达式</li>
+<li><code>&lt;aop:before&gt;</code> 表示前置通知</li>
+<li><code>&lt;aop:after-returning&gt;</code> 后置通知</li>
+<li><code>&lt;aop:after-throwing&gt;</code> 抛出体重</li>
+<li><code>&lt;aop:after&gt;</code> 最终通知</li>
+<li><code>&lt;aop:around&gt;</code> 环绕通知</li>
+</ul>
+      
+      <a class="article-more-link" href="/2019/02/27/Spring%20AOP/">阅读更多...</a>
       
       
       <!-- reward -->
@@ -245,7 +658,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/"
+  <a class="article-title" href="/2019/02/20/Spring%20%E6%95%B4%E5%90%88Junit/"
     >Spring 整合Junit</a
   >
 </h2>
@@ -256,8 +669,8 @@
 
     
     <div class="article-meta">
-      <a href="/2019/02/19/Spring%20%E6%95%B4%E5%90%88Junit/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
+      <a href="/2019/02/20/Spring%20%E6%95%B4%E5%90%88Junit/" class="article-date">
+  <time datetime="2019-02-19T20:40:58.000Z" itemprop="datePublished">2019-02-20</time>
 </a>
       
   <div class="article-category">
@@ -286,277 +699,9 @@
 <li>使用<code>@ContextConfiguration</code>注解告知spring的运行器，spring和ioc创建时基于xml还是注解的，并且说明位置  <blockquote>
 <p><strong>locations</strong>：指定xml文件的位置，加上classpath关键字，表示在类路径下<br><strong>classes</strong>:指定注解类的class</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(classes &#x3D; SpringConfig.class)</span><br><span class="line">public class mainApp &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    @Qualifier(&quot;userServiceImpl&quot;)</span><br><span class="line">    UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void Test()&#123;</span><br><span class="line">        List&lt;User&gt; userList &#x3D; userService.findAllUser();</span><br><span class="line">        for(User user:userList)&#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">ContextConfiguration</span>(<span class="title">classes</span> </span>= SpringConfig<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">mainApp</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"userServiceImpl"</span>)</span><br><span class="line">    UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        List&lt;User&gt; userList = userService.findAllUser();</span><br><span class="line">        <span class="keyword">for</span>(User user:userList)&#123;</span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring 事务管理" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"
-    >Spring 事务管理</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h3 id="Spring-事务控制我们要明确的"><a href="#Spring-事务控制我们要明确的" class="headerlink" title="Spring 事务控制我们要明确的"></a>Spring 事务控制我们要明确的</h3><pre><code>第一： JavaEE 体系进行分层开发，事务处理位于业务层，Spring提供了分层设计业务层的事务处理解决方案
-第二： Spring框架为我们提供了一组事务控制的接口。在spring-tx-3.2.13.RELEASE.jar 中
-第三：spring的事务控制都是基于AOP的，它既可以使用变成的方式的实现，也可以使用配置的方式实现</code></pre><h3 id="Spring-中的三个核心接口"><a href="#Spring-中的三个核心接口" class="headerlink" title="Spring 中的三个核心接口"></a>Spring 中的三个核心接口</h3><h4 id="1-PlatformTransactionManager"><a href="#1-PlatformTransactionManager" class="headerlink" title="1. PlatformTransactionManager"></a>1. PlatformTransactionManager</h4><p>PlatformTransactionManager 接口是 Spring 提供的平台事务管理器，用于管理事务。该接口中提供了三个事务操作方法，具体如下。</p>
-<ul>
-<li><code>TransactionStatus getTransaction（TransactionDefinition definition）</code>用于获取事务状态信息。</li>
-<li><code>void commit（TransactionStatus status）</code>用于提交事务。</li>
-<li><code>void rollback（TransactionStatus status）</code>用于回滚事务。</li>
-</ul>
-<p>真正管理事务的对象</p>
-<ul>
-<li><code>org.springframework.jdbc.datasource.DataSourceTransactionManager</code>使用SpringJDBC或Mybatis进行持久化数据时使用</li>
-<li><code>org.springframework.orm.hibernate5.HibernateTransactionManager</code> 使用Hibernate版本进行持久化数据时使用</li>
-</ul>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring 注解配置" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/"
-    >Spring注解配置</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h3 id="通过XML进行主配置"><a href="#通过XML进行主配置" class="headerlink" title="通过XML进行主配置"></a>通过XML进行主配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;</span><br><span class="line">    xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">    xmlns:context&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context&quot;</span><br><span class="line">    xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans</span><br><span class="line">        https:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&#x2F;spring-beans.xsd</span><br><span class="line">        http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context</span><br><span class="line">        https:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;context&#x2F;spring-context.xsd&quot;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="通过Java类作为主配置"><a href="#通过Java类作为主配置" class="headerlink" title="通过Java类作为主配置"></a>通过Java类作为主配置</h3><ul>
-<li><code>@Configuration</code> 指定当前类是一个配置类</li>
-<li><code>@ComponentScan</code> 用于通过注解指定spring在创建容器时要扫描的包，通过<code>value</code>属性指定创建容器时要扫描的包</li>
-<li><code>@Bean</code> 用于把当前方法的返回值作为bean对象存入spring的ioc容器中，通过<code>name</code>属性指定bean的id。不写时，默认值是当前方法的名称</li>
-<li><code>@Import</code> 用于导入其他的配置类。当我们使用Import的注释之后，有Import注释的类就是父配置类，而导入的都是子配置类。<code>value</code>:其他配置类的字节码。</li>
-<li><code>@@EnableAspectJAutoProxy</code> 开启注解AOP的支持</li>
-<li><code>@EnableTransactionManagement</code> 开启Spring注解中事务的支持<h4 id="多个配置文件时-扫描方法"><a href="#多个配置文件时-扫描方法" class="headerlink" title="多个配置文件时 扫描方法"></a>多个配置文件时 扫描方法</h4></li>
-</ul>
-<ol>
-<li>通过创建容器对象时扫描加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new AnnotationConfigApplicationContext(SpringConfig.class,jdbcConfig.class);</span><br></pre></td></tr></table></figure>
-通过这种方式扫描，配置文件上面可以不写<code>@Configuration</code>,不过这样加载两个配置将会是同级别的</li>
-<li><code>@ComponentScan</code>扫描<code>@Configuration</code> 加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan(&quot;cn.test&quot;)</span><br><span class="line">public class SpringConfig &#123; &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class jdbcConfig &#123; &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext context &#x3D; new AnnotationConfigApplicationContext(SpringConfig.class);</span><br></pre></td></tr></table></figure>
-通过主配置文件上的<code>@ComponenScan</code>会自动扫描包下的配置文件</li>
-</ol>
-      
-      <a class="article-more-link" href="/2019/02/19/Spring%20%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE/">阅读更多...</a>
-      
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
-
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-事务管理（不使用spring）" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/"
-    >事务管理（不使用spring）</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/" class="article-date">
-  <time datetime="2019-02-19T04:40:58.000Z" itemprop="datePublished">2019-02-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <p>在开发中我们免不了要进行一些事务的存储。例如用户之间的转账</p>
-<h5 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h5><table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>money</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>张三</td>
-<td>1000</td>
-</tr>
-<tr>
-<td>2</td>
-<td>李四</td>
-<td>1000</td>
-</tr>
-</tbody></table>
-<h4 id="1-编写Service层的事务接口"><a href="#1-编写Service层的事务接口" class="headerlink" title="1. 编写Service层的事务接口"></a>1. 编写Service层的事务接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void transfer(int sourceId, int targetId, double money) &#123;</span><br><span class="line">        &#x2F;&#x2F;1.获取转出账户</span><br><span class="line">        Account sourceAccount &#x3D; accountDao.findOne(sourceId);</span><br><span class="line">        &#x2F;&#x2F;2. 获取转入账户</span><br><span class="line">        Account targetAccount &#x3D; accountDao.findOne(targetId);</span><br><span class="line">        &#x2F;&#x2F;3. 转出账户减钱</span><br><span class="line"></span><br><span class="line">        sourceAccount.setMoney(sourceAccount.getMoney()-money);</span><br><span class="line">        &#x2F;&#x2F;4. 转入账户加钱</span><br><span class="line">        targetAccount.setMoney(targetAccount.getMoney()+money);</span><br><span class="line">        &#x2F;&#x2F;5. 更新转出账户信息</span><br><span class="line">        accountDao.updateAccount(sourceAccount);</span><br><span class="line"></span><br><span class="line">        int i &#x3D;1&#x2F;0;</span><br><span class="line">        &#x2F;&#x2F;6. 更新转入账户信息</span><br><span class="line">        accountDao.updateAccount(targetAccount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>目前的Dao层是每执行一个方法，它都会重新创建一个连接执行sql语句，这样就导致如果中间出错了，出账用户信息保存，入账用户就会未保存。因此我们需要一个管理Connection的工具类，通过工具类来绑定Connection</p>
-      
-      <a class="article-more-link" href="/2019/02/19/%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8spring%EF%BC%89/">阅读更多...</a>
-      
       
       <!-- reward -->
       
